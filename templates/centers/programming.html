@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <div id="portfolio" class="our-portfolio section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                <h6>Our Portofolio</h6>
+                <h4>See Our Recent <em>Projects</em></h4>
+                <div class="line-dec"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="loop owl-carousel">
+                  {% for center in centers %}
+                      {% if center.category == 'programming' %}
+                        <div class="item">
+                          <a href="{% url 'programming_detail' pk=center.id %}">
+                            <div class="portfolio-item">
+                            <div class="thumb">
+                             <img src="{{ center.image.url }}" alt="">
+
+                            </div>
+                            <div class="down-content">
+                              <h4>
+                                    {{ center.name }}
+                              </h4>
+                              <span>
+                                    {{ center.created_at }}
+                              </span>
+                            </div>
+                          </div>
+                          </a>
+                        </div>
+                      {% endif %}
+                  {% endfor %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

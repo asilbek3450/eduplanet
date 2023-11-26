@@ -1,0 +1,16 @@
+venv
+
+__pycache__/
+
+db.sqlite3
+
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+media
