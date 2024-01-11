@@ -1,9 +1,10 @@
 from django.urls import path, include
 
-from .views import dashboard, programming, programming_detail
+from blogs.views import dashboard
 
 urlpatterns = [
     path('', dashboard, name="dashboard"),
-    path('programming/', programming, name="programming"),
-    path('programming/<int:pk>/', programming_detail, name="programming_detail"),
+    path('centers/', include('centers.urls')),
+    path('courses/', include('courses.urls')),
+    path('users/', include('users.urls'))
 ]

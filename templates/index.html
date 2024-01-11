@@ -12,13 +12,17 @@
               <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
                 <div class="row">
                   <div class="col-lg-12">
-                    <h6>Educational Planet</h6>
+                      {% if not user.is_authenticated %}
+                          <h6>Educational Planet</h6>
+                      {% else %}
+                          <h6>Welcome to Educational Planet, <b>{{ user.first_name }} {{ user.last_name }}</b></h6>
+                      {% endif %}
                     <h2>Where Learning Centers Align for You</h2>
                     <p>Welcome to <b>EduPlanet</b>, where we are passionate about education and dedicated to helping individuals achieve their learning goals.</p>
                   </div>
                   <div class="col-lg-12">
                     <div class="border-first-button scroll-to-section">
-                      <a href="#services">Centers</a>
+                      <a href="#centers">Centers</a>
                     </div>
                   </div>
                 </div>
@@ -120,7 +124,7 @@
     </div>
   </div>
 
-  <div id="services" class="services section">
+  <div id="centers" class="services section">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -176,16 +180,10 @@
                           <div class="row">
                             <div class="col-lg-6 align-self-center">
                               <div class="left-text">
-
-                                <h4 class="border-first-button"><a href="{% url 'programming' %}">Programming</a></h4>
+                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='programming' %}">Programming</a></h4>
                                 <p>Start your programming journey with instruction from renowned learning centers dedicated to developing coding skills and developing a deep understanding of programming languages.</p>
-                                <div class="ticks-list"><span><i class="fa fa-check"></i>
-                                    {% for center in learning_centers %}
-                                        {% if center.category == 'programming' %}
-                                            {{ center.name }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </span></div>
+                                    <div class="ticks-list"><span><i class="fa fa-check"></i> Python</span><span><i class="fa fa-check"></i> Django</span><span><i class="fa fa-check"></i> HTML/CSS</span></div>
+                                    <div class="ticks-list"><span><i class="fa fa-check"></i> JS</span><span><i class="fa fa-check"></i> Mobile</span></div>
                                 <p>Discover a variety of reputable online platforms, each offering a unique approach to learning that caters to different skill levels and interests in programming.</p>
                               </div>
                             </div>
@@ -204,7 +202,7 @@
                           <div class="row">
                             <div class="col-lg-6 align-self-center">
                               <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'programming' %}">Design</a></h4>
+                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='design' %}">Design</a></h4>
                                 <p>Explore these awesome places where you can learn to make cool stuff! They're like magical schools for design where you can learn about making things look amazing.
                                 </p>
                                 <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized Template</span> <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> SEO Analysis</span>
@@ -227,7 +225,7 @@
                           <div class="row">
                             <div class="col-lg-6 align-self-center">
                               <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'programming' %}">Robotics</a></h4>
+                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='robotics' %}">Robotics</a></h4>
                                 <p>These great online places will help you learn all about robots. They seem like fun schools with great ways to teach robots to anyone, whether you're just starting out or already a pro!</p>
                                 <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized Template</span> <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> SEO Analysis</span>
                                   <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> SEO Analysis</span> <span><i class="fa fa-check"></i> Optimized Template</span></div>
@@ -249,7 +247,7 @@
                           <div class="row">
                             <div class="col-lg-6 align-self-center">
                               <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'programming' %}">Languages</a></h4>
+                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='languages' %}">Languages</a></h4>
                                 <p>Discover great fun places where learning new languages becomes an exciting adventure! They are like hidden treasures for learning new languages and learning about different cultures.
                                 </p>
                                 <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized Template</span> <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> SEO Analysis</span>
@@ -272,7 +270,7 @@
                           <div class="row">
                             <div class="col-lg-6 align-self-center">
                               <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'programming' %}">Kids</a></h4>
+                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='kids' %}">Kids</a></h4>
                                 <p>Hey there, little explorers! These super cool places are like playgrounds full of fun games and activities that also teach you awesome stuff!
                                 </p>
                                 <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized Template</span> <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> SEO Analysis</span>
@@ -458,44 +456,6 @@
     </div>
   </div>
 
-
-
-
-
-  <div id="free-quote" class="free-quote">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 offset-lg-4">
-          <div class="section-heading  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.3s">
-            <h6>Get Your Free Quote</h6>
-            <h4>Grow With Us Now</h4>
-            <div class="line-dec"></div>
-          </div>
-        </div>
-        <div class="col-lg-8 offset-lg-2  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.8s">
-          <form id="search" action="#" method="GET">
-            <div class="row">
-              <div class="col-lg-4 col-sm-4">
-                <fieldset>
-                  <input type="web" name="web" class="website" placeholder="Your website URL..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-4 col-sm-4">
-                <fieldset>
-                  <input type="address" name="address" class="email" placeholder="Email Address..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-4 col-sm-4">
-                <fieldset>
-                  <button type="submit" class="main-button">Get Quote Now</button>
-                </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 {% endblock %}

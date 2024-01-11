@@ -1,14 +1,13 @@
 html {
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('http://via.placeholder.com/1600x700/777/000000/');
   min-height: 100%;
 }
 body {
   background: none;
 }
 .semiBG {
-  background: rgba(0,0,0,0.5);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 .headingFont {
@@ -22,7 +21,7 @@ body {
   color: white;
 }
 a {
-  color: white;
+  color: #000000;
   text-decoration: none;
   -webkit-transition: color 500ms ease;
   -moz-transition: color 500ms ease;
@@ -32,10 +31,10 @@ a {
 }
 a:hover {
   text-decoration: none;
-  color: #018989;
+  color: #ff9a00;
 }
 a.watchNow:hover {
-  color: #018989;
+  color: #ff9a00;
 }
 .border-black {
   border-color: black !important;

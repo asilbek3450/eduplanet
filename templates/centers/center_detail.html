@@ -1,20 +1,120 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
-    <div id="portfolio" class="our-portfolio section">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link href="{% static 'centers/center_detail.css' %}" rel="stylesheet"/>
 
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6">
+    <br><br><br><br><br><br>
+{#        <div class="container">#}
+{#          <div class="row">#}
+{#              <div class="col-lg-6">#}
+{#              <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">#}
+{#                  <h4><em>{{ learning_center.name | upper }} </em>Learning Center</h4>#}
+{#                  <div class="line-dec"></div><br><br>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div>#}
+
+
+    <div class="container">
+        <div class="row">
+
+          <div class="col-md-5">
+
               <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                  <h6>Programming Learning Center</h6>
-{#                <h4>See Our Recent <em>Projects</em></h4>#}
-                  <h4>{{ center.name }}</h4>
+                  <h4><em>{{ learning_center.name | upper }} </em>Learning Center
+                  </h4>
                   <div class="line-dec"></div>
+                  <br><br>
+              </div>
+
+
+                <div class="project-info-box mt-0">
+                    <h5>About Learning Center</h5>
+                    <p class="mb-0">{{ learning_center.description }}</p>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box">
+                    <p><b>Name:</b> {{ learning_center.name}}</p>
+                    <p><b>Phone Number:</b> {{ learning_center.phone_number}}</p>
+                    <p><b>Email:</b> {{ learning_center.email}}</p>
+                    <p><b>Location:</b> <a target="_blank" href="{{ learning_center.location }}">Google Map</a></p>
+                    <p class="mb-0"><b>Website:</b> <a target="_blank" href="{{ learning_center.website }}">{{ learning_center.website}}</a></p>
+                </div><!-- / project-info-box -->
+
+            </div><!-- / column -->
+
+          <div class="col-md-7">
+                <img src="{{ learning_center.image.url }}" width="400" height="300" alt="project-image" class="rounded">
+                <div class="project-info-box">
+                    <p>
+                        <b>Professions:</b>
+                        {% for category in learning_center.categories.all %}
+                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            No categories available
+                        {% endfor %}
+                    </p>
+                    <p><b>Joined us:</b> {{ learning_center.created_at.date }}</p>
+                </div><!-- / project-info-box -->
+
+                    <div class="border-first-button">
+                          <h4>
+                              <a href="{% url 'dashboard' %}#centers">🔙 Back to Dashboard</a>
+                          </h4>
+                    </div>
+
+
+          </div><!-- / column -->
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <br><br><br><br><br><br>
+                    <h4>Courses in <em>{{ learning_center.name }}</em></h4>
+                    <div class="line-dec"></div><br><br>
+                </div>
+            </div>
+        </div>
+
+{#        <div class="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">#}
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="loop owl-carousel">
+                  {% for course in courses %}
+                        <div class="item">
+                          <a href="{% url 'course_detail' slug=course.slug %}">
+                            <div class="portfolio-item">
+                            <div class="thumb">
+                             <img src="{{ course.image.url }}" alt="course_image">
+
+                            </div>
+                            <div class="down-content">
+                              <h4>
+                                    {{ course.name }}
+                              </h4>
+                              <span>
+                                    {{ course.created_at }}
+                              </span>
+                            </div>
+                          </div>
+                          </a>
+                        </div>
+                  {% endfor %}
+
               </div>
             </div>
           </div>
-        </div>
+{#        </div>#}
+
     </div>
+
+
+
+
 
 {% endblock %}

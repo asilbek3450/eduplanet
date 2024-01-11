@@ -1,10 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link href="{% static 'centers/center_detail.css' %}" rel="stylesheet"/>
+    <link href="{% static 'centers/course_detail.css' %}" rel="stylesheet"/>
+    <br><br><br><br><br><br>
+
+
+    <div class="container">
+        <div class="row">
+
+          <div class="col-md-5">
+
+              <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                  <h4><em>{{ course.name | upper }} </em>Course</h4>
+                  <div class="line-dec"></div><br><br>
+              </div>
+
+                <div class="project-info-box mt-0">
+                    <h5>About this course</h5>
+                    <p class="mb-0">{{ course.description }}</p>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box">
+                    <p><b>Learning Center:</b> {{ course.learning_center.name}}</p>
+                    <p><b>Phone Number:</b> {{ course.learning_center.phone_number}}</p>
+                    <p><b>Email:</b> {{ course.learning_center.email}}</p>
+                    <p><b>Location:</b> <a target="_blank" href="{{ learning_center.location }}">Google Map</a></p>
+                    <p class="mb-0"><b>Website:</b> <a target="_blank" href="{{ course.learning_center.website }}">{{ learning_center.website}}</a></p>
+                    <p><b>⭐ Rating:</b> {{ course.rating}}</p>
+                </div><!-- / project-info-box -->
+
+            </div><!-- / column -->
+
+          <div class="col-md-7">
+                <img src="{{ course.image.url }}" width="400" height="300" alt="project-image" class="rounded">
+                <div class="project-info-box">
+                    <p>
+                        <b>Professions:</b>
+                        {% for category in learning_center.categories.all %}
+                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            No categories available
+                        {% endfor %}
+                    </p>
+                    <p><b>Joined us:</b> {{ learning_center.created_at.date }}</p>
+                </div><!-- / project-info-box -->
+
+                  <div class="border-first-button">
+                          <h4>
+                              <a href="{% url 'center_detail' slug=course.learning_center.slug %}">🔙 Back to Learning Center</a>
+                              <a href="#">➕ Enroll Course</a>
+                          </h4>
+                    </div>
+<br><br><br><br><br><br>
+            </div><!-- / column -->
+        </div>
+    </div>
+
+
+  <div id="playlist">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <br><br><br>
+                    <h4>Videos Playlist for <em>{{ learning_center.name }}</em> course</h4>
+                    <div class="line-dec"></div><br><br>
+                </div>
+            </div>
+        </div>
+
+
+    <!--Video Player-->
+
+        <link href="https://fonts.googleapis.com/css?family=Lato|Muli" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'centers/video_player_styles.css' %}">
+
+        <div class="col-lg-12 px-3 py-3 semiBG">
+            <div class="embed-responsive embed-responsive-16by9">
+            <iframe id="videoFrame" class="embed-responsive-item" src="{{ first_video.video_url }}" allowfullscreen></iframe>
+            </div>
+            <b><h3 id="videoName">{{ first_video.name }}</h3></b>
+            <p id="videoDescription">{{ first_video.description }}</p>
+        </div>
+
+        <div class="col-lg-12 semiBG px-3 py-3 mb-5">
+            <h2 class="text-white mb-5">Popular Playlists</h2>
+            <div class="loop owl-carousel">
+                {% for video in video_contents %}
+                    <div class="portfolio-item">
+                        <div class="card-body">
+                            <a href="#playlist" onclick="changeVideo('{{ video.video_url }}', '{{ video.name }}', '{{ video.description }}')">
+                                <img class="m-2 border border-black rounded" alt="Playlist Title" width="128" height="128" src="{{ video.cover_image.url }}" />
+                                {{ video.name }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <script>
+            function changeVideo(videoURL, videoName, videoDescription) {
+                var videoID = extractVideoID(videoURL);
+                var embedLink = "https://www.youtube.com/embed/" + videoID;
+                document.getElementById('videoFrame').src = embedLink;
+                document.getElementById('videoName').innerText = videoName;
+                document.getElementById('videoDescription').innerText = videoDescription;
+            }
+
+            function extractVideoID(videoURL) {
+                var videoID = videoURL.split('v=')[1];
+                var ampersandPosition = videoID.indexOf('&');
+                if (ampersandPosition !== -1) {
+                    videoID = videoID.substring(0, ampersandPosition);
+                }
+                return videoID;
+            }
+        </script>
+
+    </div>
+    <!-- End Video Player -->
+
+
+
+    </div>
+
+{% endblock %}

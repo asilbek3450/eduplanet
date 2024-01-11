@@ -1515,8 +1515,8 @@ Portfolio
 
 .portfolio-item {
   border-radius: 25px;
-  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-  margin: 15px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
 }
 
 .portfolio-item .thumb {
@@ -1629,7 +1629,7 @@ Blog
 
 .show-up {
   position: relative;
-  z-index: 222;
+  z-index: 99;
 }
 
 .blog-post .thumb img {
