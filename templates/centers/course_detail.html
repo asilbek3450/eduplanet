@@ -51,7 +51,11 @@
                   <div class="border-first-button">
                           <h4>
                               <a href="{% url 'center_detail' slug=course.learning_center.slug %}">🔙 Back to Learning Center</a>
-                              <a href="#">➕ Enroll Course</a>
+                              {% if is_user_enrolled %}
+                                    <a href="#playlist">✅ Enrolled Course</a>
+                                {% else %}
+                                    <a href="{% url 'enroll_course' course.id %}">➕ Enroll Course</a>
+                                {% endif %}
                           </h4>
                     </div>
 <br><br><br><br><br><br>
@@ -59,7 +63,7 @@
         </div>
     </div>
 
-
+{% if is_user_enrolled %}
   <div id="playlist">
     <div class="container">
         <div class="row">
@@ -83,13 +87,15 @@
         <div class="col-lg-12 px-3 py-3 semiBG">
             <div class="embed-responsive embed-responsive-16by9">
             <iframe id="videoFrame" class="embed-responsive-item" src="{{ first_video.video_url }}" allowfullscreen></iframe>
-            </div>
+            </div><br>
+
             <b><h3 id="videoName">{{ first_video.name }}</h3></b>
-            <p id="videoDescription">{{ first_video.description }}</p>
+            <p id="videoDescription">{{ first_video.description }}</p><br>
+
         </div>
 
         <div class="col-lg-12 semiBG px-3 py-3 mb-5">
-            <h2 class="text-white mb-5">Popular Playlists</h2>
+            <h2 class="text-dark mb-5">Course videos</h2>
             <div class="loop owl-carousel">
                 {% for video in video_contents %}
                     <div class="portfolio-item">
@@ -129,5 +135,30 @@
 
 
     </div>
+{% else %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <br><br><br>
+                    <h4>Videos Playlist for <em>{{ learning_center.name }}</em> course</h4>
+                    <div class="line-dec"></div><br><br>
+                    <h3>You are not enrolled to this course</h3>
+
+                </div>
+            </div>
+        </div>
+
+
+    <!--Video Player-->
+
+        <link href="https://fonts.googleapis.com/css?family=Lato|Muli" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'centers/video_player_styles.css' %}">
+
+
+    </div>
+{% endif %}
 
 {% endblock %}

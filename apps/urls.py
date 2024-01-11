@@ -6,5 +6,6 @@ urlpatterns = [
     path('', dashboard, name="dashboard"),
     path('centers/', include('centers.urls')),
     path('courses/', include('courses.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('connections/', include('connections.urls')),
 ]

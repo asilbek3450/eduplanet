@@ -28,8 +28,13 @@ class UserSigninForm(forms.Form):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'image', 'phone_number']
+        fields = ['first_name', 'last_name', 'image', 'phone_number', 'email', 'username']
 
         widgets = {
-            'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Enter image...'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter first name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter last name'}),
+            'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Enter image'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email', 'readonly': True}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username', 'readonly': True}),
         }

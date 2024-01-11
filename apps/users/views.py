@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import UserSignupForm, UserSigninForm, UserUpdateForm
 from .models import User
+from connections.models import UserCourse
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
@@ -65,8 +66,10 @@ def user_logout(request):
 @login_required(login_url='login')
 def profile_page(request):
     user_profile = User.objects.get(id=request.user.id)
+    enrolled_courses = UserCourse.objects.filter(user=request.user.id)
     context = {
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'enrolled_courses': enrolled_courses
     }
     return render(request, 'auth/profile.html', context)
 
@@ -86,4 +89,4 @@ def edit_profile(request):
         'form': form,
         'user_profile': user_profile
     }
-    return render(request, 'auth/profile_edit_data_and_skills.html', context)
+    return render(request, 'auth/edit_profile.html', context)

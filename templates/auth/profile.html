@@ -19,7 +19,7 @@
                     <div class="mt-3">
                       <h4>John Doe</h4>
                       <p class="text-secondary mb-1">Full Stack Developer</p>
-                      <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                      <p class="text-muted font-size-sm">Tashkent, Uzbekistan</p>
                     </div>
                   </div>
                 </div>
@@ -54,10 +54,18 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Full Name</h6>
+                      <h6 class="mb-0">First Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      Kenneth Valdez
+                        {{ user_profile.first_name }}
+                    </div>
+                  </div>
+                  <hr><div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Last Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ user_profile.last_name }}
                     </div>
                   </div>
                   <hr>
@@ -66,25 +74,25 @@
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      fip@jukmuh.al
+                        {{ user_profile.email }}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
+                      <h6 class="mb-0">Username</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      (239) 816-9029
+                      {{ user_profile.username }}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Mobile</h6>
+                      <h6 class="mb-0">Phone Number</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      (320) 380-4539
+                      {{ user_profile.phone_number }}
                     </div>
                   </div>
                   <hr>
@@ -93,13 +101,13 @@
                       <h6 class="mb-0">Address</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      Bay Area, San Francisco, CA
+                      Tashkent, Uzbekistan
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                      <a class="btn btn-info " target="__blank" href="{% url 'edit_profile' %}">Edit</a>
                     </div>
                   </div>
                 </div>
@@ -119,17 +127,22 @@
 
                 <div class="row">
                   <!-- Single Course-->
-                  <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
-                      <!-- Team Thumb-->
-                      <div class="advisor_thumb"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></div>
-                      <!-- Course Details-->
-                      <div class="single_advisor_details_info">
-                        <h6>Samantha Sarah</h6>
+                {% if enrolled_courses %}
+                    {% for course in enrolled_courses %}
+                      <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                          <!-- Team Thumb-->
+                          <div class="advisor_thumb"><img src="{{ course.course.image.url }}" alt=""></div>
+                          <!-- Course Details-->
+                          <div class="single_advisor_details_info">
+                            <h6>{{ course.course.name }}</h6>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
+                    {% endfor %}
+                {% else %}
+                    <h3 class="text-center">You have not enrolled in any courses yet</h3>
+                {% endif %}
                 </div>
 
 

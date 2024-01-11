@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from centers.models import LearningCenter, Category
 from courses.models import Course
@@ -14,6 +15,7 @@ def centers_by_category(request, slug):
     return render(request, 'centers/centers_by_category.html', context)
 
 
+@login_required(login_url='login')
 def center_detail(request, slug):
     learning_center = get_object_or_404(LearningCenter, slug=slug)
     courses = Course.objects.filter(learning_center=learning_center)
