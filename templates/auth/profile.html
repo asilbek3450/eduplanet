@@ -119,11 +119,13 @@
 
 
                 <div class="row justify-content-center">
-                  <div class="col-12 col-sm-8 col-lg-6">
+                  <div class="col-12 col-sm-8 col-lg-10">
                     <!-- Section Heading-->
                     <div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
                       <h3>Enrolled <span>Courses</span></h3>
-                      <p>Appland is completely creative, lightweight, clean &amp; super responsive app landing page.</p>
+                      <p>Roʻyxatdan oʻtgan kurslaringizni osongina oʻrganing va boshqaring.
+                          Kurs materiallariga kiring, taraqqiyotni kuzatib boring va mahoratingizni oshiring.
+                          Sizning mahorat sari sayohatingiz shu yerdan boshlanadi.</p>
                       <div class="line"></div>
                     </div>
                   </div>
@@ -133,16 +135,18 @@
                   <!-- Single Course-->
                 {% if enrolled_courses %}
                     {% for course in enrolled_courses %}
-                      <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
-                          <!-- Team Thumb-->
-                          <div class="advisor_thumb"><img src="{{ course.course.image.url }}" alt=""></div>
-                          <!-- Course Details-->
-                          <div class="single_advisor_details_info">
-                            <h6>{{ course.course.name }}</h6>
+                      <a href="{% url 'course_detail' slug=course.course.slug %}">
+                          <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                              <!-- Team Thumb-->
+                              <div class="advisor_thumb"><img src="{{ course.course.image.url }}" alt=""></div>
+                              <!-- Course Details-->
+                              <div class="single_advisor_details_info">
+                                <h6>{{ course.course.name }}</h6>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                      </a>
                     {% endfor %}
                 {% else %}
                     <h3 class="text-center">You have not enrolled in any courses yet</h3>

@@ -1,0 +1,49 @@
+
+  <div id="blog" class="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 offset-lg-4  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.3s">
+          <div class="section-heading">
+            <h6>Recent News</h6>
+            <h4>Check Our Blog <em>Posts</em></h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+          <div class="blog-post">
+            <div class="thumb">
+              <a href="#"><img src="{{ last_blog_cover_image_url }}" alt="{{ last_blog_cover_image_url }}"></a>
+{#              <a href="#"><img src="static/assets/images/blog-post-01.jpg" alt=""></a>#}
+            </div>
+            <div class="down-content" style="height: 320px">
+              <span class="date">{{ last_blog.created_at }}</span>
+              <a href="#"><h4>{{ last_blog.title }}</h4></a>
+              <p>{{ last_blog.content | truncatechars:210 }}</p>
+              <span class="border-first-button"><a href="#">Discover More Blogs</a></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+          <div class="blog-posts">
+            <div class="row">
+              {% for blog in three_blogs %}
+                <div class="col-lg-12">
+                <div class="post-item">
+                  <div class="thumb">
+                    <a href="#"><img src="{{ blog.get_cover_image }}" alt="" style="width: 230px; height: 230px;"></a>
+                  </div>
+                  <div class="right-content">
+{#                    <span class="category">SEO Analysis</span>#}
+                    <span class="date">{{ blog.created_at }}</span>
+                    <a href="#"><h4>{{ blog.title }}</h4></a>
+                    <p>{{ blog.content | truncatechars:90 }}</p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

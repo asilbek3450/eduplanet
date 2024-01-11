@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import UserSignupForm, UserSigninForm, UserUpdateForm
+from .forms import UserSignupForm, UserSigninForm, UserUpdateForm, ContactUsForm
 from .models import User
 from connections.models import UserCourse
 from django.contrib import messages
@@ -90,3 +90,7 @@ def edit_profile(request):
         'user_profile': user_profile
     }
     return render(request, 'auth/edit_profile.html', context)
+
+
+def contact_us_success(request):
+    return render(request, 'contact_us_success.html')
