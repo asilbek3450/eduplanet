@@ -13,6 +13,11 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=17, unique=True, validators=[regex_phone_number], blank=True, null=True)
     image = models.ImageField(upload_to='user_images/', blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        if self.phone_number:
+            self.phone_number = self.phone_number.replace(' ', '')
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.username
 

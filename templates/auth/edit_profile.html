@@ -48,7 +48,7 @@
                   </ul>
                   <div class="tab-content pt-3">
                     <div class="tab-pane active">
-                      <form class="form" method="post">
+                      <form class="form" method="post" enctype="multipart/form-data">
                           {% csrf_token %}
                         <div class="row">
                           {{ form.as_p }}
