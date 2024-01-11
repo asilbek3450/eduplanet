@@ -15,11 +15,11 @@
               <a href="#"><img src="{{ last_blog_cover_image_url }}" alt="{{ last_blog_cover_image_url }}"></a>
 {#              <a href="#"><img src="static/assets/images/blog-post-01.jpg" alt=""></a>#}
             </div>
-            <div class="down-content" style="height: 320px">
-              <span class="date">{{ last_blog.created_at }}</span>
+            <div class="down-content" style="height: 350px">
+              <span class="date">{{ last_blog.created_at.date }}</span>
               <a href="#"><h4>{{ last_blog.title }}</h4></a>
-              <p>{{ last_blog.content | truncatechars:210 }}</p>
-              <span class="border-first-button"><a href="#">Discover More Blogs</a></span>
+              <p>{{ last_blog.content | truncatechars:210 | linebreaks }}</p>
+              <span class="border-first-button"><a href="{% url 'blog_list' %}">Discover More Blogs</a></span>
             </div>
           </div>
         </div>
@@ -34,9 +34,9 @@
                   </div>
                   <div class="right-content">
 {#                    <span class="category">SEO Analysis</span>#}
-                    <span class="date">{{ blog.created_at }}</span>
+                    <span class="date">{{ blog.created_at.date }}</span>
                     <a href="#"><h4>{{ blog.title }}</h4></a>
-                    <p>{{ blog.content | truncatechars:90 }}</p>
+                    <p>{{ blog.content | truncatechars:90 | linebreaks }}</p>
                   </div>
                 </div>
               </div>

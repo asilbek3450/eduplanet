@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from users.forms import ContactUsForm
 from .models import BlogPost, BlogImage
@@ -31,3 +31,23 @@ def dashboard(request):
         'form': form
     }
     return render(request, template_name='index.html', context=context)
+
+
+def blog_list(request):
+    blogs = BlogPost.objects.all().order_by('-created_at')
+    context = {
+        'blogs': blogs
+    }
+    return render(request, template_name='blogs/blog_list.html', context=context)
+
+
+def blog_detail(request, pk):
+    blog = get_object_or_404(BlogPost, pk=pk)
+    cover_image = BlogImage.objects.filter(blog_post=blog).first()
+    blog_images = BlogImage.objects.filter(blog_post=blog)
+    context = {
+        'blog': blog,
+        'cover_image': cover_image,
+        'blog_images': blog_images
+    }
+    return render(request, template_name='blogs/blog_detail.html', context=context)

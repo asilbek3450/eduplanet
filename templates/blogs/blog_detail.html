@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+  <div id="blog" class="blog">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-12 offset-12  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.3s">
+          <div class="section-heading">
+            <h6></h6>
+            <h4>Blog theme: <em>{{ blog.title }}</em></h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+
+          <div class="col-lg-12 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+              <div class="blog-post">
+                  <div class="thumb">
+                      <a href="#"><img src="{{ cover_image }}" alt="{{ cover_image }}"></a>
+                  </div>
+                  <div class="down-content">
+                      <span class="date">{{ blog.created_at.date }}</span>
+                      <a href="#"><h4>{{ blog.title }}</h4></a>
+                      <p>{{ blog.content | linebreaks }}</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-12 offset-5 wow fadeInDown">
+            <div class="section-heading">
+            <h6></h6>
+            <span class="border-first-button"><a href="{% url 'blog_list' %}">🔙 Back to Blogs</a></span>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock %}
