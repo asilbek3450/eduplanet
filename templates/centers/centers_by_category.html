@@ -7,8 +7,8 @@
           <div class="row">
             <div class="col-lg-6">
               <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                <h6>Our Portofolio</h6>
-                <h4>See Our Recent <em>Projects</em></h4>
+                <h6>Programming</h6>
+                <h4>Learning Centers that teach <em>{{ category.name }}</em></h4>
                 <div class="line-dec"></div>
               </div>
             </div>
@@ -18,13 +18,12 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="loop owl-carousel">
-                  {% for center in centers %}
-                      {% if center.category == 'programming' %}
+                  {% for center in learning_centers %}
                         <div class="item">
-                          <a href="{% url 'programming_detail' pk=center.id %}">
+                          <a href="{% url 'center_detail' slug=center.slug %}">
                             <div class="portfolio-item">
                             <div class="thumb">
-                             <img src="{{ center.image.url }}" alt="">
+                             <img src="{{ center.image.url }}" alt="" style="height: 200px; object-fit: cover">
 
                             </div>
                             <div class="down-content">
@@ -38,7 +37,6 @@
                           </div>
                           </a>
                         </div>
-                      {% endif %}
                   {% endfor %}
 
               </div>
