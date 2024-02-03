@@ -9,7 +9,7 @@ from connections.models import UserCourse
 # Create your views here.
 def course_detail(request, slug):
     course = get_object_or_404(Course, slug=slug)
-    video_contents = VideoContent.objects.filter(course=course)
+    video_contents = get_object_or_404(VideoContent, course=course)
     first_video = get_object_or_404(VideoContent, course=course, pk=1)
 
     # check user has enrolled this course
