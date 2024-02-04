@@ -136,26 +136,29 @@
                 </div>
 
                 <div class="row">
-                  <!-- Single Course-->
-                {% if enrolled_courses %}
-                    {% for course in enrolled_courses %}
-                      <a href="{% url 'course_detail' slug=course.course.slug %}">
-                          <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
-                              <!-- Team Thumb-->
-                              <div class="advisor_thumb"><img src="{{ course.course.image.url }}" alt=""></div>
-                              <!-- Course Details-->
-                              <div class="single_advisor_details_info">
-                                <h6>{{ course.course.name }}</h6>
-                              </div>
+                    {% if enrolled_courses %}
+                        {% for course in enrolled_courses %}
+                            <!-- Single Course-->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <a href="{% url 'course_detail' slug=course.course.slug %}">
+                                    <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                                        <!-- Team Thumb-->
+                                        <div class="advisor_thumb"><img src="{{ course.course.image.url }}" alt=""></div>
+                                        <!-- Course Details-->
+                                        <div class="single_advisor_details_info">
+                                            <h6>{{ course.course.name }}</h6>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                          </div>
-                      </a>
-                    {% endfor %}
-                {% else %}
-                    <h3 class="text-center">You have not enrolled in any courses yet</h3>
-                {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                            <h3 class="text-center">You have not enrolled in any courses yet</h3>
+                        </div>
+                    {% endif %}
                 </div>
+
 
 
 
