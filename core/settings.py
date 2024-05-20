@@ -55,7 +55,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://eduplanet-production.up.railway.app/',
 
+]
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
