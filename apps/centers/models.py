@@ -28,7 +28,7 @@ class LearningCenter(models.Model):
     location = models.CharField(max_length=128)
     email = models.EmailField()
     phone_number = models.CharField(max_length=17, unique=True, validators=[regex_phone_number])
-    image = models.ImageField(upload_to='learning_center_images/')
+    image = models.URLField(blank=True)
     website = models.URLField(blank=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
 

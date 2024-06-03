@@ -18,7 +18,7 @@
             <div class="down-content" style="height: 350px">
               <span class="date">{{ last_blog.created_at.date }}</span>
               <a href="#"><h4>{{ last_blog.title }}</h4></a>
-              <p>{{ last_blog.content | truncatechars:210 | linebreaks }}</p>
+              <p>{{ last_blog.content | truncatechars:220 | linebreaks }}</p>
               <span class="border-first-button"><a href="{% url 'blog_list' %}">Discover More Blogs</a></span>
             </div>
           </div>

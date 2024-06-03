@@ -9,7 +9,7 @@ class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     learning_center = models.ForeignKey(LearningCenter, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='course_images/')
+    image = models.URLField(blank=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     rating = models.PositiveSmallIntegerField(default=0)
 
@@ -38,7 +38,7 @@ class VideoContent(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    cover_image = models.ImageField(upload_to='video_images/')
+    cover_image = models.URLField(blank=True)
     video_url = models.URLField()
 
     def __str__(self):

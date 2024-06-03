@@ -36,7 +36,7 @@
             </div><!-- / column -->
 
           <div class="col-md-7">
-                <img src="{{ course.image.url }}" width="400" height="300" alt="project-image" class="rounded">
+                <img src="{{ course.image }}" width="400" height="300" alt="project-image" class="rounded">
                 <div class="project-info-box">
                     <p>
                         <b>Professions:</b>
@@ -108,7 +108,7 @@
                     <div class="portfolio-item">
                         <div class="card-body">
                             <a href="#playlist" onclick="changeVideo('{{ video.video_url }}', '{{ video.name }}', '{{ video.description }}')">
-                                <img class="m-2 border border-black rounded" alt="Playlist Title" width="128" height="128" src="{{ video.cover_image.url }}" />
+                                <img class="m-2 border border-black rounded" alt="Playlist Title" width="128" height="128" src="{{ video.cover_image }}" />
                                 {{ video.name }}
                             </a>
                         </div>
