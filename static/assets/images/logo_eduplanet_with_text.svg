@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="272" height="64" viewBox="0 0 272 64" fill="none" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">EduPlanet wordmark</title>
+  <desc id="logoDesc">EduPlanet logo with icon and brand name</desc>
+  <defs>
+    <linearGradient id="badgeGradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="ringGradient" x1="14" y1="18" x2="50" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#BFDBFE"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#badgeGradient)"/>
+  <path d="M18 31.5C18 24.5964 23.5964 19 30.5 19H42.5V26H31.25C28.3505 26 26 28.3505 26 31.25C26 34.1495 28.3505 36.5 31.25 36.5H39.5V43H30.5C23.5964 43 18 37.4036 18 31.5Z" fill="white"/>
+  <path d="M43.5 20C48.7467 20 53 24.2533 53 29.5C53 36.4036 47.4036 42 40.5 42H28.5V35H39.75C42.6495 35 45 32.6495 45 29.75C45 26.8505 42.6495 24.5 39.75 24.5H32V20H43.5Z" fill="url(#ringGradient)"/>
+  <text x="78" y="28" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800" letter-spacing="0.2">EduPlanet</text>
+  <text x="78" y="46" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.6">LEARN  •  BUILD  •  GROW</text>
+</svg>

@@ -2664,7 +2664,7 @@ def get_homepage_context(request):
                     "@type": "Organization",
                     "name": "EduPlanet",
                     "url": request.build_absolute_uri(reverse("dashboard")),
-                    "logo": request.build_absolute_uri("/static/assets/images/logo_eduplanet.svg"),
+                    "logo": request.build_absolute_uri("/static/assets/images/logo_eduplanet_with_text.svg"),
                     "description": "EduPlanet is a production-ready LMS and personal brand platform by Asilbek Mirolimov.",
                 },
                 {
