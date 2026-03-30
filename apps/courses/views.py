@@ -1,25 +1,16 @@
-import re
+from django.shortcuts import get_object_or_404, render
 
-from django.shortcuts import render, get_object_or_404
-
-from courses.models import Course, VideoContent
 from connections.models import UserCourse
+from courses.models import Course
+from site_content import get_course_detail_context
 
 
 # Create your views here.
 def course_detail(request, slug):
-    course = get_object_or_404(Course, slug=slug)
-    video_contents = VideoContent.objects.filter(course=course)
-    first_video = video_contents.first()
-    user_course = UserCourse.objects.filter(user=request.user, course=course)
+    course = get_object_or_404(Course.objects.select_related('learning_center'), slug=slug)
     is_user_enrolled = False
-    if user_course.exists():
-        is_user_enrolled = True
+    if request.user.is_authenticated:
+        is_user_enrolled = UserCourse.objects.filter(user=request.user, course=course).exists()
 
-    context = {
-        'course': course,
-        'video_contents': video_contents,
-        'first_video': first_video,
-        'is_user_enrolled': is_user_enrolled
-    }
+    context = get_course_detail_context(request, course, is_user_enrolled)
     return render(request, 'centers/course_detail.html', context)

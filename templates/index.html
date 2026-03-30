@@ -1,38 +1,208 @@
 {% extends 'base.html' %}
-{% block title %}Edu Planet{% endblock title %}
+
+{% block extra_head %}
+<style>
+  .hero-shell {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: linear-gradient(180deg, rgba(2, 6, 23, 0.92) 0%, rgba(15, 23, 42, 0.98) 100%);
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.2);
+  }
+  .hero-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.24), transparent 34%), radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.18), transparent 28%);
+    pointer-events: none;
+  }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity .75s ease, transform 5.5s ease;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+  }
+  .hero-slide img {
+    animation: heroFloat 16s ease-in-out infinite;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: tickerMove 28s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  .experience-panel {
+    display: none;
+  }
+  .experience-panel.is-active {
+    display: block;
+  }
+  .persona-panel {
+    display: none;
+  }
+  .persona-panel.is-active {
+    display: block;
+  }
+  .testimonial-slide {
+    display: none;
+  }
+  .testimonial-slide.is-active {
+    display: block;
+  }
+  @keyframes tickerMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes heroFloat {
+    0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+    50% { transform: scale(1.08) translate3d(0, -12px, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slide,
+    .hero-slide img,
+    .ticker-track {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+<section class="relative overflow-hidden">
+  <div class="absolute inset-x-0 top-0 -z-10 h-[46rem] bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.16),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(56,189,248,0.12),_transparent_26%),linear-gradient(180deg,_rgba(248,250,252,0.1),_rgba(255,255,255,0.85))]"></div>
+  <div class="mx-auto grid max-w-7xl gap-14 px-4 pb-12 pt-14 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-16 lg:pt-20">
+    <div class="relative z-10" data-reveal>
+      <div class="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-white/90 px-4 py-2 text-sm font-semibold text-sky-700 shadow-sm shadow-sky-100/60">
+        <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+        {{ ui.hero_badge }}
+      </div>
+      {% if user.is_authenticated %}
+      <p class="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-slate-500">Xush kelibsiz, {{ user.first_name|default:user.username }}</p>
+      {% else %}
+      <p class="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-slate-500">Learn from real-world experience</p>
+      {% endif %}
+      <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-tight text-slate-950 sm:text-5xl lg:text-6xl">{{ ui.hero_title }}</h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">{{ ui.hero_description }}</p>
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+        <a href="#courses" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700">{{ ui.hero_primary_cta }}</a>
+        <a href="#path-finder" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50">{{ ui.hero_secondary_cta }}</a>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <div class="flex -space-x-3">
+          {% for testimonial in testimonials|slice:":3" %}
+          <img src="{{ testimonial.avatar_url }}" alt="{{ testimonial.name }}" class="h-12 w-12 rounded-2xl border-2 border-white object-cover shadow-sm">
+          {% endfor %}
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">1,200+ learner ishonchi bilan</p>
+          <p class="text-sm text-slate-500">Uzbekistan va global developer community uchun practical platform</p>
+        </div>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm shadow-slate-100/60">
+          <p class="text-3xl font-extrabold text-slate-950">{{ stats.students }}</p>
+          <p class="mt-2 text-sm text-slate-500">{{ ui.stats_students }}</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm shadow-slate-100/60">
+          <p class="text-3xl font-extrabold text-slate-950">{{ stats.courses }}</p>
+          <p class="mt-2 text-sm text-slate-500">{{ ui.stats_courses }}</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm shadow-slate-100/60">
+          <p class="text-3xl font-extrabold text-slate-950">{{ stats.rating }}</p>
+          <p class="mt-2 text-sm text-slate-500">{{ ui.stats_rating }}</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm shadow-slate-100/60">
+          <p class="text-3xl font-extrabold text-slate-950">{{ stats.hours }}</p>
+          <p class="mt-2 text-sm text-slate-500">{{ ui.stats_hours }}</p>
+        </div>
+      </div>
+    </div>
 
+    <div class="relative" data-reveal>
+      <div class="absolute -left-6 top-10 h-36 w-36 rounded-full bg-sky-200/50 blur-3xl"></div>
+      <div class="absolute -right-8 bottom-8 h-44 w-44 rounded-full bg-indigo-200/40 blur-3xl"></div>
+      <div class="hero-shell rounded-[2rem] p-4 sm:p-5">
+        <div class="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 p-4 sm:p-5">
+          <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4">
+            <div>
+              <p class="text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-200">Live platform preview</p>
+              <p class="mt-1 text-sm text-slate-300">Motion-rich hero carousel</p>
+            </div>
+            <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-200">
+              <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+              Cohort active
+            </div>
+          </div>
 
-  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-6 align-self-center">
-              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-                <div class="row">
-                  <div class="col-lg-12">
-                      {% if not user.is_authenticated %}
-                          <h6>Educational Planet</h6>
-                      {% else %}
-                          <h6>Welcome to Educational Planet, <b>{{ user.first_name }} {{ user.last_name }}</b></h6>
-                      {% endif %}
-                    <h2>Where Learning Centers Align for You</h2>
-                    <p>Welcome to <b>EduPlanet</b>, where we are passionate about education and dedicated to helping individuals achieve their learning goals.</p>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="border-first-button scroll-to-section">
-                      <a href="#centers">Centers</a>
-                    </div>
-                  </div>
+          <div class="relative h-[28rem] overflow-hidden rounded-[1.35rem] bg-slate-900 sm:h-[32rem]">
+            {% for spotlight in hero_spotlights %}
+            <article class="hero-slide {% if forloop.first %}is-active{% endif %}" data-hero-slide data-index="{{ forloop.counter0 }}">
+              <img src="{{ spotlight.image }}" alt="{{ spotlight.title }}" class="h-full w-full object-cover opacity-55">
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-950/55 via-slate-950/35 to-sky-600/20"></div>
+              <div class="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7">
+                <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-sky-100">
+                  <span>{{ spotlight.eyebrow }}</span>
+                  <span class="h-1 w-1 rounded-full bg-sky-200"></span>
+                  <span>{{ spotlight.center }}</span>
                 </div>
+                <h2 class="mt-4 max-w-lg text-2xl font-bold text-white sm:text-3xl">{{ spotlight.title }}</h2>
+                <p class="mt-3 max-w-xl text-sm leading-7 text-slate-200">{{ spotlight.description }}</p>
+                <div class="mt-5 flex flex-wrap gap-3">
+                  {% for stat in spotlight.stats %}
+                  <div class="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300">{{ stat.label }}</p>
+                    <p class="mt-1 text-sm font-semibold text-white">{{ stat.value }}</p>
+                  </div>
+                  {% endfor %}
+                </div>
+                <a href="{{ spotlight.href }}" class="mt-6 inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">Trackni ochish</a>
+              </div>
+            </article>
+            {% endfor %}
+
+            <div class="absolute left-4 top-20 z-20 max-w-[14rem] rounded-3xl border border-white/10 bg-slate-950/55 p-4 text-white backdrop-blur">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200">Mentor signal</p>
+              <p class="mt-3 text-sm leading-6 text-slate-100">{{ instructor.display_title }} sifatida Asilbek har trackni real product decision va clean execution bilan olib boradi.</p>
+            </div>
+            <div class="absolute bottom-4 right-4 z-20 rounded-[1.75rem] border border-white/10 bg-white/10 p-4 text-white backdrop-blur sm:p-5">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200">Launch metrics</p>
+              <div class="mt-3 grid grid-cols-3 gap-3 text-center text-xs font-semibold text-slate-200">
+                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.students }}</span>Learners</div>
+                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.rating }}</span>Rating</div>
+                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.hours }}</span>Watch hrs</div>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-<!--                <img src="assets/images/EduPlanet_logo_blue-removebg.png" alt="">-->
-                <img src="static/assets/images/logosvg.svg" alt="">
-              </div>
+          </div>
+
+          <div class="relative z-20 mt-4 flex items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
+            <div class="flex items-center gap-2" role="tablist" aria-label="Hero spotlight carousel">
+              {% for spotlight in hero_spotlights %}
+              <button type="button" class="h-2.5 w-8 rounded-full bg-white/20 transition {% if forloop.first %}!bg-white{% endif %}" data-hero-dot data-index="{{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
+              {% endfor %}
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-prev aria-label="Previous slide">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"></path></svg>
+              </button>
+              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-next aria-label="Next slide">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"></path></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -40,269 +210,619 @@
     </div>
   </div>
 
+  <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8" data-reveal>
+    <div class="ticker-wrap overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 py-4 shadow-sm shadow-slate-100/70">
+      <div class="ticker-track gap-3 px-4 sm:px-6">
+        {% for item in trust_strip %}
+        <div class="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-sky-100 text-sky-700">✦</span>
+          <span>{{ item }}</span>
+        </div>
+        {% endfor %}
+        {% for item in trust_strip %}
+        <div class="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-sky-100 text-sky-700">✦</span>
+          <span>{{ item }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm shadow-slate-100/60" data-reveal>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ momentum_label }}</p>
+      <h2 class="mt-4 text-3xl font-bold text-slate-950">{{ momentum_title }}</h2>
+      <p class="mt-4 text-sm leading-8 text-slate-600">{{ momentum_description }}</p>
+      <div class="mt-8 grid gap-4">
+        {% for pillar in platform_pillars %}
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+          <div class="flex items-center justify-between gap-4">
+            <h3 class="text-base font-bold text-slate-950">{{ pillar.title }}</h3>
+            <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">{{ pillar.stat }}</span>
+          </div>
+          <p class="mt-3 text-sm leading-7 text-slate-600">{{ pillar.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2" data-reveal>
+      {% for item in recent_activity %}
+      <article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60 transition hover:-translate-y-1 hover:shadow-lg">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-sky-600">{{ item.time }}</p>
+            <h3 class="mt-3 text-xl font-bold text-slate-950">{{ item.name }}</h3>
+            <p class="mt-1 text-sm text-slate-500">{{ item.role }}</p>
+          </div>
+          <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">{{ item.metric }}</span>
+        </div>
+        <p class="mt-5 text-sm leading-7 text-slate-600">{{ item.action }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-  <div id="about" class="about section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="about-left-image  wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
-                <img src="static/assets/images/about-dec-v3.png" alt="">
-              </div>
-            </div>
-            <div class="col-lg-6 align-self-center  wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-              <div class="about-right-content">
-                <div class="section-heading">
-                  <h6>About Us</h6>
-                  <h4>What is <em>EduPlanet</em></h4>
-                  <div class="line-dec"></div>
-                </div>
-                <p>Our mission is to provide a nurturing and stimulating learning environment that promotes growth, learning and skill development. We strive to empower students of all ages by offering a variety of educational programs tailored to individual needs.</p>
-                <div class="row">
-                  <div class="col-lg-4 col-sm-4">
-                    <div class="skill-item first-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                      <div class="progress" data-percentage="90">
-                        <span class="progress-left">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <span class="progress-right">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <div class="progress-value">
-                          <div>
-                            90%<br>
-                            <span>Coding</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-sm-4">
-                    <div class="skill-item second-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                      <div class="progress" data-percentage="80">
-                        <span class="progress-left">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <span class="progress-right">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <div class="progress-value">
-                          <div>
-                            80%<br>
-                            <span>Photoshop</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-sm-4">
-                    <div class="skill-item third-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-                      <div class="progress" data-percentage="80">
-                        <span class="progress-left">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <span class="progress-right">
-                          <span class="progress-bar"></span>
-                        </span>
-                        <div class="progress-value">
-                          <div>
-                            80%<br>
-                            <span>Animation</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<section id="courses" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.featured_courses }}</p>
+      <h2 class="mt-4 text-3xl font-bold text-slate-950 sm:text-4xl">Zamonaviy learning carousel ichida eng kuchli kurslarni bir joyda ko'ring.</h2>
+      <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">{{ ui.featured_courses_description }} Kurs tanlashni tezlashtirish uchun bu blok scroll-snap carousel sifatida ishlaydi va har bir kartada real value proposition ko'rsatiladi.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="prev" aria-label="Previous courses">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"></path></svg>
+      </button>
+      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="next" aria-label="Next courses">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"></path></svg>
+      </button>
+    </div>
+  </div>
+  <div id="featured-course-track" class="scrollbar-hidden mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4" data-reveal>
+    {% for course in featured_courses %}
+    <article class="group flex min-h-full min-w-[320px] snap-start flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm shadow-slate-100/60 transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[360px] xl:min-w-[380px]">
+      <div class="relative h-60 overflow-hidden">
+        <img src="{{ course.image }}" alt="{{ course.display_name }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent"></div>
+        <div class="absolute left-5 top-5 flex flex-wrap gap-2">
+          <span class="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-800">{{ course.level }}</span>
+          <span class="rounded-full bg-sky-500/90 px-3 py-1 text-xs font-semibold text-white">{{ course.duration }}</span>
+        </div>
+        <div class="absolute bottom-5 left-5 right-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-sky-100">{{ course.learning_center.name }}</p>
+          <h3 class="mt-2 text-2xl font-bold text-white">{{ course.display_name }}</h3>
+        </div>
+      </div>
+      <div class="flex flex-1 flex-col p-6">
+        <p class="text-sm leading-7 text-slate-600">{{ course.display_subtitle }}</p>
+        <div class="mt-5 grid grid-cols-3 gap-3 rounded-[1.5rem] bg-slate-50 p-4 text-center text-xs font-semibold text-slate-500">
+          <div><span class="block text-base font-bold text-slate-900">{{ course.lessons_count }}</span>{{ ui.lessons_label }}</div>
+          <div><span class="block text-base font-bold text-slate-900">{{ course.students_count }}</span>{{ ui.students_label }}</div>
+          <div><span class="block text-base font-bold text-slate-900">{{ course.rating }} ★</span>Rating</div>
+        </div>
+        <ul class="mt-5 space-y-3 text-sm leading-6 text-slate-600">
+          {% for item in course.feature_list|slice:":3" %}
+          <li class="flex items-start gap-3"><span class="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span><span>{{ item }}</span></li>
+          {% endfor %}
+        </ul>
+        <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Instructor</p>
+            <p class="text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
+          </div>
+          <a href="{{ course.href }}" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.enroll }}</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+  <div class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-100/60" data-reveal>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ journey_label }}</p>
+      <h2 class="mt-4 text-3xl font-bold text-slate-950">{{ journey_title }}</h2>
+      <p class="mt-4 text-sm leading-8 text-slate-600">{{ journey_description }}</p>
+      <div class="mt-8 grid gap-4">
+        {% for step in journey_steps %}
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+          <div class="flex items-center gap-4">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-sm font-bold text-white">{{ step.step }}</span>
+            <div>
+              <h3 class="text-lg font-bold text-slate-950">{{ step.title }}</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-600">{{ step.description }}</p>
             </div>
           </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-xl shadow-slate-900/10" data-reveal>
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ experience_label }}</p>
+          <h2 class="mt-4 text-3xl font-bold">{{ experience_title }}</h2>
+          <p class="mt-4 max-w-2xl text-sm leading-8 text-slate-300">{{ experience_description }}</p>
+        </div>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3" role="tablist" aria-label="Learning experience tabs">
+        {% for mode in experience_modes %}
+        <button type="button" class="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10 {% if forloop.first %}bg-white text-slate-950{% endif %}" data-experience-tab data-target="{{ mode.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ mode.label }}</button>
+        {% endfor %}
+      </div>
+      <div class="mt-8">
+        {% for mode in experience_modes %}
+        <article class="experience-panel {% if forloop.first %}is-active{% endif %}" data-experience-panel id="{{ mode.id }}">
+          <div class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-200">{{ mode.metric }}</p>
+                <h3 class="mt-3 text-2xl font-bold text-white">{{ mode.headline }}</h3>
+              </div>
+              <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-slate-200">{{ mode.label }}</span>
+            </div>
+            <p class="mt-5 text-sm leading-8 text-slate-300">{{ mode.description }}</p>
+            <div class="mt-6 grid gap-3 sm:grid-cols-3">
+              {% for bullet in mode.bullets %}
+              <div class="rounded-3xl border border-white/10 bg-white/5 p-4 text-sm leading-7 text-slate-200">{{ bullet }}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="path-finder" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="rounded-[2.25rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-100/60 lg:p-10">
+    <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+      <div data-reveal>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ path_label }}</p>
+        <h2 class="mt-4 text-3xl font-bold text-slate-950 sm:text-4xl">{{ path_title }}</h2>
+        <p class="mt-4 text-sm leading-8 text-slate-600">{{ path_description }}</p>
+        <div class="mt-8 grid gap-3">
+          {% for path in goal_paths %}
+          <button type="button" class="w-full rounded-[1.4rem] border border-slate-200 px-5 py-4 text-left transition hover:border-sky-200 hover:bg-sky-50 {% if forloop.first %}border-sky-200 bg-sky-50{% endif %}" data-path-tab data-target="{{ path.id }}">
+            <span class="block text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Route {{ forloop.counter }}</span>
+            <span class="mt-2 block text-base font-bold text-slate-950">{{ path.label }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+      <div data-reveal>
+        {% for path in goal_paths %}
+        <article class="persona-panel {% if forloop.first %}is-active{% endif %}" data-path-panel id="{{ path.id }}">
+          <div class="rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 p-7 text-white shadow-glow">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-sky-100">{{ path.label }}</span>
+              {% if path.course %}
+              <span class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-200">{{ path.course.level }}</span>
+              {% endif %}
+            </div>
+            <h3 class="mt-5 text-2xl font-bold">{{ path.headline }}</h3>
+            <p class="mt-4 text-sm leading-8 text-slate-200">{{ path.description }}</p>
+            <div class="mt-6 grid gap-3 sm:grid-cols-3">
+              {% for bullet in path.bullets %}
+              <div class="rounded-3xl border border-white/10 bg-white/5 p-4 text-sm leading-7 text-slate-100">{{ bullet }}</div>
+              {% endfor %}
+            </div>
+            <div class="mt-8 grid gap-4 lg:grid-cols-2">
+              {% if path.course %}
+              <a href="{{ path.course.href }}" class="rounded-[1.6rem] border border-white/10 bg-white/10 p-5 transition hover:bg-white/15">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100">{{ path_primary }}</p>
+                <h4 class="mt-3 text-lg font-bold text-white">{{ path.course.display_name }}</h4>
+                <p class="mt-3 text-sm leading-7 text-slate-200">{{ path.course.display_subtitle }}</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-100">
+                  <span class="rounded-full bg-white/10 px-3 py-1.5">{{ path.course.duration }}</span>
+                  <span class="rounded-full bg-white/10 px-3 py-1.5">{{ path.course.lessons_count }} {{ ui.lessons_label }}</span>
+                  <span class="rounded-full bg-white/10 px-3 py-1.5">{{ path.course.rating }} ★</span>
+                </div>
+              </a>
+              {% endif %}
+              {% if path.center %}
+              <a href="{{ path.center.href }}" class="rounded-[1.6rem] border border-white/10 bg-white/5 p-5 transition hover:bg-white/10">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100">{{ path_secondary }}</p>
+                <h4 class="mt-3 text-lg font-bold text-white">{{ path.center.display_name }}</h4>
+                <p class="mt-3 text-sm leading-7 text-slate-200">{{ path.center.display_headline }}</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-100">
+                  <span class="rounded-full bg-white/10 px-3 py-1.5">{{ path.center.students_count }}+ learners</span>
+                  <span class="rounded-full bg-white/10 px-3 py-1.5">{{ path.center.courses_count }} courses</span>
+                </div>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="centers" class="bg-slate-950 py-16 text-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ ui.centers }}</p>
+        <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Har bir learning center alohida career directionga qurilgan.</h2>
+      </div>
+      <p class="max-w-2xl text-sm leading-7 text-slate-300">Web product assembly, backend architecture, data thinking yoki DevOps confidence - qaysi yo'nalishni tanlasangiz ham platforma real-world outputga urg'u beradi.</p>
+    </div>
+    <div class="mt-10 grid gap-6 lg:grid-cols-2">
+      {% for center in centers %}
+      <article class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-lg shadow-black/10 transition hover:-translate-y-1 hover:border-sky-400/40" data-reveal>
+        <div class="grid gap-0 md:grid-cols-[0.95fr_1.05fr]">
+          <img src="{{ center.image }}" alt="{{ center.display_name }}" class="h-full min-h-[280px] w-full object-cover">
+          <div class="p-7">
+            <div class="flex flex-wrap gap-2">
+              {% for category_name in center.category_names %}
+              <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-slate-100">{{ category_name }}</span>
+              {% endfor %}
+            </div>
+            <h3 class="mt-5 text-2xl font-bold">{{ center.display_name }}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-300">{{ center.display_headline }}</p>
+            <p class="mt-4 text-sm leading-7 text-slate-400">{{ center.display_description|truncatechars:230 }}</p>
+            <div class="mt-6 grid grid-cols-3 gap-3 text-center text-xs font-semibold text-slate-400">
+              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.students_count }}+</span>Students</div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.mentors_count }}</span>Mentors</div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.courses_count }}</span>Courses</div>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="{{ center.href }}" class="inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">Markazni ko'rish</a>
+              <a href="#contact" class="inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Mentor bilan gaplashish</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="about" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+    <div class="rounded-[2rem] bg-gradient-to-br from-sky-600 via-sky-500 to-slate-950 p-8 text-white shadow-glow" data-reveal>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100">{{ ui.instructor_title }}</p>
+      <div class="mt-6 flex items-center gap-4">
+        <img src="{{ instructor.avatar_url }}" alt="{{ instructor.user.get_full_name }}" class="h-20 w-20 rounded-[1.5rem] object-cover ring-4 ring-white/10">
+        <div>
+          <h2 class="text-3xl font-bold">{{ instructor.user.get_full_name }}</h2>
+          <p class="mt-1 text-base text-sky-100">{{ instructor.display_title }}</p>
+        </div>
+      </div>
+      <p class="mt-6 text-sm leading-8 text-slate-100">{{ instructor.display_bio }}</p>
+      <div class="mt-6 rounded-[1.5rem] border border-white/10 bg-white/10 p-5">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">Mission</p>
+        <p class="mt-3 text-sm leading-7 text-white/90">{{ instructor.display_mission }}</p>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {% for skill in instructor.skills %}
+        <span class="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white">{{ skill }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="grid gap-6" data-reveal>
+      <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-100/60">
+        <h3 class="text-2xl font-bold text-slate-950">Why students trust this platform</h3>
+        <p class="mt-4 text-sm leading-7 text-slate-600">{{ instructor.display_profile_description }}</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-3xl bg-slate-50 p-5">
+            <p class="text-sm font-semibold text-slate-500">Experience</p>
+            <p class="mt-2 text-3xl font-extrabold text-slate-950">{{ instructor.experience_years }}+ years</p>
+          </div>
+          <div class="rounded-3xl bg-slate-50 p-5">
+            <p class="text-sm font-semibold text-slate-500">Learners mentored</p>
+            <p class="mt-2 text-3xl font-extrabold text-slate-950">{{ stats.students }}</p>
+          </div>
+          <div class="rounded-3xl bg-slate-50 p-5">
+            <p class="text-sm font-semibold text-slate-500">Launch quality</p>
+            <p class="mt-2 text-3xl font-extrabold text-slate-950">25+ roadmap</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">01</p>
+          <h4 class="mt-3 text-lg font-bold text-slate-950">Real startup thinking</h4>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Kurslar toy example emas, balki real backlog va product constraintlarga yaqin ssenariylar bilan yozilgan.</p>
+        </div>
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">02</p>
+          <h4 class="mt-3 text-lg font-bold text-slate-950">Teaching with systems</h4>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Architecture, naming, UX va growth logic bir-biridan uzilmaydi - bu esa learningni chuqurlashtiradi.</p>
+        </div>
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">03</p>
+          <h4 class="mt-3 text-lg font-bold text-slate-950">Proof-of-work focus</h4>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Har trackning yakunida studentda ko'rsatishga arziydigan loyiha, case study yoki deploy qilingan output bo'ladi.</p>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div id="centers" class="services section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
-<!--            <h6>Learning Centers</h6>-->
-            <h4>Learning <em>Centers</em></h4>
-            <div class="line-dec"></div>
-          </div>
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+    <div class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-xl shadow-slate-900/10" data-reveal>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ ui.testimonials_title }}</p>
+          <h2 class="mt-4 text-3xl font-bold">Real feedback, believable outcomes.</h2>
         </div>
-        <div class="col-lg-12">
-          <div class="naccs">
-            <div class="grid">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="menu">
-                    <div class="first-thumb active">
-                      <div class="thumb">
-                        <span class="icon"><img src="static/assets/images/service-icon-01.png" alt=""></span>
-                        Programming
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <span class="icon"><img src="static/assets/images/service-icon-02.png" alt=""></span>
-                        Design
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <span class="icon"><img src="static/assets/images/service-icon-03.png" alt=""></span>
-                        Robotics
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <span class="icon"><img src="static/assets/images/service-icon-04.png" alt=""></span>
-                        Languages
-                      </div>
-                    </div>
-                    <div class="last-thumb">
-                      <div class="thumb">
-                        <span class="icon"><img src="static/assets/images/service-icon-01.png" alt=""></span>
-                        Kids
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <ul class="nacc">
-                    <li class="active">
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-6 align-self-center">
-                              <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='programming' %}">Programming</a></h4>
-                                <p>Start your programming journey with instruction from renowned learning centers dedicated to developing coding skills and developing a deep understanding of programming languages.</p>
-                                    <div class="ticks-list"><span><i class="fa fa-check"></i> Python</span><span><i class="fa fa-check"></i> Django</span><span><i class="fa fa-check"></i> HTML/CSS</span></div>
-                                    <div class="ticks-list"><span><i class="fa fa-check"></i> JS</span><span><i class="fa fa-check"></i> Mobile</span></div>
-                                <p>Discover a variety of reputable online platforms, each offering a unique approach to learning that caters to different skill levels and interests in programming.</p>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                              <div class="right-image">
-                                <img src="static/assets/images/services-image-02.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-6 align-self-center">
-                              <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='design' %}">Design</a></h4>
-                                <p>Explore these awesome places where you can learn to make cool stuff! They're like magical schools for design where you can learn about making things look amazing.
-                                </p>
-                                <div class="ticks-list"><span><i class="fa fa-check"></i> Graphic Design</span> <span><i class="fa fa-check"></i> UI/UX Design</span> <span><i class="fa fa-check"></i> 3D Design</span>
-                                  <span><i class="fa fa-check"></i> InDesign</span> <span><i class="fa fa-check"></i> Photoshop</span> <span><i class="fa fa-check"></i> Illustrator</span></div>
-                                <p>From drawing to building, there's something for everyone, no matter if you're just starting or a total pro!</p>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                              <div class="right-image">
-                                <img src="static/assets/images/services-image-03.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-6 align-self-center">
-                              <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='robotics' %}">Robotics</a></h4>
-                                <p>These great online places will help you learn all about robots. They seem like fun schools with great ways to teach robots to anyone, whether you're just starting out or already a pro!</p>
-                                <div class="ticks-list"><span><i class="fa fa-check"></i> Simulators</span> <span><i class="fa fa-check"></i> AutoCAD</span> <span><i class="fa fa-check"></i> Raspberry Pi</span>
-                                  <span><i class="fa fa-check"></i> Arduino IDE</span> <span><i class="fa fa-check"></i> SolidWorks</span> <span><i class="fa fa-check"></i> Robot Framework</span></div>
-                                <p>From basic concepts to advanced applications, these centers offer distinct methodologies tailored for hobbyists and professionals alike.</p>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                              <div class="right-image">
-                                <img src="static/assets/images/services-image-04.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-6 align-self-center">
-                              <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='languages' %}">Languages</a></h4>
-                                <p>Discover great fun places where learning new languages becomes an exciting adventure! They are like hidden treasures for learning new languages and learning about different cultures.
-                                </p>
-                                <div class="ticks-list"><span><i class="fa fa-check"></i> English</span> <span><i class="fa fa-check"></i> Russian</span> <span><i class="fa fa-check"></i> Korean</span>
-                                  <span><i class="fa fa-check"></i> Chinese</span> <span><i class="fa fa-check"></i> Duolingo</span> <span><i class="fa fa-check"></i> Google Translate</span></div>
-                                <p>Get ready for an immersive language journey that will have you chatting effortlessly in no time!</p>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                              <div class="right-image">
-                                <img src="static/assets/images/services-image-02.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-6 align-self-center">
-                              <div class="left-text">
-                                <h4 class="border-first-button"><a href="{% url 'centers_by_category' slug='kids' %}">Kids</a></h4>
-                                <p>Hey there, little explorers! These super cool places are like playgrounds full of fun games and activities that also teach you awesome stuff!
-                                </p>
-                                <div class="ticks-list"><span><i class="fa fa-check"></i> Computer basics</span> <span><i class="fa fa-check"></i> Google apps</span> <span><i class="fa fa-check"></i> Scratch</span>
-                                  <span><i class="fa fa-check"></i> SmartGames</span> <span><i class="fa fa-check"></i> Blockly</span> <span><i class="fa fa-check"></i> Khan Academy Kids</span></div>
-                                <p>Get on board and discover a world of amazing discoveries and have an absolute blast!</p>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                              <div class="right-image">
-                                <img src="static/assets/images/services-image.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+        <div class="flex items-center gap-2">
+          {% for testimonial in testimonials|slice:":4" %}
+          <button type="button" class="h-2.5 w-8 rounded-full bg-white/20 transition {% if forloop.first %}!bg-white{% endif %}" data-testimonial-dot data-index="{{ forloop.counter0 }}" aria-label="Show testimonial {{ forloop.counter }}"></button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mt-8">
+        {% for testimonial in testimonials|slice:":4" %}
+        <article class="testimonial-slide {% if forloop.first %}is-active{% endif %}" data-testimonial-slide data-index="{{ forloop.counter0 }}">
+          <div class="rounded-[1.8rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <div class="flex items-center gap-4">
+              <img src="{{ testimonial.avatar_url }}" alt="{{ testimonial.name }}" class="h-16 w-16 rounded-[1.4rem] object-cover">
+              <div>
+                <h3 class="text-xl font-bold text-white">{{ testimonial.name }}</h3>
+                <p class="mt-1 text-sm text-slate-300">{{ testimonial.display_role }}</p>
               </div>
             </div>
+            <p class="mt-6 text-lg leading-8 text-slate-100">“{{ testimonial.display_quote }}”</p>
+            <div class="mt-6 flex items-center justify-between border-t border-white/10 pt-5">
+              <span class="text-sm font-semibold text-amber-300">{{ testimonial.rating }} / 5.0</span>
+              <span class="text-sm text-slate-300">EduPlanet learner story</span>
+            </div>
           </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="grid gap-4" data-reveal>
+      <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm shadow-slate-100/60">
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Platform signal</p>
+        <h3 class="mt-4 text-2xl font-bold text-slate-950">Attention-grabbing, but still usable.</h3>
+        <p class="mt-4 text-sm leading-8 text-slate-600">Bu redesign ko'rinishni chiroyli qilish bilangina cheklanmaydi. Har bir motion elementi CTA, content scanning yoki trust-buildingga xizmat qiladi.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Sticky CTA</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Mobile foydalanuvchilar uchun har doim ko'rinadigan action nuqtasi saqlanadi.</p>
+        </div>
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Scroll progress</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Page progress signal foydalanuvchiga sahifa uzunligida yo'qolib qolmaslikka yordam beradi.</p>
+        </div>
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Interactive tabs</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Path finder va learning experience bloklari qaror qabul qilishni tezlashtiradi.</p>
+        </div>
+        <div class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Carousel logic</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Motion hero va featured courses carousel platformani jonli va zamonaviy his qildiradi.</p>
         </div>
       </div>
     </div>
   </div>
+</section>
 
+<section id="blog" class="bg-slate-50 py-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.blog_title }}</p>
+        <h2 class="mt-4 text-3xl font-bold text-slate-950 sm:text-4xl">SEO-driven content that still feels human and useful.</h2>
+        <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">{{ ui.blog_description }}</p>
+      </div>
+      <a href="{{ navigation.blog }}" class="inline-flex rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Barcha bloglar</a>
+    </div>
+    <div class="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      {% if featured_blog_spotlight %}
+      <article class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm shadow-slate-100/60" data-reveal>
+        <div class="grid h-full gap-0 md:grid-cols-[1.02fr_0.98fr]">
+          <img src="{{ featured_blog_spotlight.cover_image }}" alt="{{ featured_blog_spotlight.display_title }}" class="h-full min-h-[300px] w-full object-cover">
+          <div class="p-8">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600">{{ blog_spotlight_label }}</p>
+            <h3 class="mt-4 text-2xl font-bold text-slate-950">{{ featured_blog_spotlight.display_title }}</h3>
+            <p class="mt-4 text-sm leading-8 text-slate-600">{{ featured_blog_spotlight.display_excerpt }}</p>
+            <div class="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
+              <span class="rounded-full bg-slate-100 px-3 py-1.5">{{ featured_blog_spotlight.topic }}</span>
+              <span class="rounded-full bg-slate-100 px-3 py-1.5">{{ featured_blog_spotlight.reading_time }} min</span>
+              <span class="rounded-full bg-slate-100 px-3 py-1.5">Asilbek Mirolimov</span>
+            </div>
+            <a href="{{ featured_blog_spotlight.href }}" class="mt-8 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.read_article }}</a>
+          </div>
+        </div>
+      </article>
+      {% endif %}
+      <div class="grid gap-4" data-reveal>
+        {% for blog in latest_blogs|slice:"1:" %}
+        <article class="rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60 transition hover:-translate-y-1 hover:shadow-lg">
+          <div class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            <span>{{ blog.topic }}</span>
+            <span>{{ blog.reading_time }} min</span>
+          </div>
+          <h3 class="mt-4 text-lg font-bold leading-7 text-slate-950">{{ blog.display_title }}</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">{{ blog.display_excerpt }}</p>
+          <a href="{{ blog.href }}" class="mt-5 inline-flex rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">{{ ui.read_article }}</a>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="overflow-hidden rounded-[2.2rem] bg-gradient-to-r from-sky-600 via-sky-500 to-cyan-400 p-8 text-white shadow-glow lg:p-12" data-reveal>
+    <div class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100">Conversion-ready CTA</p>
+        <h2 class="mt-4 text-3xl font-bold sm:text-4xl">{{ ui.cta_title }}</h2>
+        <p class="mt-4 max-w-2xl text-base leading-8 text-sky-50">{{ ui.cta_description }}</p>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a href="#courses" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">{{ ui.cta_primary }}</a>
+          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl border border-white/30 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10">{{ ui.cta_secondary }}</a>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-3xl bg-white/15 p-5 backdrop-blur">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">25+ courses vision</p>
+          <p class="mt-3 text-sm leading-7 text-white/90">Platform roadmap backend, web, data va DevOps yo'nalishlarida monetizable va scale-ready ko'rinishda yig'ilgan.</p>
+        </div>
+        <div class="rounded-3xl bg-white/15 p-5 backdrop-blur">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">Job-ready focus</p>
+          <p class="mt-3 text-sm leading-7 text-white/90">Har bir kurs real workflow, portfolio deliverable va proof-of-work signaliga bog'langan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section id="contact" class="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+  <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <div class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-xl shadow-slate-900/10" data-reveal>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ ui.contact }}</p>
+      <h2 class="mt-4 text-3xl font-bold">{{ ui.contact_title }}</h2>
+      <p class="mt-4 text-sm leading-8 text-slate-300">{{ ui.contact_description }}</p>
+      <div class="mt-8 space-y-4 text-sm leading-7 text-slate-300">
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="font-semibold text-white">Email</p>
+          <p class="mt-2">{{ contact_email }}</p>
+        </div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="font-semibold text-white">Phone</p>
+          <p class="mt-2">{{ contact_phone }}</p>
+        </div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="font-semibold text-white">Location</p>
+          <p class="mt-2">{{ contact_location }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-100/60" data-reveal>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Mentorship form</p>
+      <h2 class="mt-4 text-3xl font-bold text-slate-950">Let's map your next step.</h2>
+      <p class="mt-4 text-sm leading-8 text-slate-600">Course selection, career guidance, corporate training yoki platform partnership - xabaringizga mos ravishda bir ish kuni ichida puxta javob qaytaramiz.</p>
+      <form method="post" class="mt-8 grid gap-5 sm:grid-cols-2">
+        {% csrf_token %}
+        <div class="sm:col-span-1">{{ form.full_name }}</div>
+        <div class="sm:col-span-1">{{ form.email }}</div>
+        <div class="sm:col-span-2">{{ form.phone_number }}</div>
+        <div class="sm:col-span-2">{{ form.message }}</div>
+        <div class="sm:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-sm text-slate-500">Form orqali yozsangiz, sizga kurs, roadmap yoki partnership nuqtayi nazaridan aniq tavsiya yuboramiz.</p>
+          <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">Send message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
-{% include 'blog.html' %}
-    
-{% include 'contact_us.html' %}
+{% block extra_scripts %}
+<script>
+  const heroSlides = Array.from(document.querySelectorAll('[data-hero-slide]'));
+  const heroDots = Array.from(document.querySelectorAll('[data-hero-dot]'));
+  const heroPrev = document.querySelector('[data-hero-prev]');
+  const heroNext = document.querySelector('[data-hero-next]');
+  let heroIndex = 0;
+  let heroTimer = null;
 
+  const showHeroSlide = (index) => {
+    if (!heroSlides.length) return;
+    heroIndex = (index + heroSlides.length) % heroSlides.length;
+    heroSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === heroIndex);
+    });
+    heroDots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('!bg-white', dotIndex === heroIndex);
+      dot.classList.toggle('bg-white/20', dotIndex !== heroIndex);
+    });
+  };
 
+  const startHeroTimer = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || heroSlides.length < 2) return;
+    clearInterval(heroTimer);
+    heroTimer = window.setInterval(() => showHeroSlide(heroIndex + 1), 5000);
+  };
+
+  heroDots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      showHeroSlide(Number(dot.dataset.index));
+      startHeroTimer();
+    });
+  });
+  if (heroPrev) heroPrev.addEventListener('click', () => { showHeroSlide(heroIndex - 1); startHeroTimer(); });
+  if (heroNext) heroNext.addEventListener('click', () => { showHeroSlide(heroIndex + 1); startHeroTimer(); });
+  showHeroSlide(0);
+  startHeroTimer();
+
+  document.querySelectorAll('[data-scroll-control]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = document.getElementById(button.dataset.target);
+      if (!target) return;
+      const direction = button.dataset.direction === 'prev' ? -1 : 1;
+      target.scrollBy({ left: direction * Math.min(target.clientWidth * 0.9, 420), behavior: 'smooth' });
+    });
+  });
+
+  const bindToggleGroup = (tabSelector, panelSelector, activeButtonClasses, inactiveButtonClasses) => {
+    const tabs = Array.from(document.querySelectorAll(tabSelector));
+    const panels = Array.from(document.querySelectorAll(panelSelector));
+    if (!tabs.length || !panels.length) return;
+
+    const activate = (targetId) => {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.target === targetId;
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        activeButtonClasses.forEach((className) => tab.classList.toggle(className, isActive));
+        inactiveButtonClasses.forEach((className) => tab.classList.toggle(className, !isActive));
+      });
+      panels.forEach((panel) => panel.classList.toggle('is-active', panel.id === targetId));
+    };
+
+    tabs.forEach((tab) => tab.addEventListener('click', () => activate(tab.dataset.target)));
+  };
+
+  bindToggleGroup('[data-experience-tab]', '[data-experience-panel]', ['bg-white', 'text-slate-950'], ['text-slate-200']);
+  bindToggleGroup('[data-path-tab]', '[data-path-panel]', ['border-sky-200', 'bg-sky-50'], ['border-slate-200']);
+
+  const testimonialSlides = Array.from(document.querySelectorAll('[data-testimonial-slide]'));
+  const testimonialDots = Array.from(document.querySelectorAll('[data-testimonial-dot]'));
+  let testimonialIndex = 0;
+  let testimonialTimer = null;
+
+  const showTestimonial = (index) => {
+    if (!testimonialSlides.length) return;
+    testimonialIndex = (index + testimonialSlides.length) % testimonialSlides.length;
+    testimonialSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === testimonialIndex);
+    });
+    testimonialDots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('!bg-white', dotIndex === testimonialIndex);
+      dot.classList.toggle('bg-white/20', dotIndex !== testimonialIndex);
+    });
+  };
+
+  const startTestimonialTimer = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || testimonialSlides.length < 2) return;
+    clearInterval(testimonialTimer);
+    testimonialTimer = window.setInterval(() => showTestimonial(testimonialIndex + 1), 5500);
+  };
+
+  testimonialDots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      showTestimonial(Number(dot.dataset.index));
+      startTestimonialTimer();
+    });
+  });
+  showTestimonial(0);
+  startTestimonialTimer();
+</script>
 {% endblock %}

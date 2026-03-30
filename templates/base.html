@@ -1,146 +1,259 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <title>{% block title %} {% endblock title %}</title>
-
-    <!-- add icon link -->
-    <link rel="icon" href="{% static 'assets/images/logo_eduplanet.svg' %}" type="image/x-icon">
-
-    <!-- Bootstrap core CSS -->
-    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="/static/assets/css/fontawesome.css">
-    <link rel="stylesheet" href="/static/assets/css/templatemo-digimedia-v3.css">
-    <link rel="stylesheet" href="/static/assets/css/animated.css">
-    <link rel="stylesheet" href="/static/assets/css/owl.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome CSS -->
-
-      <link href="/static/base.css" rel="stylesheet">
-
-  </head>
-
-<body>
-
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
+<html lang="{{ lang|default:'uz' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ seo.title|default:site_name }}</title>
+  <meta name="description" content="{{ seo.description|default:'EduPlanet - Python, Django va backend kurslari platformasi.' }}">
+  <meta name="keywords" content="{{ seo.keywords|default:'Python course Uzbekistan, Django course online, Backend course Tashkent, Asilbek Mirolimov' }}">
+  <meta name="author" content="Asilbek Mirolimov">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta property="og:title" content="{{ seo.og_title|default:seo.title|default:site_name }}">
+  <meta property="og:description" content="{{ seo.og_description|default:seo.description }}">
+  <meta property="og:url" content="{{ current_url }}">
+  <meta property="og:image" content="{{ seo.og_image }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ seo.og_title|default:seo.title|default:site_name }}">
+  <meta name="twitter:description" content="{{ seo.og_description|default:seo.description }}">
+  <meta name="twitter:image" content="{{ seo.og_image }}">
+  <link rel="canonical" href="{{ current_url }}">
+  <link rel="icon" href="{% static 'assets/images/logo_eduplanet.svg' %}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0f172a',
+            },
+          },
+          boxShadow: {
+            glow: '0 24px 80px rgba(14, 165, 233, 0.22)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: linear-gradient(180deg, #f8fbff 0%, #ffffff 28%, #f8fafc 100%); }
+    .glass { backdrop-filter: blur(16px); background: rgba(255,255,255,.72); }
+    .prose-content h1, .prose-content h2, .prose-content h3 { color: #0f172a; font-weight: 800; }
+    .prose-content h1 { font-size: 2rem; line-height: 1.2; margin-bottom: 1.5rem; }
+    .prose-content h2 { font-size: 1.35rem; line-height: 1.3; margin-top: 2rem; margin-bottom: .75rem; }
+    .prose-content h3 { font-size: 1.1rem; line-height: 1.4; margin-top: 1.25rem; margin-bottom: .5rem; }
+    .prose-content p { color: #334155; line-height: 1.9; margin-bottom: 1rem; }
+    .mesh-blob { animation: floatBlob 16s ease-in-out infinite; }
+    .mesh-blob:nth-child(2) { animation-delay: -5s; }
+    .mesh-blob:nth-child(3) { animation-delay: -9s; }
+    [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+    .soft-grid { background-image: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px); background-size: 32px 32px; }
+    @keyframes floatBlob { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(0, -18px, 0) scale(1.06); } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .mesh-blob { animation: none; }
+      [data-reveal] { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+  {% if seo.structured_data %}
+  <script type="application/ld+json">{{ seo.structured_data|safe }}</script>
+  {% endif %}
+</head>
+<body class="font-sans text-slate-900 antialiased">
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="mesh-blob absolute -left-20 top-24 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl"></div>
+    <div class="mesh-blob absolute right-0 top-10 h-80 w-80 rounded-full bg-cyan-200/30 blur-3xl"></div>
+    <div class="mesh-blob absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-indigo-200/20 blur-3xl"></div>
+    <div class="soft-grid absolute inset-0 opacity-40"></div>
+  </div>
+  <div class="fixed inset-x-0 top-0 z-[60] h-1 bg-slate-200/60"><div id="scroll-progress" class="h-full w-0 bg-gradient-to-r from-sky-500 via-cyan-400 to-indigo-500 transition-[width] duration-150"></div></div>
+  <div class="min-h-screen pb-24 md:pb-0">
+    <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <a href="{{ navigation.home }}" class="flex items-center gap-3">
+          <img src="{% static 'assets/images/logo_eduplanet.svg' %}" alt="EduPlanet logo" class="h-10 w-10 rounded-2xl">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">EduPlanet</p>
+            <p class="text-xs text-slate-500">{{ ui.featured_badge }}</p>
+          </div>
+        </a>
+        <nav class="hidden items-center gap-6 lg:flex">
+          <a href="{{ navigation.home }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.home }}</a>
+          <a href="{{ navigation.courses }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.courses }}</a>
+          <a href="{{ navigation.centers }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.centers }}</a>
+          <a href="{{ navigation.blog }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.blog }}</a>
+          <a href="{{ navigation.about }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.about }}</a>
+          <a href="{{ navigation.contact }}" class="text-sm font-medium text-slate-600 transition hover:text-sky-600">{{ ui.contact }}</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <div class="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 p-1 md:flex">
+            {% for code, url in language_options.items %}
+              <a href="{{ url }}" class="rounded-full px-3 py-1.5 text-xs font-semibold {% if code == lang %}bg-slate-900 text-white{% else %}text-slate-500 hover:text-slate-900{% endif %}">{{ code|upper }}</a>
+            {% endfor %}
+          </div>
+          {% if user.is_authenticated %}
+            <a href="{{ navigation.profile }}" class="hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">{{ ui.profile }}</a>
+            <a href="{{ navigation.logout }}" class="hidden rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 sm:inline-flex">{{ ui.logout }}</a>
+          {% else %}
+            <a href="{{ navigation.login }}" class="hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">{{ ui.login }}</a>
+            <a href="{{ navigation.register }}" class="hidden rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700 sm:inline-flex">{{ ui.register }}</a>
+          {% endif %}
+          <button type="button" id="mobile-menu-toggle" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
       </div>
+      <div id="mobile-menu" class="hidden border-t border-slate-200/70 bg-white/95 px-4 py-4 shadow-2xl shadow-slate-900/5 backdrop-blur sm:px-6 lg:hidden">
+        <div class="mx-auto max-w-7xl space-y-5">
+          <nav class="grid gap-2">
+            <a href="{{ navigation.home }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.home }}</a>
+            <a href="{{ navigation.courses }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.courses }}</a>
+            <a href="{{ navigation.centers }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.centers }}</a>
+            <a href="{{ navigation.blog }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.blog }}</a>
+            <a href="{{ navigation.about }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.about }}</a>
+            <a href="{{ navigation.contact }}" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-700">{{ ui.contact }}</a>
+          </nav>
+          <div class="flex flex-wrap gap-2 rounded-3xl border border-slate-200 bg-slate-50 p-2">
+            {% for code, url in language_options.items %}
+              <a href="{{ url }}" class="flex-1 rounded-2xl px-3 py-2 text-center text-xs font-semibold {% if code == lang %}bg-slate-900 text-white{% else %}bg-white text-slate-600{% endif %}">{{ code|upper }}</a>
+            {% endfor %}
+          </div>
+          <div class="grid gap-3">
+            {% if user.is_authenticated %}
+              <a href="{{ navigation.profile }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700">{{ ui.profile }}</a>
+              <a href="{{ navigation.logout }}" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white">{{ ui.logout }}</a>
+            {% else %}
+              <a href="{{ navigation.login }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700">{{ ui.login }}</a>
+              <a href="{{ navigation.register }}" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-200">{{ ui.register }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      {% if messages %}
+        <div class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+          {% for message in messages %}
+            <div class="mb-3 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm font-medium text-sky-800 shadow-sm">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="border-t border-slate-200 bg-slate-950 text-slate-200">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-sky-400">EduPlanet</p>
+          <h2 class="mt-4 text-2xl font-bold text-white">Learn from real-world experience.</h2>
+          <p class="mt-4 max-w-xl text-sm leading-7 text-slate-400">EduPlanet combines premium course content, practical blog posts, and the personal brand of Asilbek Mirolimov into one launch-ready LMS platform.</p>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-white">Navigation</p>
+          <div class="mt-4 space-y-3 text-sm text-slate-400">
+            <a href="{{ navigation.courses }}" class="block transition hover:text-white">{{ ui.courses }}</a>
+            <a href="{{ navigation.centers }}" class="block transition hover:text-white">{{ ui.centers }}</a>
+            <a href="{{ navigation.blog }}" class="block transition hover:text-white">{{ ui.blog }}</a>
+            <a href="{{ navigation.contact }}" class="block transition hover:text-white">{{ ui.contact }}</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-white">Contact</p>
+          <div class="mt-4 space-y-3 text-sm text-slate-400">
+            <a href="mailto:asilbek@eduplanet.uz" class="block transition hover:text-white">asilbekmirolimov@gmail.com</a>
+            <a href="tel:+998909793450" class="block transition hover:text-white">+998 90 979 34 50</a>
+            <p>Tashkent, Uzbekistan</p>
+            <div class="flex gap-3 pt-2">
+              <a href="https://github.com/asilbek3450" class="rounded-full border border-slate-800 px-3 py-2 text-xs font-semibold hover:border-slate-600 hover:text-white">GitHub</a>
+              <a href="https://www.linkedin.com/in/asilbekmirolimov/" class="rounded-full border border-slate-800 px-3 py-2 text-xs font-semibold hover:border-slate-600 hover:text-white">LinkedIn</a>
+              <a href="https://t.me/mirolimov_a" class="rounded-full border border-slate-800 px-3 py-2 text-xs font-semibold hover:border-slate-600 hover:text-white">Telegram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-slate-900/80 px-4 py-6 text-center text-xs text-slate-500 sm:px-6 lg:px-8">
+        © 2026 EduPlanet. Built by Asilbek Mirolimov for ambitious developers in Uzbekistan and beyond.
+      </div>
+    </footer>
+  </div>
+
+  <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-4 shadow-[0_-12px_40px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
+    <div class="mx-auto flex max-w-md gap-3">
+      <a href="{{ sticky_primary_href }}" class="flex-1 rounded-2xl bg-sky-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-sky-200">{{ ui.sticky_primary }}</a>
+      <a href="{{ sticky_secondary_href }}" class="flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-center text-sm font-semibold text-slate-700">{{ ui.sticky_secondary }}</a>
     </div>
   </div>
-  <!-- ***** Preloader End ***** -->
+  <script>
+    const mobileMenuButton = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const setMobileMenu = (isOpen) => {
+      if (!mobileMenuButton || !mobileMenu) return;
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      mobileMenuButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    };
 
+    const progressBar = document.getElementById('scroll-progress');
+    const updateScrollProgress = () => {
+      if (!progressBar) return;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+    };
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <!-- ***** Logo Start ***** -->
-            <a href="{% url 'dashboard' %}" class="logo">
-<!--              <img src="assets/images/logo_eduplanet.svg" alt="">-->
-              <img src="/static/assets/images/logo_eduplanet_with_text.svg">
-            </a>
-            <!-- ***** Logo End ***** -->
-            <!-- ***** Menu Start ***** -->
-            <ul class="nav">
-              <li class="scroll-to-section"><a href="{% url 'dashboard' %}" class="active">Home</a></li>
-              <li class="scroll-to-section"><a href="#about">About</a></li>
-              <li class="scroll-to-section"><a href="#centers">Centers</a></li>
-              <li class="scroll-to-section"><a href="#blog">Blog</a></li>
-              <li class="scroll-to-section"><a href="#contact">Contact</a></li>
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        setMobileMenu(!isOpen);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMobileMenu(false);
+      });
+      document.querySelectorAll('#mobile-menu a').forEach((link) => {
+        link.addEventListener('click', () => setMobileMenu(false));
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) setMobileMenu(false);
+      });
+    }
 
-            {% if not user.is_authenticated %}
-              <li class="scroll-to-section"><div class="awesome"><a href="{% url 'login' %}">Login</a></div></li>
-            {% else %}
-              <li class="scroll-to-section"><div class="awesome" ><a href="{% url 'logout' %}">Logout</a></div></li>
-            {% endif %}
+    const revealItems = document.querySelectorAll('[data-reveal]');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.16 });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
 
-              <li class="scroll-to-section"><div class="awesome-profile" ><a href="{% url 'profile' %}">My Profile</a></div></li>
-
-
-            </ul>
-
-            <a class='menu-trigger'>
-                <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
-  <!-- ***** Header Area End ***** -->
-
-
-
-
-<div style="flex-basis: 100%">
-    {% block content %}
-
-    {% endblock %}
-</div>
-
-
-
-  <footer>
-    <!-- Pre-footer Starts -->
-    <div class="pre-header">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-sm-8 col-7">
-            <ul class="info">
-              <li><a href=""><i class="fa fa-envelope"></i>asilbekmirolimov@gmail.com</a></li>
-              <li><a href=""><i class="fa fa-phone"></i>+998-XX-XXX-XX-XX</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-4 col-sm-4 col-5">
-            <ul class="social-media">
-              <li><a href="https://www.facebook.com/mirolimov"><i class="fab fa-facebook"></i></a></li>
-              <li><a href="https://t.me/mirolimov_a"><i class="fab fa-telegram"></i></a></li>
-              <li><a href="https://instagram.com/mirolimov.1"><i class="fab fa-instagram"></i></a></li>
-              <li><a href="https://www.linkedin.com/in/asilbekmirolimov/"><i class="fab fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Pre-footer End -->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright © 2023 Asilbek Mirolimov. All Rights Reserved.
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
-  <!-- Scripts -->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/assets/js/owl-carousel.js"></script>
-  <script src="/static/assets/js/animation.js"></script>
-  <script src="/static/assets/js/imagesloaded.js"></script>
-  <script src="/static/assets/js/custom.js"></script>
-
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('load', updateScrollProgress);
+    updateScrollProgress();
+  </script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

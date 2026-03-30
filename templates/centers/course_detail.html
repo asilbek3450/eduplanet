@@ -1,175 +1,140 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Course{% endblock title %}
+{% extends 'base.html' %}
+
 {% block content %}
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
+    <div>
+      <div class="flex flex-wrap gap-2">
+        <span class="rounded-full bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">{{ course.level }}</span>
+        <span class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">{{ course.duration }}</span>
+        <span class="rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700">{{ course.rating }} ★</span>
+      </div>
+      <h1 class="mt-5 text-4xl font-extrabold leading-tight text-slate-950">{{ course.display_name }}</h1>
+      <p class="mt-4 text-lg leading-8 text-slate-600">{{ course.display_subtitle }}</p>
+      <p class="mt-6 text-base leading-8 text-slate-600">{{ course.display_description }}</p>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-    <link href="{% static 'centers/center_detail.css' %}" rel="stylesheet"/>
-    <link href="{% static 'centers/course_detail.css' %}" rel="stylesheet"/>
-    <br><br><br><br><br><br>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.lessons_count }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.lessons_label }}</p></div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.students_count }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.students_label }}</p></div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.hours_watched }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.hours_label }}</p></div>
+      </div>
 
-
-    <div class="container">
-        <div class="row">
-
-          <div class="col-md-5">
-
-              <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                  <h4><em>{{ course.name | upper }} </em>Course</h4>
-                  <div class="line-dec"></div><br><br>
-              </div>
-
-                <div class="project-info-box mt-0">
-                    <h5>About this course</h5>
-                    <p class="mb-0">{{ course.description }}</p>
-                </div><!-- / project-info-box -->
-
-                <div class="project-info-box">
-                    <p><b>Learning Center:</b> {{ course.learning_center.name}}</p>
-                    <p><b>Phone Number:</b> {{ course.learning_center.phone_number}}</p>
-                    <p><b>Email:</b> {{ course.learning_center.email}}</p>
-                    <p><b>Location:</b> <a target="_blank" href="{{ learning_center.location }}">Google Map</a></p>
-                    <p class="mb-0"><b>Website:</b> <a target="_blank" href="{{ course.learning_center.website }}">{{ learning_center.website}}</a></p>
-                    <p><b>⭐ Rating:</b> {{ course.rating}}</p>
-                </div><!-- / project-info-box -->
-
-            </div><!-- / column -->
-
-          <div class="col-md-7">
-                <img src="{{ course.image }}" width="400" height="300" alt="project-image" class="rounded">
-                <div class="project-info-box">
-                    <p>
-                        <b>Professions:</b>
-                        {% for category in learning_center.categories.all %}
-                            {{ category.name }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            No categories available
-                        {% endfor %}
-                    </p>
-                    <p><b>Joined us:</b> {{ learning_center.created_at.date }}</p>
-                </div><!-- / project-info-box -->
-
-                  <div class="border-first-button">
-                          <h4>
-                              <a href="{% url 'center_detail' slug=course.learning_center.slug %}">🔙 Back to Learning Center</a>
-                              {% if is_user_enrolled %}
-                                    <a href="#playlist">✅ Enrolled Course</a>
-                                {% else %}
-                                    <a href="{% url 'enroll_course' course.id %}">➕ Enroll Course</a>
-                                {% endif %}
-                          </h4>
-                    </div>
-<br><br><br><br><br><br>
-            </div><!-- / column -->
-        </div>
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+        {% if is_user_enrolled %}
+        <a href="#playlist" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-200">Kursga yozilgansiz</a>
+        {% else %}
+        <a href="{{ course.enroll_href }}" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">{{ ui.enroll }}</a>
+        {% endif %}
+        <a href="{{ learning_center.href }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">{{ learning_center.display_name }}</a>
+      </div>
     </div>
 
-{% if is_user_enrolled %}
-  <div id="playlist">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                    <br><br><br>
-                    <h4>Videos Playlist for <em>{{ learning_center.name }}</em> course</h4>
-                    <div class="line-dec"></div><br><br>
-                </div>
-            </div>
+    <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+      <img src="{{ course.image }}" alt="{{ course.display_name }}" class="h-72 w-full object-cover">
+      <div class="grid gap-6 p-7 sm:grid-cols-2">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Instructor</p>
+          <p class="mt-2 text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
         </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Center</p>
+          <p class="mt-2 text-sm font-semibold text-slate-900">{{ learning_center.display_name }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Website</p>
+          <a href="{{ learning_center.website }}" target="_blank" rel="noreferrer" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.website }}</a>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Support</p>
+          <a href="mailto:{{ learning_center.email }}" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.email }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="mt-14 grid gap-8 lg:grid-cols-2">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.curriculum }}</p>
+      <ul class="mt-6 space-y-4 text-sm leading-7 text-slate-600">
+        {% for item in course.curriculum_list %}
+        <li class="flex items-start gap-3"><span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">{{ forloop.counter }}</span><span>{{ item }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.results }}</p>
+      <ul class="mt-6 space-y-4 text-sm leading-7 text-slate-600">
+        {% for item in course.outcome_list %}
+        <li class="flex items-start gap-3"><span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span><span>{{ item }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
-    <!--Video Player-->
+  <div id="playlist" class="mt-14 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.preview_lessons }}</p>
+        <h2 class="mt-4 text-3xl font-bold text-slate-950">{% if is_user_enrolled %}Full playlist{% else %}Preview playlist{% endif %} for {{ course.display_name }}</h2>
+      </div>
+      {% if not is_user_enrolled %}
+      <p class="max-w-xl text-sm leading-7 text-slate-600">Preview darslar ochiq. To'liq videolar, assignmentlar va course workflowga kirish uchun kursga yoziling.</p>
+      {% endif %}
+    </div>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato|Muli" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'centers/video_player_styles.css' %}">
     {% if first_video %}
-        <div class="col-lg-12 px-3 py-3 semiBG">
-            <div class="embed-responsive embed-responsive-16by9">
-            <iframe id="videoFrame" class="embed-responsive-item" src="{{ first_video.video_url }}" allowfullscreen></iframe>
-            </div><br>
-
-            <b><h3 id="videoName">{{ first_video.name }}</h3></b>
-            <p id="videoDescription">{{ first_video.description }}</p><br>
-
+    <div class="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <div>
+        <div class="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-950 shadow-lg shadow-slate-900/10">
+          <iframe id="videoFrame" class="aspect-video w-full" src="https://www.youtube.com/embed/" title="{{ first_video.name }}" allowfullscreen></iframe>
         </div>
+        <div class="mt-5 rounded-[1.5rem] bg-slate-50 p-6">
+          <div class="flex items-center justify-between gap-4">
+            <h3 id="videoName" class="text-xl font-bold text-slate-950">{{ first_video.name }}</h3>
+            <span id="videoDuration" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm">{{ first_video.duration }}</span>
+          </div>
+          <p id="videoDescription" class="mt-3 text-sm leading-7 text-slate-600">{{ first_video.description }}</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        {% for video in video_contents %}
+          {% if is_user_enrolled or video.is_preview %}
+          <button type="button" onclick="changeVideo('{{ video.video_url|escapejs }}', '{{ video.name|escapejs }}', '{{ video.description|escapejs }}', '{{ video.duration|escapejs }}')" class="flex w-full items-center gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-left transition hover:border-sky-200 hover:bg-sky-50">
+            <img src="{{ video.cover_image }}" alt="{{ video.name }}" class="h-20 w-28 rounded-2xl object-cover">
+            <span class="flex-1">
+              <span class="block text-sm font-semibold text-slate-950">{{ video.name }}</span>
+              <span class="mt-2 block text-xs leading-5 text-slate-500">{{ video.description|truncatechars:90 }}</span>
+            </span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">{{ video.duration }}</span>
+          </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
     {% else %}
-        <div class="col-lg-12 px-3 py-3 semiBG">
-            <h3>No videos available</h3>
-        </div>
+    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-6 text-sm text-slate-600">Ushbu kurs uchun video materiallar tez orada qo'shiladi.</div>
     {% endif %}
-    
-        <div class="col-lg-12 semiBG px-3 py-3 mb-5">
-            <h2 class="text-dark mb-5">Course videos</h2>
-            <div class="loop owl-carousel">
-            {% if video_contents %}
-                {% for video in video_contents %}
-                    <div class="portfolio-item">
-                        <div class="card-body">
-                            <a href="#playlist" onclick="changeVideo('{{ video.video_url }}', '{{ video.name }}', '{{ video.description }}')">
-                                <img class="m-2 border border-black rounded" alt="Playlist Title" width="128" height="128" src="{{ video.cover_image }}" />
-                                {{ video.name }}
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <h3>No videos available</h3>
-            {% endif %}
-            
-            </div>
-        </div>
+  </div>
+</section>
 
-        <script>
-            function changeVideo(videoURL, videoName, videoDescription) {
-                var videoID = extractVideoID(videoURL);
-                var embedLink = "https://www.youtube.com/embed/" + videoID;
-                document.getElementById('videoFrame').src = embedLink;
-                document.getElementById('videoName').innerText = videoName;
-                document.getElementById('videoDescription').innerText = videoDescription;
-            }
+<script>
+  function extractVideoID(url) {
+    const match = url.match(/(?:v=|be\/|embed\/)([A-Za-z0-9_-]{11})/);
+    return match ? match[1] : '';
+  }
 
-            function extractVideoID(videoURL) {
-                var videoID = videoURL.split('v=')[1];
-                var ampersandPosition = videoID.indexOf('&');
-                if (ampersandPosition !== -1) {
-                    videoID = videoID.substring(0, ampersandPosition);
-                }
-                return videoID;
-            }
-        </script>
+  function changeVideo(url, name, description, duration) {
+    const videoID = extractVideoID(url);
+    document.getElementById('videoFrame').src = videoID ? `https://www.youtube.com/embed/${videoID}` : url;
+    document.getElementById('videoName').innerText = name;
+    document.getElementById('videoDescription').innerText = description;
+    document.getElementById('videoDuration').innerText = duration;
+  }
 
-    </div>
-    <!-- End Video Player -->
-
-
-
-    </div>
-{% else %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-                    <br><br><br>
-                    <h4>Videos Playlist for <em>{{ learning_center.name }}</em> course</h4>
-                    <div class="line-dec"></div><br><br>
-                    <h3>You are not enrolled to this course</h3>
-
-                </div>
-            </div>
-        </div>
-
-
-    <!--Video Player-->
-
-        <link href="https://fonts.googleapis.com/css?family=Lato|Muli" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'centers/video_player_styles.css' %}">
-
-
-    </div>
-{% endif %}
-
+  document.addEventListener('DOMContentLoaded', function () {
+    {% if first_video %}
+    changeVideo('{{ first_video.video_url|escapejs }}', '{{ first_video.name|escapejs }}', '{{ first_video.description|escapejs }}', '{{ first_video.duration|escapejs }}');
+    {% endif %}
+  });
+</script>
 {% endblock %}

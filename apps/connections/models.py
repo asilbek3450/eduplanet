@@ -8,6 +8,9 @@ class UserCourse(models.Model):
     course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
     enrolled_date = models.DateField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'course')
+
     def __str__(self):
         return f'{self.user} - {self.course}'
 
@@ -30,3 +33,19 @@ class UserCourseRating(models.Model):
 
     def __str__(self):
         return f'RATING: {self.rating} | by {self.user.username} - for {self.course.name}'
+
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=128)
+    role = models.CharField(max_length=160)
+    quote = models.TextField()
+    avatar_url = models.URLField(blank=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    sort_order = models.PositiveIntegerField(default=0)
+    translations = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        ordering = ['sort_order', 'id']
+
+    def __str__(self):
+        return self.name

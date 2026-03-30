@@ -1,24 +1,22 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect
 
-from .models import UserCourse
 from courses.models import Course
+from site_content import get_language, with_lang
+from .models import UserCourse
 
 
 # Create your views here.
-
 @login_required(login_url='login')
 def enroll_course(request, course_id):
-    # Get the course
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
+    lang = get_language(request)
 
-    # Check if the user is already enrolled
     if UserCourse.objects.filter(user=request.user, course=course).exists():
-        messages.warning(request, "You are already enrolled in this course.")
+        messages.warning(request, "Siz ushbu kursga allaqachon yozilgansiz.")
     else:
-        # Enroll the user in the course
         UserCourse.objects.create(user=request.user, course=course)
-        messages.success(request, "You have successfully enrolled in the course.")
+        messages.success(request, "Kursga muvaffaqiyatli yozildingiz.")
 
-    return redirect('course_detail', course.slug)
+    return redirect(with_lang(f'/courses/{course.slug}/', lang))

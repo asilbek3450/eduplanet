@@ -1,96 +1,36 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Register{% endblock title %}
 
 {% block content %}
-
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/static/auth/register.css">
-
-    <br><br><br><br><br><br><br><br><br><br>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-11 mt-60 mx-md-auto">
-                <div class="login-box bg-white pr-lg-5 pr-0">
-                    <div class="row no-gutters align-items-center" style="margin: 0px 0px">
-                        <div class="col-md-6 order-md-last">
-                            <div class="form-wrap bg-white">
-                                <h4 class="btm-sep pb-3 mb-5">Register</h4>
-                                <form class="form" method="post" action="#">
-                                    {% csrf_token %}
-                                    <div class="row">
-{#                                                fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']#}
-
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-account"></span>
-                                                {{ form.first_name }}
-                                            </div>
-                                        </div><br><br>
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-account"></span>
-                                                {{ form.last_name }}
-                                            </div>
-                                        </div><br><br>
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-account"></span>
-                                                {{ form.username }}
-                                            </div>
-                                        </div><br><br>
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-email"></span>
-                                                {{ form.email }}
-                                            </div>
-                                        </div><br><br>
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-lock"></span>
-                                                {{ form.password1 }}
-                                            </div>
-                                        </div><br><br>
-                                        <div class="col-12">
-                                            <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-lock"></span>
-                                                {{ form.password2 }}
-                                            </div>
-                                        </div><br><br>
-
-                                        <div class="col-12">
-                                            <button type="submit" id="submit" class="btn btn-lg btn-custom btn-dark btn-block">
-                                                Sign Up
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-6 order-md-first">
-                            <div class="content text-center">
-                                <div class="border-bottom pb-5 mb-5">
-                                    <h3 class="c-black">Already have an account?</h3>
-                                    <a href="{% url 'login' %}" class="btn btn-custom">sign In</a>
-                                </div>
-                                <h5 class="c-black mb-4 mt-n1">Or Sign Up With</h5>
-                                <div class="socials">
-                                    <a href="#" class="zmdi zmdi-facebook"></a>
-                                    <a href="#" class="zmdi zmdi-twitter"></a>
-                                    <a href="#" class="zmdi zmdi-google"></a>
-                                    <a href="#" class="zmdi zmdi-instagram"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm lg:p-10">
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.register }}</p>
+      <h1 class="mt-4 text-4xl font-extrabold leading-tight text-slate-950">Join EduPlanet and build real momentum.</h1>
+      <p class="mt-5 text-sm leading-8 text-slate-600">Bitta akkaunt orqali kurslarga yozilasiz, preview playlistlarni saqlaysiz va Asilbek Mirolimovning content-rich platformasida sistemali o'sishni boshlaysiz.</p>
+      <form method="post" class="mt-8 grid gap-5 sm:grid-cols-2">
+        {% csrf_token %}
+        <div>{{ form.first_name }}</div>
+        <div>{{ form.last_name }}</div>
+        <div class="sm:col-span-2">{{ form.username }}</div>
+        <div class="sm:col-span-2">{{ form.email }}</div>
+        <div class="sm:col-span-1">{{ form.password1 }}</div>
+        <div class="sm:col-span-1">{{ form.password2 }}</div>
+        {% if error %}<p class="sm:col-span-2 text-sm font-medium text-rose-600">{{ error }}</p>{% endif %}
+        <div class="sm:col-span-2">
+          <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.register }}</button>
         </div>
+      </form>
+      <p class="mt-6 text-sm text-slate-500">Akkauntingiz bormi? <a href="{{ navigation.login }}" class="font-semibold text-sky-600 hover:text-sky-700">{{ ui.login }}</a></p>
     </div>
-<br><br><br><br><br><br><br><br>
-
-{% endblock content %}
+    <div class="rounded-[2rem] bg-gradient-to-br from-sky-600 to-slate-950 p-8 text-white shadow-glow lg:p-10">
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200">Launch-ready LMS</p>
+      <h2 class="mt-4 text-3xl font-bold">What you unlock</h2>
+      <div class="mt-8 space-y-4 text-sm leading-7 text-slate-100">
+        <div class="rounded-3xl border border-white/10 bg-white/10 p-5">Access to practical Python, Django, PostgreSQL, DevOps and fullstack tracks.</div>
+        <div class="rounded-3xl border border-white/10 bg-white/10 p-5">A clean profile, course enrollment state and future-ready learning dashboard.</div>
+        <div class="rounded-3xl border border-white/10 bg-white/10 p-5">Guidance built around becoming a job-ready developer, not just finishing lessons.</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
