@@ -30,5 +30,23 @@
     </article>
     {% endfor %}
   </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50" aria-label="Previous">&#8592;</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+      <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-600 text-sm font-semibold text-white shadow-sm">{{ num }}</span>
+      {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+      <a href="?page={{ num }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50" aria-label="Next">&#8594;</a>
+    {% endif %}
+  </nav>
+  {% endif %}
 </section>
 {% endblock %}

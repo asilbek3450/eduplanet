@@ -14,18 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
-from django.conf import settings
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("apps.urls")),
 ]
-# Serving the media files in development mode
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += staticfiles_urlpatterns()
+else:
+    # In production, serve user-uploaded media via Django only if no CDN/nginx is configured.
+    # WhiteNoise handles static files; media must be served separately or via cloud storage.
+    # This line ensures uploaded images (profile photos) work on Railway/Heroku without extra config.
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

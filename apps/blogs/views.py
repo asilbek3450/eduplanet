@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
 from site_content import (
@@ -12,7 +14,6 @@ from users.forms import ContactUsForm
 from .models import BlogPost
 
 
-# Create your views here.
 def dashboard(request):
     lang = get_language(request)
     if request.method == 'POST':
@@ -32,6 +33,13 @@ def dashboard(request):
 
 def blog_list(request):
     context = get_blog_list_context(request)
+    per_page = getattr(settings, 'BLOG_POSTS_PER_PAGE', 9)
+    paginator = Paginator(context['blogs'], per_page)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    context['blogs'] = page_obj
+    context['page_obj'] = page_obj
+    context['paginator'] = paginator
     return render(request, template_name='blogs/blog_list.html', context=context)
 
 

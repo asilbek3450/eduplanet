@@ -1,8 +1,8 @@
 from django.db import models
+from django.db.models import Avg
 from django.utils.text import slugify
 
 from centers.models import LearningCenter
-from connections.models import UserCourseRating, UserCourseComment
 
 
 class Course(models.Model):
@@ -11,7 +11,7 @@ class Course(models.Model):
     description = models.TextField()
     learning_center = models.ForeignKey(LearningCenter, on_delete=models.CASCADE, related_name='courses')
     image = models.URLField(blank=True)
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, db_index=True)
     level = models.CharField(max_length=32, blank=True)
     duration = models.CharField(max_length=32, blank=True)
     lessons_count = models.PositiveIntegerField(default=0)
@@ -26,7 +26,7 @@ class Course(models.Model):
     seo_title = models.CharField(max_length=180, blank=True)
     seo_description = models.TextField(blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -43,15 +43,31 @@ class Course(models.Model):
             self.seo_description = self.description[:160]
 
         if self.pk:
-            ratings = UserCourseRating.objects.filter(course=self)
-            if ratings.exists():
-                self.rating = round(sum(rating.rating for rating in ratings) / ratings.count(), 1)
+            avg = (
+                self.__class__._default_manager
+                .using(self._state.db)
+                .filter(pk=self.pk)
+                .values_list('pk', flat=True)
+                .first()
+            )
+            # Use a separate query to avoid self-reference issues
+            from connections.models import UserCourseRating
+            result = UserCourseRating.objects.filter(course_id=self.pk).aggregate(avg=Avg('rating'))
+            if result['avg'] is not None:
+                self.rating = round(result['avg'], 1)
 
         super().save(*args, **kwargs)
 
+    def update_rating(self):
+        from connections.models import UserCourseRating
+        result = UserCourseRating.objects.filter(course=self).aggregate(avg=Avg('rating'))
+        self.rating = round(result['avg'], 1) if result['avg'] is not None else 0
+        Course.objects.filter(pk=self.pk).update(rating=self.rating)
+
     @property
     def comments(self):
-        return UserCourseComment.objects.filter(course=self)
+        from connections.models import UserCourseComment
+        return UserCourseComment.objects.select_related('user').filter(course=self).order_by('-created_at')
 
     def __str__(self):
         return f'{self.learning_center} - {self.name}'

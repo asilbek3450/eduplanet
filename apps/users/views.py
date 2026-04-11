@@ -6,7 +6,6 @@ from django.shortcuts import redirect, render
 from connections.models import UserCourse
 from site_content import build_common_context, ensure_platform_content, get_contact_success_context, get_language, global_keywords, with_lang
 from .forms import UserSigninForm, UserSignupForm, UserUpdateForm
-from .models import User
 
 
 def account_context(request, title, description):
@@ -23,7 +22,6 @@ def account_context(request, title, description):
     return build_common_context(request, seo)
 
 
-# user signup and save user to database
 def user_signup(request):
     lang = get_language(request)
     error = ''
@@ -43,6 +41,8 @@ def user_signup(request):
 
 def user_login(request):
     lang = get_language(request)
+    if request.user.is_authenticated:
+        return redirect(with_lang('/users/profile/', lang))
     if request.method == 'POST':
         form = UserSigninForm(request.POST)
         if form.is_valid():
@@ -52,9 +52,9 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Xush kelibsiz!')
-                return redirect(with_lang('/', lang))
+                next_url = request.GET.get('next', with_lang('/', lang))
+                return redirect(next_url)
             messages.error(request, 'Username yoki parol noto\'g\'ri')
-            return redirect(with_lang('/users/login/', lang))
     else:
         form = UserSigninForm()
     context = account_context(request, 'Kirish | EduPlanet', 'EduPlanet akkauntingizga kirib kurslar, saved content va learning dashboardga ulaning.')
@@ -72,11 +72,15 @@ def user_logout(request):
 
 @login_required(login_url='login')
 def profile_page(request):
-    user_profile = User.objects.get(id=request.user.id)
-    enrolled_courses = UserCourse.objects.select_related('course').filter(user=request.user.id)
+    enrolled_courses = (
+        UserCourse.objects
+        .select_related('course', 'course__learning_center')
+        .filter(user=request.user)
+        .order_by('-enrolled_date')
+    )
     context = account_context(request, 'Profil | EduPlanet', 'EduPlanet learning profile, enrolled courses va personal progress overview.')
     context.update({
-        'user_profile': user_profile,
+        'user_profile': request.user,
         'enrolled_courses': enrolled_courses,
     })
     return render(request, 'auth/profile.html', context)
@@ -84,18 +88,17 @@ def profile_page(request):
 
 @login_required(login_url='login')
 def edit_profile(request):
-    user_profile = User.objects.get(id=request.user.id)
     lang = get_language(request)
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, request.FILES, instance=user_profile)
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profil ma\'lumotlari yangilandi.')
             return redirect(with_lang('/users/profile/', lang))
     else:
-        form = UserUpdateForm(instance=user_profile)
+        form = UserUpdateForm(instance=request.user)
     context = account_context(request, 'Profilni tahrirlash | EduPlanet', 'EduPlanet profilingizdagi shaxsiy ma\'lumotlarni va learning experience sozlamalarini yangilang.')
-    context.update({'form': form, 'user_profile': user_profile})
+    context.update({'form': form, 'user_profile': request.user})
     return render(request, 'auth/edit_profile.html', context)
 
 

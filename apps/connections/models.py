@@ -4,8 +4,8 @@ from users.models import User
 
 
 class UserCourse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, db_index=True)
     enrolled_date = models.DateField(auto_now_add=True)
 
     class Meta:
@@ -26,10 +26,15 @@ class UserCourseComment(models.Model):
 
 
 class UserCourseRating(models.Model):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField()
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'course')
 
     def __str__(self):
         return f'RATING: {self.rating} | by {self.user.username} - for {self.course.name}'
