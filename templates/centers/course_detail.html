@@ -2,62 +2,111 @@
 
 {% block content %}
 <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+
+  <!-- Hero grid -->
   <div class="grid gap-10 lg:grid-cols-[1.02fr_0.98fr]">
+    <!-- Left: info -->
     <div>
       <div class="flex flex-wrap gap-2">
-        <span class="rounded-full bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">{{ course.level }}</span>
-        <span class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">{{ course.duration }}</span>
-        <span class="rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700">{{ course.rating }} ★</span>
+        {% if course.level %}
+          <span class="rounded-full bg-sky-50 px-4 py-1.5 text-sm font-semibold text-sky-700">{{ course.level }}</span>
+        {% endif %}
+        {% if course.duration %}
+          <span class="rounded-full bg-slate-100 px-4 py-1.5 text-sm font-semibold text-slate-700">{{ course.duration }}</span>
+        {% endif %}
+        {% if course.rating %}
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700">
+            <svg class="h-4 w-4 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            {{ course.rating }}
+          </span>
+        {% endif %}
       </div>
+
       <h1 class="mt-5 text-4xl font-extrabold leading-tight text-slate-950">{{ course.display_name }}</h1>
       <p class="mt-4 text-lg leading-8 text-slate-600">{{ course.display_subtitle }}</p>
-      <p class="mt-6 text-base leading-8 text-slate-600">{{ course.display_description }}</p>
+      <p class="mt-5 text-base leading-8 text-slate-500">{{ course.display_description }}</p>
 
+      <!-- Stats -->
       <div class="mt-8 grid gap-4 sm:grid-cols-3">
-        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.lessons_count }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.lessons_label }}</p></div>
-        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.students_count }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.students_label }}</p></div>
-        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-3xl font-extrabold text-slate-950">{{ course.hours_watched }}</p><p class="mt-2 text-sm text-slate-500">{{ ui.hours_label }}</p></div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-slate-950">{{ course.lessons_count }}</p>
+          <p class="mt-1.5 text-sm text-slate-500">{{ ui.lessons_label }}</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-slate-950">{{ course.students_count }}</p>
+          <p class="mt-1.5 text-sm text-slate-500">{{ ui.students_label }}</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-slate-950">{{ course.hours_watched }}</p>
+          <p class="mt-1.5 text-sm text-slate-500">{{ ui.hours_label }}</p>
+        </div>
       </div>
 
-      <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+      <!-- CTA -->
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         {% if is_user_enrolled %}
-        <a href="#playlist" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-200">Kursga yozilgansiz</a>
+          <span class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-200">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Kursga yozilgansiz
+          </span>
+          <a href="#playlist" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50">
+            Darslarni boshlash ↓
+          </a>
         {% else %}
-        <a href="{{ course.enroll_href }}" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">{{ ui.enroll }}</a>
+          <a href="{{ course.enroll_href }}"
+            class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-700">
+            {{ ui.enroll }}
+          </a>
+          <a href="{{ learning_center.href }}"
+            class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
+            {{ learning_center.display_name }}
+          </a>
         {% endif %}
-        <a href="{{ learning_center.href }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">{{ learning_center.display_name }}</a>
       </div>
     </div>
 
+    <!-- Right: card -->
     <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
       <img src="{{ course.image }}" alt="{{ course.display_name }}" class="h-72 w-full object-cover">
-      <div class="grid gap-6 p-7 sm:grid-cols-2">
+      <div class="grid gap-5 p-7 sm:grid-cols-2">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Instructor</p>
-          <p class="mt-2 text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Instructor</p>
+          <p class="mt-1.5 text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Center</p>
-          <p class="mt-2 text-sm font-semibold text-slate-900">{{ learning_center.display_name }}</p>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Center</p>
+          <p class="mt-1.5 text-sm font-semibold text-slate-900">{{ learning_center.display_name }}</p>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Website</p>
-          <a href="{{ learning_center.website }}" target="_blank" rel="noreferrer" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.website }}</a>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Website</p>
+          <a href="{{ learning_center.website }}" target="_blank" rel="noreferrer"
+            class="mt-1.5 block truncate text-sm font-semibold text-slate-900 hover:text-sky-600 transition">
+            {{ learning_center.website }}
+          </a>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Support</p>
-          <a href="mailto:{{ learning_center.email }}" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.email }}</a>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Support</p>
+          <a href="mailto:{{ learning_center.email }}"
+            class="mt-1.5 block truncate text-sm font-semibold text-slate-900 hover:text-sky-600 transition">
+            {{ learning_center.email }}
+          </a>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Curriculum & Outcomes -->
   <div class="mt-14 grid gap-8 lg:grid-cols-2">
     <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
       <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.curriculum }}</p>
       <ul class="mt-6 space-y-4 text-sm leading-7 text-slate-600">
         {% for item in course.curriculum_list %}
-        <li class="flex items-start gap-3"><span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">{{ forloop.counter }}</span><span>{{ item }}</span></li>
+        <li class="flex items-start gap-3">
+          <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">{{ forloop.counter }}</span>
+          <span>{{ item }}</span>
+        </li>
+        {% empty %}
+        <li class="text-slate-400 italic">Tez orada qo'shiladi.</li>
         {% endfor %}
       </ul>
     </div>
@@ -65,171 +114,237 @@
       <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.results }}</p>
       <ul class="mt-6 space-y-4 text-sm leading-7 text-slate-600">
         {% for item in course.outcome_list %}
-        <li class="flex items-start gap-3"><span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span><span>{{ item }}</span></li>
+        <li class="flex items-start gap-3">
+          <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">✓</span>
+          <span>{{ item }}</span>
+        </li>
+        {% empty %}
+        <li class="text-slate-400 italic">Tez orada qo'shiladi.</li>
         {% endfor %}
       </ul>
     </div>
   </div>
 
+  <!-- Video playlist -->
   <div id="playlist" class="mt-14 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.preview_lessons }}</p>
-        <h2 class="mt-4 text-3xl font-bold text-slate-950">{% if is_user_enrolled %}Full playlist{% else %}Preview playlist{% endif %} for {{ course.display_name }}</h2>
+        <h2 class="mt-3 text-3xl font-bold text-slate-950">
+          {% if is_user_enrolled %}Full playlist{% else %}Preview playlist{% endif %}
+        </h2>
       </div>
       {% if not is_user_enrolled %}
-      <p class="max-w-xl text-sm leading-7 text-slate-600">Preview darslar ochiq. To'liq videolar, assignmentlar va course workflowga kirish uchun kursga yoziling.</p>
+      <p class="max-w-sm text-sm leading-7 text-slate-500">Preview darslar ochiq. To'liq kursga kirish uchun yoziling.</p>
       {% endif %}
     </div>
 
     {% if first_video %}
-    <div class="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+    <div class="mt-8 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <!-- Player -->
       <div>
-        <div class="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-950 shadow-lg shadow-slate-900/10">
-          <iframe id="videoFrame" class="aspect-video w-full" src="https://www.youtube.com/embed/" title="{{ first_video.name }}" allowfullscreen></iframe>
+        <div class="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-950 shadow-lg">
+          <iframe id="videoFrame" class="aspect-video w-full" src=""
+            title="{{ first_video.name }}" allowfullscreen loading="lazy"></iframe>
         </div>
-        <div class="mt-5 rounded-[1.5rem] bg-slate-50 p-6">
-          <div class="flex items-center justify-between gap-4">
-            <h3 id="videoName" class="text-xl font-bold text-slate-950">{{ first_video.name }}</h3>
-            <span id="videoDuration" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm">{{ first_video.duration }}</span>
+        <div class="mt-4 rounded-[1.5rem] bg-slate-50 p-5">
+          <div class="flex items-start justify-between gap-4">
+            <h3 id="videoName" class="text-lg font-bold text-slate-950">{{ first_video.name }}</h3>
+            <span id="videoDuration"
+              class="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm">
+              {{ first_video.duration }}
+            </span>
           </div>
-          <p id="videoDescription" class="mt-3 text-sm leading-7 text-slate-600">{{ first_video.description }}</p>
+          <p id="videoDescription" class="mt-2 text-sm leading-7 text-slate-600">{{ first_video.description }}</p>
         </div>
       </div>
-      <div class="space-y-4">
+      <!-- Playlist sidebar -->
+      <div class="space-y-3 lg:max-h-[520px] lg:overflow-y-auto lg:pr-1">
         {% for video in video_contents %}
           {% if is_user_enrolled or video.is_preview %}
-          <button type="button" onclick="changeVideo('{{ video.video_url|escapejs }}', '{{ video.name|escapejs }}', '{{ video.description|escapejs }}', '{{ video.duration|escapejs }}')" class="flex w-full items-center gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-left transition hover:border-sky-200 hover:bg-sky-50">
-            <img src="{{ video.cover_image }}" alt="{{ video.name }}" class="h-20 w-28 rounded-2xl object-cover">
-            <span class="flex-1">
-              <span class="block text-sm font-semibold text-slate-950">{{ video.name }}</span>
-              <span class="mt-2 block text-xs leading-5 text-slate-500">{{ video.description|truncatechars:90 }}</span>
+          <button type="button"
+            onclick="changeVideo('{{ video.video_url|escapejs }}','{{ video.name|escapejs }}','{{ video.description|escapejs }}','{{ video.duration|escapejs }}')"
+            class="video-item flex w-full items-center gap-3 rounded-[1.5rem] border border-slate-200 bg-white p-3 text-left transition hover:border-sky-200 hover:bg-sky-50">
+            <div class="relative shrink-0">
+              <img src="{{ video.cover_image }}" alt="{{ video.name }}"
+                class="h-16 w-24 rounded-2xl object-cover">
+              {% if video.is_preview %}
+              <span class="absolute bottom-1 left-1 rounded-full bg-sky-600 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">Preview</span>
+              {% endif %}
+            </div>
+            <span class="flex-1 min-w-0">
+              <span class="block truncate text-sm font-semibold text-slate-900">{{ video.name }}</span>
+              <span class="mt-1 block text-xs leading-5 text-slate-500">{{ video.description|truncatechars:60 }}</span>
             </span>
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">{{ video.duration }}</span>
+            <span class="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">
+              {{ video.duration }}
+            </span>
           </button>
           {% endif %}
         {% endfor %}
       </div>
     </div>
     {% else %}
-    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-6 text-sm text-slate-600">Ushbu kurs uchun video materiallar tez orada qo'shiladi.</div>
+    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-8 text-center text-sm text-slate-500">
+      <svg class="mx-auto mb-3 h-10 w-10 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.362a1 1 0 01-1.447.894L15 14M4 8a2 2 0 012-2h9a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"/></svg>
+      Ushbu kurs uchun video materiallar tez orada qo'shiladi.
+    </div>
     {% endif %}
   </div>
 </section>
 
-<script>
-  function extractVideoID(url) {
-    const match = url.match(/(?:v=|be\/|embed\/)([A-Za-z0-9_-]{11})/);
-    return match ? match[1] : '';
-  }
-
-  function changeVideo(url, name, description, duration) {
-    const videoID = extractVideoID(url);
-    document.getElementById('videoFrame').src = videoID ? `https://www.youtube.com/embed/${videoID}` : url;
-    document.getElementById('videoName').innerText = name;
-    document.getElementById('videoDescription').innerText = description;
-    document.getElementById('videoDuration').innerText = duration;
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    {% if first_video %}
-    changeVideo('{{ first_video.video_url|escapejs }}', '{{ first_video.name|escapejs }}', '{{ first_video.description|escapejs }}', '{{ first_video.duration|escapejs }}');
-    {% endif %}
-  });
-</script>
-
+<!-- Comments & Ratings (enrolled only) -->
 {% if is_user_enrolled %}
-<section id="comments" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+<section id="comments" class="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
   <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
     <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Kurs baholash va izohlar</p>
 
     <div class="mt-6 grid gap-6 lg:grid-cols-2">
+
       <!-- Rating form -->
-      <div class="rounded-[1.5rem] bg-slate-50 p-6">
-        <h3 class="text-lg font-bold text-slate-950">Kursni baholang</h3>
+      <div class="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-6">
+        <h3 class="text-base font-bold text-slate-950">Kursni baholang</h3>
         <form method="post" action="/connections/rating/{{ course.id }}/" class="mt-4">
           {% csrf_token %}
-          <div class="flex items-center gap-2">
-            {% for star in "12345" %}
+          <div class="flex items-center gap-1" id="star-row">
+            {% for i in "12345" %}
             <label class="cursor-pointer">
-              <input type="radio" name="rating" value="{{ star }}" class="sr-only" {% if user_rating == star|add:0 %}checked{% endif %}>
-              <span class="text-3xl transition hover:scale-110 {% if user_rating >= star|add:0 %}text-amber-400{% else %}text-slate-300{% endif %}" data-value="{{ star }}">★</span>
+              <input type="radio" name="rating" value="{{ i }}" class="sr-only"
+                {% if user_rating == i|add:0 %}checked{% endif %}>
+              <svg class="star-icon h-9 w-9 transition-transform hover:scale-110
+                {% if user_rating and user_rating >= i|add:0 %}text-amber-400{% else %}text-slate-200{% endif %}"
+                data-val="{{ i }}" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
             </label>
             {% endfor %}
           </div>
-          <p class="mt-2 text-xs text-slate-500">Joriy bahoyingiz: {% if user_rating %}{{ user_rating }} ★{% else %}Baholanmagan{% endif %}</p>
-          <button type="submit" class="mt-4 inline-flex rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">Baholashni saqlash</button>
+          <p class="mt-2 text-xs text-slate-400">
+            Sizning bahoyingiz: {% if user_rating %}<strong class="text-amber-600">{{ user_rating }} ★</strong>{% else %}Hali baholanmagan{% endif %}
+          </p>
+          <button type="submit"
+            class="mt-4 inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600">
+            Baholashni saqlash
+          </button>
         </form>
       </div>
 
       <!-- Comment form -->
-      <div class="rounded-[1.5rem] bg-slate-50 p-6">
-        <h3 class="text-lg font-bold text-slate-950">Izoh qoldiring</h3>
+      <div class="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-6">
+        <h3 class="text-base font-bold text-slate-950">Izoh qoldiring</h3>
         <form method="post" action="/connections/comment/{{ course.id }}/" class="mt-4">
           {% csrf_token %}
-          <textarea name="text" rows="4" maxlength="1000" placeholder="Kurs haqida fikringizni yozing..." class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100 min-h-[120px]"></textarea>
-          <div class="mt-3 flex items-center justify-between">
-            <span class="text-xs text-slate-400">Maksimal 1000 belgi</span>
-            <button type="submit" class="inline-flex rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">Izoh yuborish</button>
+          <textarea name="text" rows="4" maxlength="1000"
+            placeholder="Kurs haqida fikringizni yozing..."
+            class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 min-h-[110px] resize-none"></textarea>
+          <div class="mt-2.5 flex items-center justify-between">
+            <span id="char-count" class="text-xs text-slate-400">0 / 1000</span>
+            <button type="submit"
+              class="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600">
+              Yuborish
+            </button>
           </div>
         </form>
       </div>
     </div>
 
     <!-- Comments list -->
-    {% if comments %}
-    <div class="mt-8 space-y-4">
-      <h3 class="text-lg font-bold text-slate-950">Barcha izohlar ({{ comments|length }})</h3>
-      {% for comment in comments %}
-      <div class="flex gap-4 rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-sky-700">
-          {{ comment.user.first_name|first|default:comment.user.username|first|upper }}
-        </div>
-        <div class="flex-1">
-          <div class="flex flex-wrap items-center gap-3">
-            <span class="text-sm font-semibold text-slate-900">{{ comment.user.get_full_name|default:comment.user.username }}</span>
-            <span class="text-xs text-slate-400">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+    <div class="mt-8">
+      <h3 class="text-base font-bold text-slate-950">
+        Barcha izohlar
+        <span class="ml-2 rounded-full bg-slate-100 px-2.5 py-0.5 text-sm font-semibold text-slate-600">{{ comments|length }}</span>
+      </h3>
+      {% if comments %}
+      <div class="mt-5 space-y-4">
+        {% for comment in comments %}
+        <div class="flex gap-4 rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 transition hover:border-slate-200">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-sky-700">
+            {{ comment.user.first_name|first|default:comment.user.username|first|upper }}
           </div>
-          <p class="mt-2 text-sm leading-7 text-slate-600">{{ comment.text }}</p>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm font-semibold text-slate-900">{{ comment.user.get_full_name|default:comment.user.username }}</span>
+              <span class="text-xs text-slate-400">{{ comment.created_at|date:"d.m.Y · H:i" }}</span>
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{{ comment.text }}</p>
+          </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      {% else %}
+      <div class="mt-5 rounded-[1.5rem] bg-slate-50 p-8 text-center">
+        <svg class="mx-auto mb-3 h-10 w-10 text-slate-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        <p class="text-sm text-slate-400">Hozircha izoh yo'q. Birinchi bo'lib fikringizni qoldiring!</p>
+      </div>
+      {% endif %}
     </div>
-    {% else %}
-    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-6 text-center text-sm text-slate-500">
-      Hozircha izoh yo'q. Birinchi bo'lib fikringizni qoldiring!
-    </div>
-    {% endif %}
   </div>
 </section>
+{% else %}
+<!-- Not enrolled CTA -->
+<section class="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+  <div class="rounded-[2rem] border border-slate-200 bg-gradient-to-r from-sky-50 to-slate-50 p-8 text-center shadow-sm">
+    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Izoh va baho</p>
+    <h3 class="mt-3 text-xl font-bold text-slate-950">Kursga yoziling va fikringizni bildiring</h3>
+    <p class="mt-2 text-sm text-slate-500">Faqat kursga yozilgan talabalar izoh va baho qoldira oladi.</p>
+    <a href="{{ course.enroll_href }}"
+      class="mt-5 inline-flex items-center gap-2 rounded-2xl bg-sky-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">
+      {{ ui.enroll }}
+    </a>
+  </div>
+</section>
+{% endif %}
 
+{% block extra_scripts %}
 <script>
-  // Interactive star rating
-  const ratingInputs = document.querySelectorAll('input[name="rating"]');
-  const stars = document.querySelectorAll('[data-value]');
+  // Video player
+  function extractVideoID(url) {
+    const m = url.match(/(?:v=|be\/|embed\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : '';
+  }
+  function changeVideo(url, name, desc, dur) {
+    const id = extractVideoID(url);
+    document.getElementById('videoFrame').src = id ? `https://www.youtube.com/embed/${id}?autoplay=1` : url;
+    document.getElementById('videoName').textContent = name;
+    document.getElementById('videoDescription').textContent = desc;
+    document.getElementById('videoDuration').textContent = dur;
+    document.querySelectorAll('.video-item').forEach(el => el.classList.remove('border-sky-400','bg-sky-50'));
+    event.currentTarget.classList.add('border-sky-400','bg-sky-50');
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if first_video %}
+    changeVideo('{{ first_video.video_url|escapejs }}','{{ first_video.name|escapejs }}','{{ first_video.description|escapejs }}','{{ first_video.duration|escapejs }}');
+    {% endif %}
+  });
 
+  // Star rating hover
+  const stars = document.querySelectorAll('.star-icon');
+  const userRating = {{ user_rating|default:0 }};
   stars.forEach((star, idx) => {
-    star.closest('label').addEventListener('mouseenter', () => {
-      stars.forEach((s, i) => {
-        s.classList.toggle('text-amber-400', i <= idx);
-        s.classList.toggle('text-slate-300', i > idx);
-      });
+    const label = star.closest('label');
+    if (!label) return;
+    label.addEventListener('mouseenter', () => {
+      stars.forEach((s, i) => s.classList.toggle('text-amber-400', i <= idx));
+      stars.forEach((s, i) => s.classList.toggle('text-slate-200', i > idx));
     });
-    star.closest('label').addEventListener('mouseleave', () => {
-      const checked = document.querySelector('input[name="rating"]:checked');
-      const checkedVal = checked ? parseInt(checked.value) - 1 : -1;
+    label.addEventListener('mouseleave', () => {
       stars.forEach((s, i) => {
-        s.classList.toggle('text-amber-400', i <= checkedVal);
-        s.classList.toggle('text-slate-300', i > checkedVal);
-      });
-    });
-    star.closest('label').addEventListener('click', () => {
-      stars.forEach((s, i) => {
-        s.classList.toggle('text-amber-400', i <= idx);
-        s.classList.toggle('text-slate-300', i > idx);
+        s.classList.toggle('text-amber-400', userRating > 0 && i < userRating);
+        s.classList.toggle('text-slate-200', userRating === 0 || i >= userRating);
       });
     });
   });
+
+  // Comment char counter
+  const textarea = document.querySelector('textarea[name="text"]');
+  const counter = document.getElementById('char-count');
+  if (textarea && counter) {
+    textarea.addEventListener('input', () => {
+      const len = textarea.value.length;
+      counter.textContent = `${len} / 1000`;
+      counter.classList.toggle('text-rose-500', len > 900);
+    });
+  }
 </script>
-{% endif %}
+{% endblock %}
 {% endblock %}

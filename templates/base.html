@@ -148,9 +148,33 @@
 
     <main>
       {% if messages %}
-        <div class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+        <div id="toast-container" class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8 space-y-2">
           {% for message in messages %}
-            <div class="mb-3 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm font-medium text-sky-800 shadow-sm">{{ message }}</div>
+            {% if message.tags == 'error' %}
+            <div role="alert" class="toast-msg flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 shadow-sm">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
+              <span class="flex-1">{{ message }}</span>
+              <button type="button" onclick="this.closest('.toast-msg').remove()" class="shrink-0 text-rose-400 hover:text-rose-600" aria-label="Yopish">✕</button>
+            </div>
+            {% elif message.tags == 'success' %}
+            <div role="status" class="toast-msg flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 shadow-sm">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
+              <span class="flex-1">{{ message }}</span>
+              <button type="button" onclick="this.closest('.toast-msg').remove()" class="shrink-0 text-emerald-400 hover:text-emerald-600" aria-label="Yopish">✕</button>
+            </div>
+            {% elif message.tags == 'warning' %}
+            <div role="alert" class="toast-msg flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 shadow-sm">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+              <span class="flex-1">{{ message }}</span>
+              <button type="button" onclick="this.closest('.toast-msg').remove()" class="shrink-0 text-amber-400 hover:text-amber-600" aria-label="Yopish">✕</button>
+            </div>
+            {% else %}
+            <div role="status" class="toast-msg flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-medium text-sky-800 shadow-sm">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-sky-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4m0-4h.01"/></svg>
+              <span class="flex-1">{{ message }}</span>
+              <button type="button" onclick="this.closest('.toast-msg').remove()" class="shrink-0 text-sky-400 hover:text-sky-600" aria-label="Yopish">✕</button>
+            </div>
+            {% endif %}
           {% endfor %}
         </div>
       {% endif %}
@@ -199,6 +223,14 @@
       <a href="{{ sticky_secondary_href }}" class="flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-center text-sm font-semibold text-slate-700">{{ ui.sticky_secondary }}</a>
     </div>
   </div>
+  <!-- Back to top -->
+  <button id="back-to-top" type="button" aria-label="Tepaga qaytish"
+    class="fixed bottom-24 right-5 z-50 hidden h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-lg shadow-slate-900/8 transition hover:border-sky-200 hover:bg-sky-50 hover:text-sky-600 md:bottom-8">
+    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
   <script>
     const mobileMenuButton = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -250,6 +282,51 @@
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     window.addEventListener('load', updateScrollProgress);
     updateScrollProgress();
+
+    // Back to top
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      const toggleBackToTop = () => {
+        const show = window.scrollY > 400;
+        backToTop.classList.toggle('hidden', !show);
+        backToTop.classList.toggle('flex', show);
+      };
+      window.addEventListener('scroll', toggleBackToTop, { passive: true });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // Auto-dismiss toasts after 5s
+    document.querySelectorAll('.toast-msg').forEach((el) => {
+      setTimeout(() => {
+        el.style.transition = 'opacity .4s ease, transform .4s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-6px)';
+        setTimeout(() => el.remove(), 420);
+      }, 5000);
+    });
+
+    // Active nav link highlight
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('header nav a, #mobile-menu nav a').forEach((link) => {
+      try {
+        const href = new URL(link.href).pathname;
+        if (href !== '/' && currentPath.startsWith(href)) {
+          link.classList.add('text-sky-600', 'font-semibold');
+          link.classList.remove('text-slate-600');
+        }
+      } catch (_) {}
+    });
+
+    // Form submit loading state — disable button & show spinner
+    document.querySelectorAll('form').forEach((form) => {
+      form.addEventListener('submit', () => {
+        form.querySelectorAll('button[type="submit"]').forEach((btn) => {
+          btn.disabled = true;
+          btn.dataset.originalText = btn.innerHTML;
+          btn.innerHTML = '<svg class="inline-block h-4 w-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>Yuklanmoqda...';
+        });
+      });
+    });
   </script>
   {% block extra_scripts %}{% endblock %}
 </body>
