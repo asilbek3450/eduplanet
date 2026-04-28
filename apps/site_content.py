@@ -18,6 +18,59 @@ LANGUAGE_OPTIONS = {
     "en": "English",
     "ru": "Русский",
 }
+LANGUAGE_META = {
+    "uz": {
+        "label": "O'zbekcha",
+        "short": "UZ",
+        "native": "O'zbekcha",
+        "flag_alt": "Uzbekistan flag",
+        "flag_svg": (
+            "<svg viewBox='0 0 60 40' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'>"
+            "<rect width='60' height='13.34' y='0' fill='#0099B5'/>"
+            "<rect width='60' height='1' y='13.34' fill='#CE1126'/>"
+            "<rect width='60' height='12.34' y='14.34' fill='#FFFFFF'/>"
+            "<rect width='60' height='1' y='26.68' fill='#CE1126'/>"
+            "<rect width='60' height='12.32' y='27.68' fill='#1EB53A'/>"
+            "<g fill='#FFFFFF'>"
+            "<circle cx='14' cy='7' r='3.4'/>"
+            "<circle cx='15.4' cy='7' r='3.4' fill='#0099B5'/>"
+            "<circle cx='20' cy='4.5' r='0.5'/><circle cx='22.4' cy='4.5' r='0.5'/>"
+            "<circle cx='20' cy='7' r='0.5'/><circle cx='22.4' cy='7' r='0.5'/><circle cx='24.8' cy='7' r='0.5'/>"
+            "<circle cx='20' cy='9.5' r='0.5'/><circle cx='22.4' cy='9.5' r='0.5'/><circle cx='24.8' cy='9.5' r='0.5'/><circle cx='27.2' cy='9.5' r='0.5'/>"
+            "</g>"
+            "</svg>"
+        ),
+    },
+    "en": {
+        "label": "English",
+        "short": "EN",
+        "native": "English",
+        "flag_alt": "United Kingdom flag",
+        "flag_svg": (
+            "<svg viewBox='0 0 60 40' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'>"
+            "<rect width='60' height='40' fill='#012169'/>"
+            "<path d='M0 0 L60 40 M60 0 L0 40' stroke='#FFFFFF' stroke-width='8'/>"
+            "<path d='M0 0 L60 40' stroke='#C8102E' stroke-width='4'/>"
+            "<path d='M60 0 L0 40' stroke='#C8102E' stroke-width='4'/>"
+            "<path d='M30 0 V40 M0 20 H60' stroke='#FFFFFF' stroke-width='10'/>"
+            "<path d='M30 0 V40 M0 20 H60' stroke='#C8102E' stroke-width='6'/>"
+            "</svg>"
+        ),
+    },
+    "ru": {
+        "label": "Русский",
+        "short": "RU",
+        "native": "Русский",
+        "flag_alt": "Russia flag",
+        "flag_svg": (
+            "<svg viewBox='0 0 60 40' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'>"
+            "<rect width='60' height='13.34' y='0' fill='#FFFFFF'/>"
+            "<rect width='60' height='13.34' y='13.34' fill='#0039A6'/>"
+            "<rect width='60' height='13.32' y='26.68' fill='#D52B1E'/>"
+            "</svg>"
+        ),
+    },
+}
 DEFAULT_LANGUAGE = "uz"
 GLOBAL_KEYWORDS = [
     "Python course Uzbekistan",
@@ -2357,11 +2410,12 @@ def build_common_context(request, seo):
     lang = get_language(request)
     ui = UI_COPY[lang]
     home_url = with_lang(reverse("dashboard"), lang)
+    blog_list_url = with_lang(reverse("blog_list"), lang)
     base_navigation = {
         "home": home_url,
         "courses": f"{home_url}#courses",
         "centers": f"{home_url}#centers",
-        "blog": f"{home_url}#blog",
+        "blog": blog_list_url,
         "about": f"{home_url}#about",
         "contact": f"{home_url}#contact",
         "login": with_lang(reverse("login"), lang),
@@ -2369,13 +2423,32 @@ def build_common_context(request, seo):
         "profile": with_lang(reverse("profile"), lang),
         "logout": with_lang(reverse("logout"), lang),
     }
+    nav_menu = build_nav_menu(lang, base_navigation)
+    languages = []
+    current_path = request.path
+    for code in LANGUAGE_OPTIONS:
+        meta = LANGUAGE_META[code]
+        languages.append({
+            "code": code,
+            "label": meta["label"],
+            "short": meta["short"],
+            "native": meta["native"],
+            "flag_alt": meta["flag_alt"],
+            "flag_svg": meta["flag_svg"],
+            "url": with_lang(current_path, code),
+            "is_current": code == lang,
+        })
+    current_language = next((item for item in languages if item["is_current"]), languages[0])
     return {
         "lang": lang,
         "lang_query": f"?lang={lang}",
-        "language_options": {code: with_lang(request.path, code) for code in LANGUAGE_OPTIONS},
+        "language_options": {code: with_lang(current_path, code) for code in LANGUAGE_OPTIONS},
         "language_labels": LANGUAGE_OPTIONS,
+        "languages": languages,
+        "current_language": current_language,
         "ui": ui,
         "navigation": base_navigation,
+        "nav_menu": nav_menu,
         "seo": seo,
         "site_name": ui["meta_site_name"],
         "sticky_primary_href": f"{home_url}#courses",
@@ -2383,6 +2456,167 @@ def build_common_context(request, seo):
         "current_url": request.build_absolute_uri(),
         "home_url": home_url,
     }
+
+
+def build_nav_menu(lang, navigation):
+    blog_url = navigation["blog"]
+    contact_url = navigation["contact"]
+    about_url = navigation["about"]
+
+    category_links = []
+    try:
+        categories = list(Category.objects.all())
+    except Exception:
+        categories = []
+    for category in categories:
+        annotated = annotate_category(category, lang)
+        category_links.append({
+            "label": annotated.display_name,
+            "description": annotated.display_description,
+            "href": annotated.href,
+            "icon": annotated.icon,
+        })
+
+    course_links = []
+    try:
+        featured_courses = list(Course.objects.filter(featured=True).select_related("learning_center")[:4])
+    except Exception:
+        featured_courses = []
+    for course in featured_courses:
+        annotated = annotate_course(course, lang)
+        course_links.append({
+            "label": annotated.display_name,
+            "description": annotated.display_subtitle,
+            "href": annotated.href,
+            "icon": "→",
+        })
+
+    if lang == "uz":
+        labels = {
+            "all_courses": "Barcha kurslar",
+            "all_courses_desc": "Featured trekları va to'liq kurs katalogi",
+            "all_centers": "Barcha markazlar",
+            "all_centers_desc": "Web, Backend, Data va DevOps yo'nalishlari",
+            "blog_topic_python": "Python roadmap",
+            "blog_topic_python_desc": "Boshlovchidan junior backendgacha qadamlar",
+            "blog_topic_django": "Django va REST API",
+            "blog_topic_django_desc": "Architecture, auth va product workflow",
+            "blog_topic_career": "Karyera va portfolio",
+            "blog_topic_career_desc": "Junior backend ishga olishda nima muhim",
+            "blog_all": "Barcha maqolalar",
+            "blog_all_desc": "EduPlanet blog arxivi",
+            "about_mentor": "Mentor sifatida",
+            "about_mentor_desc": "Asilbek bilan o'qish formati va kutiladigan natijalar",
+            "about_skills": "Tech stack",
+            "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
+            "about_mission": "Mission va falsafa",
+            "about_mission_desc": "Nega EduPlanet va kim uchun yaratilgan",
+            "contact_book": "Konsultatsiyaga yozilish",
+            "contact_book_desc": "Karyera yoki kurs tanlash bo'yicha 30 daqiqalik suhbat",
+            "contact_email": "Email bilan yozish",
+            "contact_email_desc": "asilbekmirolimov@gmail.com — 1 ish kuni ichida javob",
+            "contact_telegram": "Telegram orqali",
+            "contact_telegram_desc": "@mirolimov_a — tezkor savollar uchun",
+        }
+    elif lang == "en":
+        labels = {
+            "all_courses": "All courses",
+            "all_courses_desc": "Featured tracks and the full catalog",
+            "all_centers": "All centers",
+            "all_centers_desc": "Web, Backend, Data, and DevOps tracks",
+            "blog_topic_python": "Python roadmap",
+            "blog_topic_python_desc": "From beginner to junior backend, step by step",
+            "blog_topic_django": "Django & REST API",
+            "blog_topic_django_desc": "Architecture, auth, and product workflow",
+            "blog_topic_career": "Career & portfolio",
+            "blog_topic_career_desc": "What hiring teams actually look for",
+            "blog_all": "All articles",
+            "blog_all_desc": "Browse the EduPlanet blog archive",
+            "about_mentor": "As a mentor",
+            "about_mentor_desc": "How learning with Asilbek works in practice",
+            "about_skills": "Tech stack",
+            "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
+            "about_mission": "Mission & philosophy",
+            "about_mission_desc": "Why EduPlanet exists and who it serves",
+            "contact_book": "Book a consultation",
+            "contact_book_desc": "30-minute career or course-fit chat",
+            "contact_email": "Email us",
+            "contact_email_desc": "asilbekmirolimov@gmail.com — reply within one business day",
+            "contact_telegram": "Telegram",
+            "contact_telegram_desc": "@mirolimov_a for quick questions",
+        }
+    else:
+        labels = {
+            "all_courses": "Все курсы",
+            "all_courses_desc": "Featured-треки и полный каталог",
+            "all_centers": "Все направления",
+            "all_centers_desc": "Web, Backend, Data и DevOps",
+            "blog_topic_python": "Python roadmap",
+            "blog_topic_python_desc": "От новичка до junior backend, шаг за шагом",
+            "blog_topic_django": "Django и REST API",
+            "blog_topic_django_desc": "Architecture, auth и product workflow",
+            "blog_topic_career": "Карьера и портфолио",
+            "blog_topic_career_desc": "Что реально ценят при найме",
+            "blog_all": "Все статьи",
+            "blog_all_desc": "Архив блога EduPlanet",
+            "about_mentor": "Как наставник",
+            "about_mentor_desc": "Как устроено обучение с Асилбеком",
+            "about_skills": "Tech stack",
+            "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
+            "about_mission": "Миссия и философия",
+            "about_mission_desc": "Зачем EduPlanet и для кого",
+            "contact_book": "Записаться на консультацию",
+            "contact_book_desc": "30-минутный разговор по карьере или выбору курса",
+            "contact_email": "Написать на email",
+            "contact_email_desc": "asilbekmirolimov@gmail.com — ответ в течение рабочего дня",
+            "contact_telegram": "Telegram",
+            "contact_telegram_desc": "@mirolimov_a — быстрые вопросы",
+        }
+
+    courses_submenu = list(course_links)
+    courses_submenu.append({
+        "label": labels["all_courses"],
+        "description": labels["all_courses_desc"],
+        "href": navigation["courses"],
+        "icon": "★",
+    })
+
+    centers_submenu = list(category_links)
+    centers_submenu.append({
+        "label": labels["all_centers"],
+        "description": labels["all_centers_desc"],
+        "href": navigation["centers"],
+        "icon": "◎",
+    })
+
+    blog_submenu = [
+        {"label": labels["blog_topic_python"], "description": labels["blog_topic_python_desc"], "href": blog_url, "icon": "Py"},
+        {"label": labels["blog_topic_django"], "description": labels["blog_topic_django_desc"], "href": blog_url, "icon": "Dj"},
+        {"label": labels["blog_topic_career"], "description": labels["blog_topic_career_desc"], "href": blog_url, "icon": "→"},
+        {"label": labels["blog_all"], "description": labels["blog_all_desc"], "href": blog_url, "icon": "★"},
+    ]
+
+    about_submenu = [
+        {"label": labels["about_mentor"], "description": labels["about_mentor_desc"], "href": about_url, "icon": "AM"},
+        {"label": labels["about_skills"], "description": labels["about_skills_desc"], "href": about_url, "icon": "</>"},
+        {"label": labels["about_mission"], "description": labels["about_mission_desc"], "href": about_url, "icon": "◎"},
+    ]
+
+    contact_submenu = [
+        {"label": labels["contact_book"], "description": labels["contact_book_desc"], "href": contact_url, "icon": "✱"},
+        {"label": labels["contact_email"], "description": labels["contact_email_desc"], "href": "mailto:asilbekmirolimov@gmail.com", "icon": "@"},
+        {"label": labels["contact_telegram"], "description": labels["contact_telegram_desc"], "href": "https://t.me/mirolimov_a", "icon": "✈"},
+    ]
+
+    ui = UI_COPY[lang]
+    return [
+        {"key": "home", "label": ui["home"], "href": navigation["home"], "submenu": []},
+        {"key": "courses", "label": ui["courses"], "href": navigation["courses"], "submenu": courses_submenu},
+        {"key": "centers", "label": ui["centers"], "href": navigation["centers"], "submenu": centers_submenu},
+        {"key": "blog", "label": ui["blog"], "href": navigation["blog"], "submenu": blog_submenu},
+        {"key": "about", "label": ui["about"], "href": navigation["about"], "submenu": about_submenu},
+        {"key": "contact", "label": ui["contact"], "href": navigation["contact"], "submenu": contact_submenu},
+    ]
 
 
 def ensure_platform_content(force=False):
