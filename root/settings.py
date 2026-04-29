@@ -34,6 +34,15 @@ def _split_env_list(value):
         return []
     return [item.strip().rstrip('/') for item in value.split(',') if item.strip()]
 
+
+def _to_origin(value):
+    value = (value or '').strip().rstrip('/')
+    if not value:
+        return None
+    if value.startswith('http://') or value.startswith('https://'):
+        return value
+    return f'https://{value}'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,10 +70,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CSRF_TRUSTED_ORIGINS = [
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
+_trusted_origins = [
     'https://eduplanet-production.up.railway.app',
+    _to_origin(os.getenv('RAILWAY_PUBLIC_DOMAIN')),
 ]
-CSRF_TRUSTED_ORIGINS += _split_env_list(os.getenv('CSRF_TRUSTED_ORIGINS'))
+_trusted_origins.extend(_split_env_list(os.getenv('CSRF_TRUSTED_ORIGINS')))
+CSRF_TRUSTED_ORIGINS = [origin for origin in _trusted_origins if origin]
 ROOT_URLCONF = 'root.urls'
 
 TEMPLATES = [
