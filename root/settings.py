@@ -28,6 +28,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+
+def _split_env_list(value):
+    if not value:
+        return []
+    return [item.strip().rstrip('/') for item in value.split(',') if item.strip()]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,9 +62,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://eduplanet-production.up.railway.app/',
-
+    'https://eduplanet-production.up.railway.app',
 ]
+CSRF_TRUSTED_ORIGINS += _split_env_list(os.getenv('CSRF_TRUSTED_ORIGINS'))
 ROOT_URLCONF = 'root.urls'
 
 TEMPLATES = [
