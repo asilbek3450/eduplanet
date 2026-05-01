@@ -1,0 +1,52 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:centers_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi markaz</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish: nomi, joylashuv..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Markaz</th><th>Joylashuv</th><th>Kategoriyalar</th><th>O‘quvchilar</th><th>Kurslar</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for c in page %}
+            <tr>
+              <td>{{ c.id }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  {% if c.image %}<img src="{{ c.image }}" style="width:42px;height:42px;border-radius:8px;object-fit:cover" />
+                  {% else %}<span class="d-inline-flex align-items-center justify-content-center" style="width:42px;height:42px;border-radius:8px;background:#f1f5f9"><i class="mdi mdi-school text-muted"></i></span>{% endif %}
+                  <div class="ml-3">
+                    <p class="mb-0 font-weight-medium">{{ c.name }}</p>
+                    <small class="text-muted">{{ c.email }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>{{ c.location }}</td>
+              <td>{% for cat in c.categories.all %}<span class="badge badge-soft-info mr-1">{{ cat.name }}</span>{% endfor %}</td>
+              <td>{{ c.students_count }}</td>
+              <td>{{ c.courses_count }}</td>
+              <td class="text-right table-actions">
+                <a href="/centers/{{ c.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
+                <a href="{% url 'dashboard:centers_edit' c.pk %}"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:centers_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" class="empty-state"><i class="mdi mdi-school-outline d-block"></i>Markazlar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

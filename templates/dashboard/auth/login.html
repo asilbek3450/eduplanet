@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Admin kirish | EduPlanet</title>
+  <link rel="stylesheet" href="{% static 'admin/vendors/mdi/css/materialdesignicons.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/vendors/css/vendor.bundle.base.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/css/style.css' %}" />
+  <link rel="shortcut icon" href="{% static 'admin/images/favicon.png' %}" />
+  <style>
+    body {background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%); min-height: 100vh;}
+    .auth-card {max-width: 440px; margin: 80px auto; padding: 2.5rem; border-radius: 18px; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);}
+    .auth-card .brand {text-align: center; margin-bottom: 1.5rem;}
+    .auth-card .brand img {height: 56px;}
+    .auth-card h3 {text-align: center; margin-bottom: 0.5rem; font-weight: 600;}
+    .auth-card p.subtitle {text-align: center; color: #64748b; margin-bottom: 2rem;}
+    .form-control {height: 48px; border-radius: 10px;}
+    .btn-primary {height: 48px; border-radius: 10px; font-weight: 500;}
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="brand">
+      <img src="{% static 'assets/images/logo_eduplanet_with_text.svg' %}" alt="EduPlanet" />
+    </div>
+    <h3>Admin paneliga kirish</h3>
+    <p class="subtitle">EduPlanet boshqaruv paneliga kirish uchun ma'lumotlaringizni kiriting</p>
+
+    {% if error %}
+      <div class="alert alert-danger"><i class="mdi mdi-alert"></i> {{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Username</label>
+        {{ form.username }}
+        {% for err in form.username.errors %}<div class="invalid-feedback d-block">{{ err }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label>Parol</label>
+        {{ form.password }}
+        {% for err in form.password.errors %}<div class="invalid-feedback d-block">{{ err }}</div>{% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="mdi mdi-login"></i> Kirish
+      </button>
+      <div class="text-center mt-3">
+        <a href="/" class="text-muted small">← Saytga qaytish</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

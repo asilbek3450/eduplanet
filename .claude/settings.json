@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/asilbek/Desktop/Projects/eduplanet/static/admin)",
+      "Bash(cp -r /Users/asilbek/Desktop/Projects/eduplanet/templates/admin/assets/* /Users/asilbek/Desktop/Projects/eduplanet/static/admin/)",
+      "Bash(python -c \"import django; print\\(django.get_version\\(\\)\\)\")",
+      "Bash(python3 -c \"import django; print\\(django.get_version\\(\\)\\)\")",
+      "Bash(python3 -m pip install django==4.2.7 whitenoise pillow)",
+      "Bash(python3 manage.py check)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 manage.py migrate)",
+      "Bash(python3 manage.py collectstatic --noinput --dry-run)"
+    ],
+    "additionalDirectories": [
+      "/Users/asilbek/Desktop/Projects/eduplanet/apps"
+    ]
+  }
+}

@@ -22,7 +22,8 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
+    path('admin/', include('dashboard.urls')),
     path('', include("apps.urls")),
 ]
 # Serving the media files in development mode

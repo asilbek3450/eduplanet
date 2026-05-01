@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Foydalanuvchi</th><th>Kurs</th><th>Markaz</th><th>Sana</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for e in page %}
+            <tr>
+              <td>{{ e.id }}</td>
+              <td>{{ e.user.get_full_name|default:e.user.username }}<br><small class="text-muted">{{ e.user.email }}</small></td>
+              <td>{{ e.course.name }}</td>
+              <td>{{ e.course.learning_center.name }}</td>
+              <td>{{ e.enrolled_date|date:"d.m.Y" }}</td>
+              <td class="text-right table-actions">
+                <a href="{% url 'dashboard:enrollments_delete' e.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="empty-state"><i class="mdi mdi-account-off d-block"></i>Yozuvlar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

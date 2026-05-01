@@ -1,0 +1,37 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:blog_images_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi rasm</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="row">
+      {% for img in page %}
+        <div class="col-md-3 col-sm-6 mb-3">
+          <div class="card border h-100">
+            <img src="{{ img.image_url }}" class="card-img-top" style="height:160px;object-fit:cover" />
+            <div class="card-body p-3">
+              <p class="small mb-2 text-muted">{{ img.blog_post.title|truncatechars:40 }}</p>
+              <div class="d-flex justify-content-between">
+                <a href="{% url 'dashboard:blog_images_edit' img.pk %}" class="text-muted"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:blog_images_delete' img.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 empty-state"><i class="mdi mdi-image-off-outline"></i><p>Rasmlar yo'q</p></div>
+      {% endfor %}
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

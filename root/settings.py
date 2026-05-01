@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'centers',
     'courses',
     'connections',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

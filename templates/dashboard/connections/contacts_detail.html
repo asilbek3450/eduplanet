@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:contacts_list' %}" class="btn btn-light btn-sm"><i class="mdi mdi-arrow-left"></i> Orqaga</a>
+  <a href="{% url 'dashboard:contacts_delete' instance.pk %}" class="btn btn-danger btn-sm ml-2"><i class="mdi mdi-delete"></i> O'chirish</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="form-section">
+      <h5>Murojaat tafsiloti</h5>
+      <table class="table">
+        <tr><th style="width:200px">Ism</th><td>{{ instance.full_name }}</td></tr>
+        <tr><th>Email</th><td><a href="mailto:{{ instance.email }}">{{ instance.email }}</a></td></tr>
+        <tr><th>Telefon</th><td><a href="tel:{{ instance.phone_number }}">{{ instance.phone_number }}</a></td></tr>
+        <tr><th>Sana</th><td>{{ instance.created_at|date:"d.m.Y H:i" }}</td></tr>
+      </table>
+      <h6 class="mt-4">Xabar</h6>
+      <div class="alert alert-light border" style="white-space: pre-wrap;">{{ instance.message }}</div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="form-section">
+      <h5>Tezkor amallar</h5>
+      <a href="mailto:{{ instance.email }}?subject=EduPlanet%20javob" class="btn btn-primary btn-block">
+        <i class="mdi mdi-email"></i> Email yuborish
+      </a>
+      <a href="tel:{{ instance.phone_number }}" class="btn btn-success btn-block">
+        <i class="mdi mdi-phone"></i> Qo'ng'iroq qilish
+      </a>
+      <a href="https://wa.me/{{ instance.phone_number|cut:'+' }}" target="_blank" class="btn btn-info btn-block">
+        <i class="mdi mdi-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

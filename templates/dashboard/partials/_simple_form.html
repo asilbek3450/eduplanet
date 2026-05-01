@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  {% if back_url %}<a href="{{ back_url }}" class="btn btn-light btn-sm"><i class="mdi mdi-arrow-left"></i> Orqaga</a>{% endif %}
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="form-section">
+        <h5>{% block form_title %}Ma'lumotlar{% endblock %}</h5>
+        {% include "dashboard/partials/_form_fields.html" %}
+      </div>
+      {% block extra_sections %}{% endblock %}
+    </div>
+    <div class="col-lg-3">
+      <div class="form-section">
+        <button type="submit" class="btn btn-primary btn-block"><i class="mdi mdi-content-save"></i> Saqlash</button>
+        {% if back_url %}<a href="{{ back_url }}" class="btn btn-light btn-block">Bekor qilish</a>{% endif %}
+        {% if instance %}
+          <hr/>
+          <p class="text-muted small mb-1">ID: {{ instance.pk }}</p>
+          {% if instance.created_at %}<p class="text-muted small mb-1">Yaratildi: {{ instance.created_at|date:"d.m.Y H:i" }}</p>{% endif %}
+          {% if instance.updated_at %}<p class="text-muted small mb-0">Yangilandi: {{ instance.updated_at|date:"d.m.Y H:i" }}</p>{% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

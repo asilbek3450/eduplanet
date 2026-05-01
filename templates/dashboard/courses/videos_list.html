@@ -1,0 +1,43 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:videos_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi video</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Nomi</th><th>Kurs</th><th>Davomiyligi</th><th>Tartib</th><th>Preview</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for v in page %}
+            <tr>
+              <td>{{ v.id }}</td>
+              <td><strong>{{ v.name }}</strong><br><small class="text-muted">{{ v.description|truncatechars:60 }}</small></td>
+              <td>{{ v.course.name }}</td>
+              <td>{{ v.duration|default:"—" }}</td>
+              <td>{{ v.sort_order }}</td>
+              <td>{% if v.is_preview %}<span class="badge badge-soft-success">Ha</span>{% else %}<span class="badge badge-soft-secondary">Yo'q</span>{% endif %}</td>
+              <td class="text-right table-actions">
+                <a href="{{ v.video_url }}" target="_blank"><i class="mdi mdi-play"></i></a>
+                <a href="{% url 'dashboard:videos_edit' v.pk %}"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:videos_delete' v.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" class="empty-state"><i class="mdi mdi-video-off d-block"></i>Videolar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

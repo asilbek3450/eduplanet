@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>{% block title %}{{ page_title|default:"Dashboard" }}{% endblock %} | EduPlanet Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/vendors/mdi/css/materialdesignicons.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/vendors/css/vendor.bundle.base.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/vendors/font-awesome/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'admin/css/style.css' %}" />
+  <link rel="shortcut icon" href="{% static 'admin/images/favicon.png' %}" />
+  <style>
+    .stat-card {border: none; border-radius: 14px;}
+    .stat-card .card-body {padding: 1.25rem 1rem;}
+    .stat-card h2 {font-weight: 600;}
+    .table thead th {border-top: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: #7d8ba1;}
+    .table td, .table th {vertical-align: middle;}
+    .form-section {background: #fff; border-radius: 14px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);}
+    .form-section h5 {margin-bottom: 1rem; font-weight: 600;}
+    .breadcrumb {background: transparent; padding: 0; margin-bottom: 1rem; font-size: 0.85rem;}
+    .breadcrumb-item + .breadcrumb-item::before {content: "›"; color: #9aa6b8;}
+    .badge-soft-success {background: #e6f7ee; color: #18a957;}
+    .badge-soft-danger {background: #fdecec; color: #ef4444;}
+    .badge-soft-warning {background: #fff4d6; color: #c79100;}
+    .badge-soft-info {background: #e6f1ff; color: #3b82f6;}
+    .badge-soft-secondary {background: #eef0f4; color: #64748b;}
+    .pagination-wrap {display: flex; justify-content: space-between; align-items: center; padding-top: 1rem;}
+    .pagination .page-link {color: #475569; border-radius: 8px; margin: 0 2px;}
+    .pagination .page-item.active .page-link {background: #5b8def; border-color: #5b8def;}
+    .empty-state {padding: 3rem 1rem; text-align: center; color: #64748b;}
+    .empty-state i {font-size: 3rem; opacity: 0.4;}
+    .filter-bar {display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;}
+    .filter-bar .form-control {height: 38px;}
+    .table-actions a {color: #64748b; margin-right: 0.5rem;}
+    .table-actions a:hover {color: #1e293b;}
+    .json-field textarea {font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, monospace; font-size: 0.82rem;}
+    .form-group label {font-weight: 500; font-size: 0.85rem; color: #334155;}
+    .help-block, .invalid-feedback {color: #ef4444; font-size: 0.8rem;}
+    .nav-profile-link {color: #fff; text-decoration: none;}
+    .nav-profile-link:hover {color: #fff;}
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="container-scroller">
+    {% include "dashboard/partials/_navbar.html" %}
+    <div class="container-fluid page-body-wrapper">
+      {% include "dashboard/partials/_sidebar.html" %}
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% if breadcrumb %}
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                {% for crumb in breadcrumb %}
+                  {% if crumb.url %}
+                    <li class="breadcrumb-item"><a href="{{ crumb.url }}">{{ crumb.label }}</a></li>
+                  {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ crumb.label }}</li>
+                  {% endif %}
+                {% endfor %}
+              </ol>
+            </nav>
+          {% endif %}
+
+          <div class="page-header flex-wrap">
+            <h3 class="mb-0">{% block page_heading %}{{ page_title }}{% endblock %}</h3>
+            <div class="d-flex">{% block page_actions %}{% endblock %}</div>
+          </div>
+
+          {% if messages %}
+            <div class="mb-3">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% block content %}{% endblock %}
+        </div>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">EduPlanet Admin © {% now "Y" %}</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Powered by <strong>EduPlanet</strong></span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'admin/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'admin/vendors/chart.js/Chart.min.js' %}"></script>
+  <script src="{% static 'admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+  <script src="{% static 'admin/js/off-canvas.js' %}"></script>
+  <script src="{% static 'admin/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'admin/js/misc.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

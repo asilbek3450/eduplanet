@@ -1,0 +1,51 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:blogs_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi yozuv</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+      <select name="featured" class="form-control" style="max-width: 220px;" onchange="this.form.submit()">
+        <option value="">Barchasi</option>
+        <option value="1" {% if featured == '1' %}selected{% endif %}>Faqat ajratilganlar</option>
+      </select>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Sarlavha</th><th>Mavzu</th><th>Muallif</th><th>O‘qish vaqti</th><th>Sana</th><th>Holat</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for b in page %}
+            <tr>
+              <td>{{ b.id }}</td>
+              <td>
+                <p class="mb-0 font-weight-medium">{{ b.title }}</p>
+                <small class="text-muted">{{ b.excerpt|truncatechars:80 }}</small>
+              </td>
+              <td>{{ b.topic|default:"—" }}</td>
+              <td>{{ b.author_name }}</td>
+              <td>{{ b.reading_time }} daq</td>
+              <td>{{ b.published_at|date:"d.m.Y" }}</td>
+              <td>{% if b.featured %}<span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> TOP</span>{% else %}<span class="badge badge-soft-secondary">Oddiy</span>{% endif %}</td>
+              <td class="text-right table-actions">
+                <a href="/blogs/{{ b.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
+                <a href="{% url 'dashboard:blogs_edit' b.pk %}"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:blogs_delete' b.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="8" class="empty-state"><i class="mdi mdi-post-outline d-block"></i>Bloglar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

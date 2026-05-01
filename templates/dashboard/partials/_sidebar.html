@@ -1,0 +1,126 @@
+{% load static %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
+    <a class="sidebar-brand brand-logo" href="{% url 'dashboard:home' %}">
+      <img src="{% static 'assets/images/logo_eduplanet_with_text.svg' %}" alt="EduPlanet" />
+    </a>
+    <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{% url 'dashboard:home' %}">
+      <img src="{% static 'assets/images/logo_eduplanet.svg' %}" alt="EduPlanet" />
+    </a>
+  </div>
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <a href="{% url 'dashboard:users_edit' user.id %}" class="nav-link nav-profile-link">
+        <div class="nav-profile-image">
+          {% if user.image %}
+            <img src="{{ user.image.url }}" alt="profile" />
+          {% else %}
+            <img src="{% static 'admin/images/faces/face1.jpg' %}" alt="profile" />
+          {% endif %}
+          <span class="login-status online"></span>
+        </div>
+        <div class="nav-profile-text d-flex flex-column pr-3">
+          <span class="font-weight-medium mb-2">{{ user.get_full_name|default:user.username }}</span>
+          <span class="font-weight-normal text-small">{% if user.is_superuser %}Super Admin{% elif user.is_staff %}Admin{% else %}User{% endif %}</span>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+      <a class="nav-link" href="{% url 'dashboard:home' %}">
+        <i class="mdi mdi-view-dashboard menu-icon"></i>
+        <span class="menu-title">Bosh sahifa</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nav-users" aria-expanded="false" aria-controls="nav-users">
+        <i class="mdi mdi-account-multiple menu-icon"></i>
+        <span class="menu-title">Foydalanuvchilar</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="nav-users">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:users_list' %}">Hammasi</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:users_create' %}">Yangi qo‘shish</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:instructors_list' %}">Instruktorlar</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nav-centers" aria-expanded="false" aria-controls="nav-centers">
+        <i class="mdi mdi-school menu-icon"></i>
+        <span class="menu-title">O‘quv markazlari</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="nav-centers">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:centers_list' %}">Markazlar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:centers_create' %}">Yangi markaz</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:categories_list' %}">Kategoriyalar</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nav-courses" aria-expanded="false" aria-controls="nav-courses">
+        <i class="mdi mdi-book-open-variant menu-icon"></i>
+        <span class="menu-title">Kurslar</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="nav-courses">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:courses_list' %}">Hamma kurslar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:courses_create' %}">Yangi kurs</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:videos_list' %}">Video darslar</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nav-blogs" aria-expanded="false" aria-controls="nav-blogs">
+        <i class="mdi mdi-post menu-icon"></i>
+        <span class="menu-title">Blog</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="nav-blogs">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:blogs_list' %}">Yozuvlar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:blogs_create' %}">Yangi yozuv</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:blog_images_list' %}">Rasmlar</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nav-conn" aria-expanded="false" aria-controls="nav-conn">
+        <i class="mdi mdi-link-variant menu-icon"></i>
+        <span class="menu-title">Faollik</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="nav-conn">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:enrollments_list' %}">Yozuvlar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:comments_list' %}">Sharhlar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:ratings_list' %}">Baholar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:testimonials_list' %}">Tavsiyanomalar</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'dashboard:contacts_list' %}">
+        <i class="mdi mdi-email menu-icon"></i>
+        <span class="menu-title">Murojaatlar</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/" target="_blank">
+        <i class="mdi mdi-open-in-new menu-icon"></i>
+        <span class="menu-title">Saytni ko'rish</span>
+      </a>
+    </li>
+  </ul>
+</nav>

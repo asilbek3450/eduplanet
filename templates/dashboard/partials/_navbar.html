@@ -1,0 +1,47 @@
+{% load static %}
+<nav class="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
+  <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-between">
+    <a class="navbar-brand brand-logo-mini align-self-center d-lg-none" href="{% url 'dashboard:home' %}">
+      <img src="{% static 'assets/images/logo_eduplanet.svg' %}" alt="EduPlanet" />
+    </a>
+    <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
+      <i class="mdi mdi-menu"></i>
+    </button>
+    <ul class="navbar-nav">
+      <li class="nav-item nav-search border-0 ml-1 ml-md-3 ml-lg-5 d-none d-md-flex">
+        <span class="nav-link form-inline mt-2 mt-md-0 text-muted">
+          <i class="mdi mdi-calendar mr-2"></i> {% now "l, j F Y" %}
+        </span>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav navbar-nav-right ml-lg-auto">
+      <li class="nav-item d-none d-sm-flex border-0">
+        <a class="nav-link" href="/" target="_blank">
+          <i class="mdi mdi-earth"></i> Saytga o'tish
+        </a>
+      </li>
+      <li class="nav-item nav-profile dropdown border-0">
+        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
+          {% if user.image %}
+            <img class="nav-profile-img mr-2" alt="" src="{{ user.image.url }}" />
+          {% else %}
+            <img class="nav-profile-img mr-2" alt="" src="{% static 'admin/images/faces/face1.jpg' %}" />
+          {% endif %}
+          <span class="profile-name">{{ user.get_full_name|default:user.username }}</span>
+        </a>
+        <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
+          <a class="dropdown-item" href="{% url 'dashboard:users_edit' user.id %}">
+            <i class="mdi mdi-account mr-2 text-success"></i> Profil
+          </a>
+          <a class="dropdown-item" href="{% url 'dashboard:logout' %}">
+            <i class="mdi mdi-logout mr-2 text-primary"></i> Chiqish
+          </a>
+        </div>
+      </li>
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+      <span class="mdi mdi-menu"></span>
+    </button>
+  </div>
+</nav>

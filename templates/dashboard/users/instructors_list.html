@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:instructors_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi instruktor</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Foydalanuvchi</th><th>Lavozim</th><th>Tajriba</th><th>Joylashuv</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for ip in page %}
+            <tr>
+              <td>{{ ip.id }}</td>
+              <td>
+                <p class="mb-0 font-weight-medium">{{ ip.user.get_full_name|default:ip.user.username }}</p>
+                <small class="text-muted">{{ ip.user.email }}</small>
+              </td>
+              <td>{{ ip.title }}</td>
+              <td>{{ ip.experience_years }} yil</td>
+              <td>{{ ip.location|default:"—" }}</td>
+              <td class="text-right table-actions">
+                <a href="{% url 'dashboard:instructors_edit' ip.pk %}"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:instructors_delete' ip.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="empty-state"><i class="mdi mdi-account-tie d-block"></i>Instruktorlar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

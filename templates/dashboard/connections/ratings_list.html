@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
+        <div class="input-group-append"><button class="btn btn-primary"><i class="mdi mdi-magnify"></i></button></div>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead><tr><th>#</th><th>Foydalanuvchi</th><th>Kurs</th><th>Baho</th><th>Sana</th><th class="text-right">Amallar</th></tr></thead>
+        <tbody>
+          {% for r in page %}
+            <tr>
+              <td>{{ r.id }}</td>
+              <td>{{ r.user.username }}</td>
+              <td>{{ r.course.name }}</td>
+              <td><span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> {{ r.rating }}/5</span></td>
+              <td>{{ r.created_at|date:"d.m.Y H:i" }}</td>
+              <td class="text-right table-actions">
+                <a href="{% url 'dashboard:ratings_delete' r.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="empty-state"><i class="mdi mdi-star-off d-block"></i>Baholar yo'q</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

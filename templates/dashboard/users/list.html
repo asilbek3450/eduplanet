@@ -1,0 +1,90 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:users_create' %}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Yangi foydalanuvchi</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="filter-bar">
+      <div class="input-group" style="max-width: 320px;">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish: ism, email, telefon..." />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+        </div>
+      </div>
+      <select name="role" class="form-control" style="max-width: 220px;" onchange="this.form.submit()">
+        <option value="">Barcha foydalanuvchilar</option>
+        <option value="staff" {% if role == 'staff' %}selected{% endif %}>Faqat adminlar</option>
+        <option value="super" {% if role == 'super' %}selected{% endif %}>Super adminlar</option>
+        <option value="inactive" {% if role == 'inactive' %}selected{% endif %}>Faol bo'lmaganlar</option>
+      </select>
+      {% if query or role %}
+        <a href="{% url 'dashboard:users_list' %}" class="btn btn-light">Tozalash</a>
+      {% endif %}
+    </form>
+
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Foydalanuvchi</th>
+            <th>Email</th>
+            <th>Telefon</th>
+            <th>Rol</th>
+            <th>Holat</th>
+            <th>Ro'yxatdan o'tdi</th>
+            <th class="text-right">Amallar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in page %}
+            <tr>
+              <td>{{ u.id }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  {% if u.image %}
+                    <img src="{{ u.image.url }}" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover" />
+                  {% else %}
+                    <span class="d-inline-flex align-items-center justify-content-center text-white font-weight-bold"
+                          style="width:36px;height:36px;border-radius:50%;background:#5b8def">
+                      {{ u.username|first|upper }}
+                    </span>
+                  {% endif %}
+                  <div class="ml-3">
+                    <p class="mb-0 font-weight-medium">{{ u.get_full_name|default:u.username }}</p>
+                    <small class="text-muted">@{{ u.username }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>{{ u.email|default:"—" }}</td>
+              <td>{{ u.phone_number|default:"—" }}</td>
+              <td>
+                {% if u.is_superuser %}<span class="badge badge-soft-danger">Super admin</span>
+                {% elif u.is_staff %}<span class="badge badge-soft-info">Admin</span>
+                {% else %}<span class="badge badge-soft-secondary">Foydalanuvchi</span>{% endif %}
+              </td>
+              <td>
+                {% if u.is_active %}<span class="badge badge-soft-success">Faol</span>
+                {% else %}<span class="badge badge-soft-danger">Bloklangan</span>{% endif %}
+              </td>
+              <td>{{ u.date_joined|date:"d.m.Y" }}</td>
+              <td class="text-right table-actions">
+                <a href="{% url 'dashboard:users_edit' u.pk %}" title="Tahrirlash"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:users_delete' u.pk %}" title="O'chirish" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="8" class="empty-state"><i class="mdi mdi-account-off-outline d-block"></i>Foydalanuvchi topilmadi</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% include "dashboard/partials/_pagination.html" %}
+  </div>
+</div>
+{% endblock %}

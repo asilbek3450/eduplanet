@@ -1,0 +1,33 @@
+{% extends "dashboard/partials/_simple_form.html" %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:blogs_list' %}" class="btn btn-light btn-sm"><i class="mdi mdi-arrow-left"></i> Orqaga</a>
+{% endblock %}
+
+{% block form_title %}Blog yozuvi{% endblock %}
+
+{% block extra_sections %}
+  {% if instance and images is not None %}
+    <div class="form-section">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Galereya</h5>
+        <a href="{% url 'dashboard:blog_images_create' %}" class="btn btn-sm btn-outline-primary"><i class="mdi mdi-plus"></i> Rasm qo'shish</a>
+      </div>
+      {% if images %}
+        <div class="row">
+          {% for img in images %}
+            <div class="col-md-3 mb-3">
+              <img src="{{ img.image_url }}" class="img-fluid rounded" style="height:120px;object-fit:cover;width:100%" />
+              <div class="d-flex justify-content-between mt-2">
+                <a href="{% url 'dashboard:blog_images_edit' img.pk %}" class="text-muted small"><i class="mdi mdi-pencil"></i></a>
+                <a href="{% url 'dashboard:blog_images_delete' img.pk %}" class="text-danger small"><i class="mdi mdi-delete"></i></a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">Rasmlar yo'q</p>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

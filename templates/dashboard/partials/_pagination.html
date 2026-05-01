@@ -1,0 +1,22 @@
+{% if page.paginator.num_pages > 1 %}
+<div class="pagination-wrap">
+  <span class="text-muted small">
+    {{ page.start_index }}–{{ page.end_index }} / {{ page.paginator.count }} ta yozuv
+  </span>
+  <ul class="pagination mb-0">
+    {% if page.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}{% if query %}&q={{ query }}{% endif %}"><i class="mdi mdi-chevron-left"></i></a></li>
+    {% endif %}
+    {% for num in page.paginator.page_range %}
+      {% if num >= page.number|add:'-2' and num <= page.number|add:'2' %}
+        <li class="page-item {% if num == page.number %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    {% if page.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}{% if query %}&q={{ query }}{% endif %}"><i class="mdi mdi-chevron-right"></i></a></li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

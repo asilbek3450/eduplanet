@@ -1,0 +1,364 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block page_heading %}
+  Salom, {{ user.first_name|default:user.username }}!
+  <span class="pl-0 h6 pl-sm-2 text-muted d-inline-block">EduPlanet boshqaruv paneli</span>
+{% endblock %}
+
+{% block page_actions %}
+  <a href="{% url 'dashboard:blogs_create' %}" class="btn btn-sm bg-white btn-icon-text border">
+    <i class="mdi mdi-pencil btn-icon-prepend"></i> Yangi blog
+  </a>
+  <a href="{% url 'dashboard:courses_create' %}" class="btn btn-sm ml-3 btn-success">
+    <i class="mdi mdi-plus btn-icon-prepend"></i> Yangi kurs
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-xl-3 col-lg-12 stretch-card grid-margin">
+    <div class="row">
+      <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
+        <div class="card stat-card bg-warning">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <p class="mb-0 text-white">Foydalanuvchilar</p>
+                <h2 class="text-white">{{ stats.users_total }}</h2>
+              </div>
+              <i class="card-icon-indicator mdi mdi-account-multiple bg-inverse-icon-warning"></i>
+            </div>
+            <h6 class="text-white">{{ stats.users_active }} ta faol</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
+        <div class="card stat-card bg-danger">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <p class="mb-0 text-white">Markazlar</p>
+                <h2 class="text-white">{{ stats.centers_total }}</h2>
+              </div>
+              <i class="card-icon-indicator mdi mdi-school bg-inverse-icon-danger"></i>
+            </div>
+            <h6 class="text-white">{{ stats.courses_total }} ta kurs</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3 pb-lg-0 pb-xl-3">
+        <div class="card stat-card bg-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <p class="mb-0 text-white">Yozuvlar</p>
+                <h2 class="text-white">{{ stats.enrollments_total }}</h2>
+              </div>
+              <i class="card-icon-indicator mdi mdi-account-plus bg-inverse-icon-primary"></i>
+            </div>
+            <h6 class="text-white">{{ stats.enrollments_30 }} (so'nggi 30 kun)</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-6 stretch-card pb-sm-3 pb-lg-0">
+        <div class="card stat-card bg-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <p class="mb-0 text-white">Bloglar</p>
+                <h2 class="text-white">{{ stats.blogs_total }}</h2>
+              </div>
+              <i class="card-icon-indicator mdi mdi-post bg-inverse-icon-success"></i>
+            </div>
+            <h6 class="text-white">{{ stats.contacts_total }} ta murojaat</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-9 stretch-card grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-7">
+            <h5>Faollik dinamikasi</h5>
+            <p class="text-muted">So‘nggi 12 hafta davomida kurslarga yozilishlar</p>
+          </div>
+          <div class="col-sm-5 text-md-right">
+            <span class="badge {% if stats.enrollments_growth >= 0 %}badge-soft-success{% else %}badge-soft-danger{% endif %} p-2">
+              <i class="mdi {% if stats.enrollments_growth >= 0 %}mdi-trending-up{% else %}mdi-trending-down{% endif %}"></i>
+              {{ stats.enrollments_growth }}% (oxirgi oy)
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card mb-3 mb-sm-0 border">
+              <div class="card-body py-3 px-4">
+                <p class="m-0 survey-head text-muted">O‘rtacha baho</p>
+                <h3 class="m-0">{{ stats.avg_rating|floatformat:2 }}</h3>
+                <p class="text-success m-0 small">{{ stats.comments_total }} ta sharh</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="card mb-3 mb-sm-0 border">
+              <div class="card-body py-3 px-4">
+                <p class="m-0 survey-head text-muted">Faol foydalanuvchilar</p>
+                <h3 class="m-0">{{ stats.users_active }}</h3>
+                <p class="text-muted m-0 small">jami {{ stats.users_total }} dan</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="card border">
+              <div class="card-body py-3 px-4">
+                <p class="m-0 survey-head text-muted">Murojaatlar</p>
+                <h3 class="m-0">{{ stats.contacts_total }}</h3>
+                <p class="text-muted m-0 small">CRM uchun lid</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-sm-12">
+            <canvas id="enrollChart" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-8 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body px-0 overflow-auto">
+        <div class="d-flex justify-content-between align-items-center px-4">
+          <h4 class="card-title">Eng mashhur kurslar</h4>
+          <a href="{% url 'dashboard:courses_list' %}" class="text-primary small">Hammasini ko'rish <i class="mdi mdi-chevron-right"></i></a>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="bg-light">
+              <tr>
+                <th>Kurs</th>
+                <th>Markaz</th>
+                <th>O‘quvchilar</th>
+                <th>Reyting</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for course in top_courses %}
+                <tr>
+                  <td>
+                    <p class="mb-0 font-weight-medium">{{ course.name }}</p>
+                    <small class="text-muted">{{ course.subtitle|default:'' }}</small>
+                  </td>
+                  <td>{{ course.learning_center.name }}</td>
+                  <td>{{ course.students_count }}</td>
+                  <td>
+                    <span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> {{ course.rating }}</span>
+                  </td>
+                  <td class="text-right pr-4">
+                    <a href="{% url 'dashboard:courses_edit' course.pk %}" class="text-muted"><i class="mdi mdi-pencil"></i></a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="5" class="empty-state">Hali kurslar yo'q</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Kategoriyalar bo‘yicha taqsimot</h4>
+        <p class="text-muted small">Markazlarning kategoriya bo‘yicha taqsimoti</p>
+        <canvas id="categoryChart" height="220"></canvas>
+        <ul class="list-unstyled mt-3 mb-0">
+          {% for cat in category_distribution %}
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span>{{ cat.name }}</span>
+              <span class="font-weight-medium">{{ cat.c }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="card-title">Yangi foydalanuvchilar</h4>
+          <a href="{% url 'dashboard:users_list' %}" class="text-primary small">Barchasi</a>
+        </div>
+        {% for u in recent_users %}
+          <div class="d-flex align-items-center py-2 border-bottom">
+            {% if u.image %}
+              <img src="{{ u.image.url }}" class="customer-img" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover" />
+            {% else %}
+              <span class="d-inline-flex align-items-center justify-content-center text-white font-weight-bold"
+                    style="width:36px;height:36px;border-radius:50%;background:#5b8def">
+                {{ u.username|first|upper }}
+              </span>
+            {% endif %}
+            <div class="ml-3 flex-grow-1">
+              <p class="mb-0 font-weight-medium">{{ u.get_full_name|default:u.username }}</p>
+              <small class="text-muted">{{ u.email|default:u.phone_number|default:"-" }}</small>
+            </div>
+            <small class="text-muted">{{ u.date_joined|date:"d.m.y" }}</small>
+          </div>
+        {% empty %}
+          <div class="empty-state"><i class="mdi mdi-account-off"></i><p>Hali foydalanuvchi yo'q</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="card-title">So'nggi murojaatlar</h4>
+          <a href="{% url 'dashboard:contacts_list' %}" class="text-primary small">Barchasi</a>
+        </div>
+        {% for c in recent_contacts %}
+          <div class="py-2 border-bottom">
+            <div class="d-flex justify-content-between">
+              <strong>{{ c.full_name }}</strong>
+              <small class="text-muted">{{ c.created_at|date:"d.m H:i" }}</small>
+            </div>
+            <small class="text-muted d-block">{{ c.email }} · {{ c.phone_number }}</small>
+            <p class="mb-0 small text-truncate">{{ c.message }}</p>
+          </div>
+        {% empty %}
+          <div class="empty-state"><i class="mdi mdi-email-off"></i><p>Murojaatlar yo'q</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="card-title">So'nggi sharhlar</h4>
+          <a href="{% url 'dashboard:comments_list' %}" class="text-primary small">Barchasi</a>
+        </div>
+        {% for c in recent_comments %}
+          <div class="py-2 border-bottom">
+            <div class="d-flex justify-content-between">
+              <strong>{{ c.user.username }}</strong>
+              <small class="text-muted">{{ c.created_at|date:"d.m H:i" }}</small>
+            </div>
+            <small class="text-muted d-block">{{ c.course.name }}</small>
+            <p class="mb-0 small text-truncate">{{ c.text }}</p>
+          </div>
+        {% empty %}
+          <div class="empty-state"><i class="mdi mdi-comment-off-outline"></i><p>Sharhlar yo'q</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Yetakchi markazlar</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="bg-light">
+              <tr><th>#</th><th>Markaz</th><th>O‘quvchilar</th><th>Mentorlar</th><th>Kurslar</th><th>Joylashuv</th><th></th></tr>
+            </thead>
+            <tbody>
+              {% for c in top_centers %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    <p class="mb-0 font-weight-medium">{{ c.name }}</p>
+                    <small class="text-muted">{{ c.headline|default:'' }}</small>
+                  </td>
+                  <td>{{ c.students_count }}</td>
+                  <td>{{ c.mentors_count }}</td>
+                  <td>{{ c.courses_count }}</td>
+                  <td>{{ c.location }}</td>
+                  <td><a href="{% url 'dashboard:centers_edit' c.pk %}" class="text-muted"><i class="mdi mdi-pencil"></i></a></td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="7" class="empty-state">Markazlar yo'q</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var ctx = document.getElementById('enrollChart');
+    if (ctx) {
+      new Chart(ctx.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: {{ chart_days|safe }},
+          datasets: [{
+            label: 'Yozilishlar',
+            data: {{ chart_values|safe }},
+            backgroundColor: 'rgba(91, 141, 239, 0.15)',
+            borderColor: '#5b8def',
+            borderWidth: 2,
+            tension: 0.35,
+            fill: true,
+            pointRadius: 3,
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {legend: {display: false}},
+          scales: {y: {beginAtZero: true, ticks: {precision: 0}}}
+        }
+      });
+    }
+
+    var pie = document.getElementById('categoryChart');
+    if (pie) {
+      var labels = [
+        {% for cat in category_distribution %}'{{ cat.name|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}
+      ];
+      var values = [
+        {% for cat in category_distribution %}{{ cat.c }}{% if not forloop.last %},{% endif %}{% endfor %}
+      ];
+      new Chart(pie.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: ['#5b8def', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'],
+            borderWidth: 0,
+          }]
+        },
+        options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {position: 'bottom'}}, cutout: '60%'}
+      });
+    }
+  })();
+</script>
+{% endblock %}
