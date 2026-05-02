@@ -9,7 +9,10 @@
       "Bash(python3 manage.py check)",
       "Bash(python3 -c ' *)",
       "Bash(python3 manage.py migrate)",
-      "Bash(python3 manage.py collectstatic --noinput --dry-run)"
+      "Bash(python3 manage.py collectstatic --noinput --dry-run)",
+      "Bash(python3 manage.py collectstatic --noinput)",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)"
     ],
     "additionalDirectories": [
       "/Users/asilbek/Desktop/Projects/eduplanet/apps"
