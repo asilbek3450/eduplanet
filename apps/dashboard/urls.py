@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from . import views
 
@@ -6,7 +7,7 @@ app_name = 'dashboard'
 
 urlpatterns = [
     # Auth
-    path('login/', views.admin_login, name='login'),
+    path('login/', RedirectView.as_view(pattern_name='login', query_string=True, permanent=False), name='login'),
     path('logout/', views.admin_logout, name='logout'),
 
     # Home / dashboard
@@ -62,14 +63,20 @@ urlpatterns = [
 
     # Enrollments
     path('enrollments/', views.enrollments_list, name='enrollments_list'),
+    path('enrollments/new/', views.enrollments_form, name='enrollments_create'),
+    path('enrollments/<int:pk>/edit/', views.enrollments_form, name='enrollments_edit'),
     path('enrollments/<int:pk>/delete/', views.enrollments_delete, name='enrollments_delete'),
 
     # Comments
     path('comments/', views.comments_list, name='comments_list'),
+    path('comments/new/', views.comments_form, name='comments_create'),
+    path('comments/<int:pk>/edit/', views.comments_form, name='comments_edit'),
     path('comments/<int:pk>/delete/', views.comments_delete, name='comments_delete'),
 
     # Ratings
     path('ratings/', views.ratings_list, name='ratings_list'),
+    path('ratings/new/', views.ratings_form, name='ratings_create'),
+    path('ratings/<int:pk>/edit/', views.ratings_form, name='ratings_edit'),
     path('ratings/<int:pk>/delete/', views.ratings_delete, name='ratings_delete'),
 
     # Testimonials
@@ -80,6 +87,8 @@ urlpatterns = [
 
     # Contacts
     path('contacts/', views.contacts_list, name='contacts_list'),
+    path('contacts/new/', views.contacts_form, name='contacts_create'),
+    path('contacts/<int:pk>/edit/', views.contacts_form, name='contacts_edit'),
     path('contacts/<int:pk>/', views.contacts_detail, name='contacts_detail'),
     path('contacts/<int:pk>/delete/', views.contacts_delete, name='contacts_delete'),
 ]

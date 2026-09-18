@@ -17,15 +17,18 @@
     pointer-events: none;
   }
   .hero-slide {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
+    min-width: 0;
     opacity: 0;
-    transform: scale(1.05);
-    transition: opacity .75s ease, transform 5.5s ease;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .45s ease;
   }
   .hero-slide.is-active {
     opacity: 1;
-    transform: scale(1);
+    visibility: visible;
+    pointer-events: auto;
     z-index: 2;
   }
   .hero-slide img {
@@ -95,7 +98,7 @@
       {% if user.is_authenticated %}
       <p class="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-slate-500">Xush kelibsiz, {{ user.first_name|default:user.username }}</p>
       {% else %}
-      <p class="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-slate-500">Learn from real-world experience</p>
+      <p class="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-slate-500">{{ ui.slogan }}</p>
       {% endif %}
       <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-tight text-slate-950 sm:text-5xl lg:text-6xl">{{ ui.hero_title }}</h1>
       <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">{{ ui.hero_description }}</p>
@@ -139,10 +142,10 @@
       <div class="absolute -right-8 bottom-8 h-44 w-44 rounded-full bg-indigo-200/40 blur-3xl"></div>
       <div class="hero-shell rounded-[2rem] p-4 sm:p-5">
         <div class="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 p-4 sm:p-5">
-          <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4">
+          <div class="relative z-20 mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <p class="text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-200">Live platform preview</p>
-              <p class="mt-1 text-sm text-slate-300">Motion-rich hero carousel</p>
+              <p class="mt-1 text-sm text-slate-300">Kurslar bilan tanishing</p>
             </div>
             <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-200">
               <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
@@ -150,44 +153,31 @@
             </div>
           </div>
 
-          <div class="relative h-[28rem] overflow-hidden rounded-[1.35rem] bg-slate-900 sm:h-[32rem]">
+          <div class="relative grid overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-900">
             {% for spotlight in hero_spotlights %}
             <article class="hero-slide {% if forloop.first %}is-active{% endif %}" data-hero-slide data-index="{{ forloop.counter0 }}">
-              <img src="{{ spotlight.image }}" alt="{{ spotlight.title }}" class="h-full w-full object-cover opacity-55">
-              <div class="absolute inset-0 bg-gradient-to-br from-slate-950/55 via-slate-950/35 to-sky-600/20"></div>
-              <div class="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7">
-                <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-sky-100">
+              <div class="h-36 overflow-hidden sm:h-44"><img src="{{ spotlight.image }}" alt="" class="h-full w-full object-cover opacity-80"></div>
+              <div class="relative z-10 p-5">
+                <div class="inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-sky-100">
                   <span>{{ spotlight.eyebrow }}</span>
                   <span class="h-1 w-1 rounded-full bg-sky-200"></span>
-                  <span>{{ spotlight.center }}</span>
+                  <span class="truncate">{{ spotlight.center }}</span>
                 </div>
-                <h2 class="mt-4 max-w-lg text-2xl font-bold text-white sm:text-3xl">{{ spotlight.title }}</h2>
-                <p class="mt-3 max-w-xl text-sm leading-7 text-slate-200">{{ spotlight.description }}</p>
-                <div class="mt-5 flex flex-wrap gap-3">
+                <h2 class="mt-3 text-xl font-bold leading-snug text-white sm:text-2xl">{{ spotlight.title }}</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-300">{{ spotlight.description }}</p>
+                <div class="mt-4 grid grid-cols-3 gap-2">
                   {% for stat in spotlight.stats %}
-                  <div class="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300">{{ stat.label }}</p>
-                    <p class="mt-1 text-sm font-semibold text-white">{{ stat.value }}</p>
+                  <div class="min-w-0 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2">
+                    <p class="break-words text-[9px] font-semibold uppercase tracking-wider text-slate-400">{{ stat.label }}</p>
+                    <p class="mt-1 break-words text-xs font-semibold text-white">{{ stat.value }}</p>
                   </div>
                   {% endfor %}
                 </div>
-                <a href="{{ spotlight.href }}" class="mt-6 inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">Trackni ochish</a>
+                <a href="{{ spotlight.href }}" class="mt-4 inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">Trackni ochish</a>
               </div>
             </article>
             {% endfor %}
 
-            <div class="absolute left-4 top-20 z-20 max-w-[14rem] rounded-3xl border border-white/10 bg-slate-950/55 p-4 text-white backdrop-blur">
-              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200">Mentor signal</p>
-              <p class="mt-3 text-sm leading-6 text-slate-100">{{ instructor.display_title }} sifatida Asilbek har trackni real product decision va clean execution bilan olib boradi.</p>
-            </div>
-            <div class="absolute bottom-4 right-4 z-20 rounded-[1.75rem] border border-white/10 bg-white/10 p-4 text-white backdrop-blur sm:p-5">
-              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200">Launch metrics</p>
-              <div class="mt-3 grid grid-cols-3 gap-3 text-center text-xs font-semibold text-slate-200">
-                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.students }}</span>Learners</div>
-                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.rating }}</span>Rating</div>
-                <div class="rounded-2xl bg-white/10 px-3 py-3"><span class="block text-lg font-bold text-white">{{ stats.hours }}</span>Watch hrs</div>
-              </div>
-            </div>
           </div>
 
           <div class="relative z-20 mt-4 flex items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
@@ -197,10 +187,10 @@
               {% endfor %}
             </div>
             <div class="flex items-center gap-2">
-              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-prev aria-label="Previous slide">
+              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-prev aria-label="{{ ui.previous_slide }}">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"></path></svg>
               </button>
-              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-next aria-label="Next slide">
+              <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-hero-next aria-label="{{ ui.next_slide }}">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"></path></svg>
               </button>
             </div>
@@ -230,42 +220,6 @@
   </div>
 </section>
 
-<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-  <div class="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
-    <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm shadow-slate-100/60" data-reveal>
-      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ momentum_label }}</p>
-      <h2 class="mt-4 text-3xl font-bold text-slate-950">{{ momentum_title }}</h2>
-      <p class="mt-4 text-sm leading-8 text-slate-600">{{ momentum_description }}</p>
-      <div class="mt-8 grid gap-4">
-        {% for pillar in platform_pillars %}
-        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-          <div class="flex items-center justify-between gap-4">
-            <h3 class="text-base font-bold text-slate-950">{{ pillar.title }}</h3>
-            <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">{{ pillar.stat }}</span>
-          </div>
-          <p class="mt-3 text-sm leading-7 text-slate-600">{{ pillar.description }}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="grid gap-4 sm:grid-cols-2" data-reveal>
-      {% for item in recent_activity %}
-      <article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm shadow-slate-100/60 transition hover:-translate-y-1 hover:shadow-lg">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-sky-600">{{ item.time }}</p>
-            <h3 class="mt-3 text-xl font-bold text-slate-950">{{ item.name }}</h3>
-            <p class="mt-1 text-sm text-slate-500">{{ item.role }}</p>
-          </div>
-          <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">{{ item.metric }}</span>
-        </div>
-        <p class="mt-5 text-sm leading-7 text-slate-600">{{ item.action }}</p>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
 <section id="courses" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
   <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
     <div>
@@ -274,10 +228,10 @@
       <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">{{ ui.featured_courses_description }} Kurs tanlashni tezlashtirish uchun bu blok scroll-snap carousel sifatida ishlaydi va har bir kartada real value proposition ko'rsatiladi.</p>
     </div>
     <div class="flex items-center gap-3">
-      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="prev" aria-label="Previous courses">
+      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="prev" aria-label="{{ ui.previous_courses }}">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"></path></svg>
       </button>
-      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="next" aria-label="Next courses">
+      <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-scroll-control data-target="featured-course-track" data-direction="next" aria-label="{{ ui.next_courses }}">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"></path></svg>
       </button>
     </div>
@@ -311,7 +265,7 @@
         </ul>
         <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
           <div>
-            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Instructor</p>
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">{{ ui.instructor_label }}</p>
             <p class="text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
           </div>
           <a href="{{ course.href }}" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.enroll }}</a>
@@ -452,33 +406,27 @@
     <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ ui.centers }}</p>
-        <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Har bir learning center alohida career directionga qurilgan.</h2>
+        <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Toshkentdagi mashhur o'quv markazlari</h2>
       </div>
-      <p class="max-w-2xl text-sm leading-7 text-slate-300">Web product assembly, backend architecture, data thinking yoki DevOps confidence - qaysi yo'nalishni tanlasangiz ham platforma real-world outputga urg'u beradi.</p>
+      <p class="max-w-2xl text-sm leading-7 text-slate-300">O'zingizga mos yo'nalish va markazni tanlang.</p>
     </div>
-    <div class="mt-10 grid gap-6 lg:grid-cols-2">
+    <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {% for center in centers %}
       <article class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-lg shadow-black/10 transition hover:-translate-y-1 hover:border-sky-400/40" data-reveal>
-        <div class="grid gap-0 md:grid-cols-[0.95fr_1.05fr]">
-          <img src="{{ center.image }}" alt="{{ center.display_name }}" class="h-full min-h-[280px] w-full object-cover">
-          <div class="p-7">
-            <div class="flex flex-wrap gap-2">
+        <div class="relative">
+          <img src="{{ center.image }}" alt="{{ center.display_name }}" class="h-72 w-full object-cover sm:h-80">
+          <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950 to-transparent"></div>
+          <div class="absolute inset-x-5 bottom-5 flex flex-wrap gap-2">
               {% for category_name in center.category_names %}
-              <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-slate-100">{{ category_name }}</span>
+              <span class="rounded-full border border-white/10 bg-slate-950/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur">{{ category_name }}</span>
               {% endfor %}
-            </div>
-            <h3 class="mt-5 text-2xl font-bold">{{ center.display_name }}</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-300">{{ center.display_headline }}</p>
-            <p class="mt-4 text-sm leading-7 text-slate-400">{{ center.display_description|truncatechars:230 }}</p>
-            <div class="mt-6 grid grid-cols-3 gap-3 text-center text-xs font-semibold text-slate-400">
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.students_count }}+</span>Students</div>
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.mentors_count }}</span>Mentors</div>
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4"><span class="block text-lg font-bold text-white">{{ center.courses_count }}</span>Courses</div>
-            </div>
-            <div class="mt-6 flex flex-wrap gap-3">
-              <a href="{{ center.href }}" class="inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">Markazni ko'rish</a>
-              <a href="#contact" class="inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Mentor bilan gaplashish</a>
-            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-2xl font-bold">{{ center.display_name }}</h3>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="{{ center.href }}" class="inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">{{ ui.view_center }}</a>
+            <a href="#contact" class="inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">{{ ui.contact }}</a>
           </div>
         </div>
       </article>
@@ -491,7 +439,7 @@
   <div class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
     <div class="rounded-[2rem] bg-gradient-to-br from-sky-600 via-sky-500 to-slate-950 p-8 text-white shadow-glow" data-reveal>
       <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100">{{ ui.instructor_title }}</p>
-      <div class="mt-6 flex items-center gap-4">
+      <div id="about-founder" class="mt-6 flex scroll-mt-28 items-center gap-4">
         <img src="{{ instructor.avatar_url }}" alt="{{ instructor.user.get_full_name }}" class="h-20 w-20 rounded-[1.5rem] object-cover ring-4 ring-white/10">
         <div>
           <h2 class="text-3xl font-bold">{{ instructor.user.get_full_name }}</h2>
@@ -499,11 +447,11 @@
         </div>
       </div>
       <p class="mt-6 text-sm leading-8 text-slate-100">{{ instructor.display_bio }}</p>
-      <div class="mt-6 rounded-[1.5rem] border border-white/10 bg-white/10 p-5">
+      <div id="about-mission" class="mt-6 scroll-mt-28 rounded-[1.5rem] border border-white/10 bg-white/10 p-5">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">Mission</p>
         <p class="mt-3 text-sm leading-7 text-white/90">{{ instructor.display_mission }}</p>
       </div>
-      <div class="mt-6 flex flex-wrap gap-3">
+      <div id="about-skills" class="mt-6 flex scroll-mt-28 flex-wrap gap-3">
         {% for skill in instructor.skills %}
         <span class="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white">{{ skill }}</span>
         {% endfor %}
@@ -673,7 +621,7 @@
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="rounded-3xl bg-white/15 p-5 backdrop-blur">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">25+ courses vision</p>
-          <p class="mt-3 text-sm leading-7 text-white/90">Platform roadmap backend, web, data va DevOps yo'nalishlarida monetizable va scale-ready ko'rinishda yig'ilgan.</p>
+          <p class="mt-3 text-sm leading-7 text-white/90">IT, dizayn va marketing: o‘zingizga mos yo‘nalishni tanlang va ustoz bilan o‘rganing.</p>
         </div>
         <div class="rounded-3xl bg-white/15 p-5 backdrop-blur">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100">Job-ready focus</p>
@@ -692,11 +640,11 @@
       <p class="mt-4 text-sm leading-8 text-slate-300">{{ ui.contact_description }}</p>
       <div class="mt-8 space-y-4 text-sm leading-7 text-slate-300">
         <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-          <p class="font-semibold text-white">Email</p>
+          <p class="font-semibold text-white">{{ ui.email_label }}</p>
           <p class="mt-2">{{ contact_email }}</p>
         </div>
         <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-          <p class="font-semibold text-white">Phone</p>
+          <p class="font-semibold text-white">{{ ui.phone_label }}</p>
           <p class="mt-2">{{ contact_phone }}</p>
         </div>
         <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
@@ -706,7 +654,7 @@
       </div>
     </div>
     <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-100/60" data-reveal>
-      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Mentorship form</p>
+      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.mentorship_form }}</p>
       <h2 class="mt-4 text-3xl font-bold text-slate-950">Let's map your next step.</h2>
       <p class="mt-4 text-sm leading-8 text-slate-600">Course selection, career guidance, corporate training yoki platform partnership - xabaringizga mos ravishda bir ish kuni ichida puxta javob qaytaramiz.</p>
       <form method="post" class="mt-8 grid gap-5 sm:grid-cols-2">
@@ -717,7 +665,7 @@
         <div class="sm:col-span-2">{{ form.message }}</div>
         <div class="sm:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-sm text-slate-500">Form orqali yozsangiz, sizga kurs, roadmap yoki partnership nuqtayi nazaridan aniq tavsiya yuboramiz.</p>
-          <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">Send message</button>
+          <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.send_message }}</button>
         </div>
       </form>
     </div>

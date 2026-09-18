@@ -3,6 +3,7 @@
 {% block content %}
 <div class="card">
   <div class="card-body">
+    <div class="d-flex justify-content-end mb-3"><a href="{% url 'dashboard:contacts_create' %}" class="btn btn-primary btn-sm"><i class="mdi mdi-plus"></i> Yangi murojaat</a></div>
     <form method="get" class="filter-bar">
       <div class="input-group" style="max-width: 320px;">
         <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
@@ -21,9 +22,12 @@
               <td><a href="tel:{{ c.phone_number }}">{{ c.phone_number }}</a></td>
               <td><div style="max-width:340px">{{ c.message|truncatechars:100 }}</div></td>
               <td>{{ c.created_at|date:"d.m.Y H:i" }}</td>
-              <td class="text-right table-actions">
-                <a href="{% url 'dashboard:contacts_detail' c.pk %}"><i class="mdi mdi-eye"></i></a>
-                <a href="{% url 'dashboard:contacts_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              <td class="table-actions">
+                <div class="d-flex justify-content-end align-items-center flex-nowrap">
+                  <a href="{% url 'dashboard:contacts_detail' c.pk %}"><i class="mdi mdi-eye"></i></a>
+                  <a href="{% url 'dashboard:contacts_edit' c.pk %}" title="Tahrirlash"><i class="mdi mdi-pencil"></i></a>
+                  <a href="{% url 'dashboard:contacts_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                </div>
               </td>
             </tr>
           {% empty %}

@@ -36,10 +36,12 @@
               <td>{{ c.students_count }}</td>
               <td><span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> {{ c.rating }}</span></td>
               <td>{{ c.price }} so'm</td>
-              <td class="text-right table-actions">
-                <a href="/courses/{{ c.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
-                <a href="{% url 'dashboard:courses_edit' c.pk %}"><i class="mdi mdi-pencil"></i></a>
-                <a href="{% url 'dashboard:courses_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              <td class="table-actions">
+                <div class="d-flex justify-content-end align-items-center flex-nowrap">
+                  <a href="/courses/{{ c.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
+                  <a href="{% url 'dashboard:courses_edit' c.pk %}"><i class="mdi mdi-pencil"></i></a>
+                  <a href="{% url 'dashboard:courses_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                </div>
               </td>
             </tr>
           {% empty %}

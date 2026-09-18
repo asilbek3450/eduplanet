@@ -33,10 +33,12 @@
               <td>{{ b.reading_time }} daq</td>
               <td>{{ b.published_at|date:"d.m.Y" }}</td>
               <td>{% if b.featured %}<span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> TOP</span>{% else %}<span class="badge badge-soft-secondary">Oddiy</span>{% endif %}</td>
-              <td class="text-right table-actions">
-                <a href="/blogs/{{ b.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
-                <a href="{% url 'dashboard:blogs_edit' b.pk %}"><i class="mdi mdi-pencil"></i></a>
-                <a href="{% url 'dashboard:blogs_delete' b.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+              <td class="table-actions">
+                <div class="d-flex justify-content-end align-items-center flex-nowrap">
+                  <a href="/blogs/{{ b.slug }}/" target="_blank"><i class="mdi mdi-eye"></i></a>
+                  <a href="{% url 'dashboard:blogs_edit' b.pk %}"><i class="mdi mdi-pencil"></i></a>
+                  <a href="{% url 'dashboard:blogs_delete' b.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                </div>
               </td>
             </tr>
           {% empty %}

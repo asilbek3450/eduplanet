@@ -3,6 +3,7 @@
 {% block content %}
 <div class="card">
   <div class="card-body">
+    <div class="d-flex justify-content-end mb-3"><a href="{% url 'dashboard:ratings_create' %}" class="btn btn-primary btn-sm"><i class="mdi mdi-plus"></i> Yangi baho</a></div>
     <form method="get" class="filter-bar">
       <div class="input-group" style="max-width: 320px;">
         <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
@@ -21,6 +22,7 @@
               <td><span class="badge badge-soft-warning"><i class="mdi mdi-star"></i> {{ r.rating }}/5</span></td>
               <td>{{ r.created_at|date:"d.m.Y H:i" }}</td>
               <td class="text-right table-actions">
+                <a href="{% url 'dashboard:ratings_edit' r.pk %}" title="Tahrirlash"><i class="mdi mdi-pencil"></i></a>
                 <a href="{% url 'dashboard:ratings_delete' r.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
               </td>
             </tr>

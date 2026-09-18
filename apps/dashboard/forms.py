@@ -2,7 +2,7 @@ from django import forms
 
 from blogs.models import BlogImage, BlogPost
 from centers.models import Category, LearningCenter
-from connections.models import Testimonial
+from connections.models import Testimonial, UserCourse, UserCourseComment, UserCourseRating
 from courses.models import Course, VideoContent
 from users.models import ContactUs, InstructorProfile, User
 
@@ -20,16 +20,16 @@ def _attrs(extra=None, css=INPUT):
     return base
 
 
-class AdminLoginForm(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs=_attrs({'placeholder': 'Username', 'autofocus': 'autofocus'})),
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs=_attrs({'placeholder': 'Parol'})),
-    )
-
-
 class UserAdminForm(forms.ModelForm):
+    is_teacher = forms.BooleanField(required=False, label='O‘qituvchi roli', widget=forms.CheckboxInput(attrs={'class': CHECK}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk and InstructorProfile.objects.filter(user=self.instance).exists():
+            self.fields['is_teacher'].initial = True
+            self.fields['is_teacher'].disabled = True
+            self.fields['is_teacher'].help_text = 'Rolni bekor qilish uchun Instruktorlar bo‘limida profilni o‘chiring.'
+
     password = forms.CharField(
         required=False,
         widget=forms.PasswordInput(attrs=_attrs({'placeholder': "Yangi parol (bo'sh qoldirsangiz o'zgarmaydi)"})),
@@ -54,6 +54,12 @@ class UserAdminForm(forms.ModelForm):
             'is_superuser': forms.CheckboxInput(attrs={'class': CHECK}),
         }
 
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if not self.instance.pk and not password:
+            raise forms.ValidationError('Yangi akkaunt uchun parol kiriting.')
+        return password
+
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data.get('password')
@@ -61,6 +67,10 @@ class UserAdminForm(forms.ModelForm):
             user.set_password(password)
         if commit:
             user.save()
+            if self.cleaned_data.get('is_teacher'):
+                InstructorProfile.objects.get_or_create(user=user, defaults={
+                    'title': 'O‘qituvchi', 'bio': '', 'mission': '', 'experience_years': 0,
+                })
         return user
 
 
@@ -100,6 +110,10 @@ class CategoryForm(forms.ModelForm):
 
 
 class LearningCenterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['categories'].queryset = Category.objects.filter(slug__in=('it', 'design', 'marketing', 'languages', 'subjects'))
+
     class Meta:
         model = LearningCenter
         fields = (
@@ -134,8 +148,8 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = (
-            'name', 'subtitle', 'description', 'learning_center', 'image', 'level',
-            'duration', 'lessons_count', 'students_count', 'hours_watched', 'price',
+            'name', 'subtitle', 'description', 'instructor', 'category', 'learning_center', 'image', 'level',
+            'duration', 'lessons_count', 'hours_watched', 'price',
             'highlights', 'outcomes', 'curriculum', 'translations', 'seo_title',
             'seo_description', 'meta_keywords', 'featured', 'slug',
         )
@@ -148,7 +162,6 @@ class CourseForm(forms.ModelForm):
             'level': forms.TextInput(attrs=_attrs({'placeholder': 'Boshlang\'ich / O\'rta / Yuqori'})),
             'duration': forms.TextInput(attrs=_attrs({'placeholder': '8 hafta'})),
             'lessons_count': forms.NumberInput(attrs=_attrs()),
-            'students_count': forms.NumberInput(attrs=_attrs()),
             'hours_watched': forms.NumberInput(attrs=_attrs()),
             'price': forms.NumberInput(attrs=_attrs()),
             'highlights': forms.Textarea(attrs=_attrs({'rows': 2, 'placeholder': '[]'}, css=TEXTAREA)),
@@ -239,4 +252,48 @@ class ContactUsResponseForm(forms.ModelForm):
             'email': forms.EmailInput(attrs=_attrs({'readonly': True})),
             'phone_number': forms.TextInput(attrs=_attrs({'readonly': True})),
             'message': forms.Textarea(attrs=_attrs({'rows': 6, 'readonly': True}, css=TEXTAREA)),
+        }
+
+
+class EnrollmentForm(forms.ModelForm):
+    class Meta:
+        model = UserCourse
+        fields = ('user', 'course')
+        widgets = {
+            'user': forms.Select(attrs=_attrs(css=SELECT)),
+            'course': forms.Select(attrs=_attrs(css=SELECT)),
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = UserCourseComment
+        fields = ('user', 'course', 'text')
+        widgets = {
+            'user': forms.Select(attrs=_attrs(css=SELECT)),
+            'course': forms.Select(attrs=_attrs(css=SELECT)),
+            'text': forms.Textarea(attrs=_attrs({'rows': 5}, css=TEXTAREA)),
+        }
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = UserCourseRating
+        fields = ('user', 'course', 'rating')
+        widgets = {
+            'user': forms.Select(attrs=_attrs(css=SELECT)),
+            'course': forms.Select(attrs=_attrs(css=SELECT)),
+            'rating': forms.NumberInput(attrs=_attrs({'min': 1, 'max': 5})),
+        }
+
+
+class ContactUsForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields = ('full_name', 'email', 'phone_number', 'message')
+        widgets = {
+            'full_name': forms.TextInput(attrs=_attrs()),
+            'email': forms.EmailInput(attrs=_attrs()),
+            'phone_number': forms.TextInput(attrs=_attrs({'placeholder': '+998901234567'})),
+            'message': forms.Textarea(attrs=_attrs({'rows': 6}, css=TEXTAREA)),
         }

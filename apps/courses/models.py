@@ -2,10 +2,12 @@ from django.db import models
 from django.utils.text import slugify
 
 from centers.models import LearningCenter
-from connections.models import UserCourseRating, UserCourseComment
+from connections.models import UserCourseComment
 
 
 class Course(models.Model):
+    instructor = models.ForeignKey('users.InstructorProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='courses')
+    category = models.ForeignKey('centers.Category', on_delete=models.SET_NULL, null=True, blank=True, related_name='courses')
     name = models.CharField(max_length=255)
     subtitle = models.CharField(max_length=255, blank=True)
     description = models.TextField()
@@ -15,7 +17,7 @@ class Course(models.Model):
     level = models.CharField(max_length=32, blank=True)
     duration = models.CharField(max_length=32, blank=True)
     lessons_count = models.PositiveIntegerField(default=0)
-    students_count = models.PositiveIntegerField(default=0)
+    students_count = models.PositiveIntegerField(default=0, editable=False)
     hours_watched = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)
@@ -41,11 +43,6 @@ class Course(models.Model):
             self.seo_title = self.name
         if not self.seo_description:
             self.seo_description = self.description[:160]
-
-        if self.pk:
-            ratings = UserCourseRating.objects.filter(course=self)
-            if ratings.exists():
-                self.rating = round(sum(rating.rating for rating in ratings) / ratings.count(), 1)
 
         super().save(*args, **kwargs)
 

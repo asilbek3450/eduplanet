@@ -5,24 +5,25 @@
   <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
     <div class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-xl shadow-slate-900/10 lg:p-10">
       <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-300">{{ ui.login }}</p>
-      <h1 class="mt-4 text-4xl font-extrabold leading-tight">Return to your learning dashboard.</h1>
-      <p class="mt-5 text-sm leading-8 text-slate-300">Track enrolled courses, continue preview lessons, and keep your backend roadmap moving without friction.</p>
+      <h1 class="mt-4 text-4xl font-extrabold leading-tight">{{ ui.login_title }}</h1>
+      <p class="mt-5 text-sm leading-8 text-slate-300">{{ ui.login_description }}</p>
       <div class="mt-8 space-y-4 text-sm leading-7 text-slate-300">
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">Resume your practical Python, Django and backend programs.</div>
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">Keep a single profile across blog reading, course enrollment and mentorship requests.</div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">{{ ui.login_benefit_one }}</div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">{{ ui.login_benefit_two }}</div>
       </div>
     </div>
     <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm lg:p-10">
-      <h2 class="text-3xl font-bold text-slate-950">Welcome back</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-600">Kirish orqali learning dashboard, course playlist va personal profile sahifangizga qaytasiz.</p>
+      <h2 class="text-3xl font-bold text-slate-950">{{ ui.welcome_back }}</h2>
+      <p class="mt-3 text-sm leading-7 text-slate-600">{{ ui.login_intro }}</p>
       <form method="post" class="mt-8 space-y-5">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next_url }}">
         <div>
-          <label class="mb-2 block text-sm font-semibold text-slate-700">Username</label>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">{{ ui.username }}</label>
           {{ form.username }}
         </div>
         <div>
-          <label class="mb-2 block text-sm font-semibold text-slate-700">Password</label>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">{{ ui.password }}</label>
           {{ form.password }}
         </div>
         <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.login }}</button>

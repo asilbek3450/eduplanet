@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+<style>
+  .catalog-card { transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease; animation: catalog-in .4s ease both; }
+  .catalog-card:hover { border-color: #bae6fd; box-shadow: 0 12px 30px -16px rgb(14 165 233 / .3); transform: translateY(-2px); }
+  .catalog-card:focus-within { border-color: #38bdf8; }
+  .catalog-thumb img { transition: transform .35s ease; }
+  .catalog-card:hover .catalog-thumb img { transform: scale(1.06); }
+  .catalog-enter svg { transition: transform .2s ease; }
+  .catalog-enter:hover svg { transform: translateX(3px); }
+  @keyframes catalog-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .catalog-card, .catalog-thumb img, .catalog-enter svg { animation: none; transition: none; transform: none !important; } }
+</style>
+{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div><h1 class="text-3xl font-bold tracking-tight text-slate-950">Barcha kurslar</h1><p class="mt-2 max-w-2xl text-sm leading-7 text-slate-500">IT, dizayn, marketing, til va boshqa yo‘nalishlardan o‘zingizga mos kursni tanlang.</p></div>
+    <span class="rounded-full border border-sky-100 bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700">{{ page.paginator.count }} ta kurs</span>
+  </div>
+  <form method="get" role="search" class="my-8 grid items-end gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[1fr_1fr_auto]">
+    <input type="hidden" name="lang" value="{{ lang }}">
+    <label class="text-xs font-semibold text-slate-600">Kurs qidirish<input type="search" placeholder="Kurs nomini yozing…" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm font-normal text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-50" name="q" value="{{ query }}"></label>
+    <label class="text-xs font-semibold text-slate-600">Yo‘nalish<select class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm font-normal text-slate-900 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-50" name="category"><option value="">Barcha yo‘nalishlar</option>{% for category in categories %}<option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></label>
+    <button class="rounded-2xl bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-500">Qidirish</button>
+  </form>
+  {% for course in page %}
+  <article class="catalog-card relative my-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="pr-28 sm:pr-40">
+      <h2 class="mb-3 truncate text-xl font-bold text-slate-950"><a href="{% url 'course_detail' course.slug %}?lang={{ lang }}" title="{{ course.name }}" class="transition hover:text-sky-600 focus-visible:outline-sky-500">{{ course.name }}</a></h2>
+      <p class="truncate text-base text-slate-500" title="{{ course.subtitle }}">{{ course.subtitle }}</p>
+      <p class="truncate text-base text-slate-600"><span class="text-sky-700">{{ course.category|default:'IT' }}</span><span class="mx-1 text-slate-300">&middot;</span><span class="font-semibold text-slate-900">{% if course.price %}{{ course.price }} so‘m{% else %}Bepul{% endif %}</span></p>
+      {% if course.instructor %}<p class="truncate text-base text-slate-500">Ustoz: {{ course.instructor }}</p>{% endif %}
+    </div>
+    <div class="absolute bottom-6 right-4 top-6 flex w-24 flex-col items-end justify-between sm:right-6 sm:w-32">
+      <div class="catalog-thumb h-12 w-full shrink overflow-hidden rounded-xl bg-sky-50 ring-1 ring-slate-900/5">
+        {% if course.image %}<img src="{{ course.image }}" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover">{% else %}<div class="flex h-full items-center justify-center text-sky-500"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M6 9v7c4 3 8 3 12 0V9M21 7v9"/></svg></div>{% endif %}
+      </div>
+      <a href="{% url 'course_detail' course.slug %}?lang={{ lang }}" aria-label="{{ course.name }}: Kursga kirish" class="catalog-enter mt-2 inline-flex w-full shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-full bg-slate-900 px-3 py-2 text-[11px] font-semibold text-white transition hover:bg-sky-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 sm:gap-2 sm:px-3 sm:text-xs">Kursga kirish<svg class="shrink-0" aria-hidden="true" width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></a>
+    </div>
+  </article>
+  {% empty %}
+  <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center"><h2 class="text-xl font-bold text-slate-900">Kurs topilmadi</h2><p class="mt-2 text-sm text-slate-500">Boshqa nom yoki yo‘nalish bilan qidirib ko‘ring.</p><a href="{% url 'course_catalog' %}?lang={{ lang }}" class="mt-5 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-sky-700 shadow-sm hover:bg-sky-50">Barcha kurslarni ko‘rish</a></div>
+  {% endfor %}
+  {% if page.has_other_pages %}<nav aria-label="Katalog sahifalari" class="mt-8 flex items-center justify-center gap-5 text-sm font-semibold text-slate-600">{% if page.has_previous %}<a class="rounded-full border border-slate-200 px-4 py-2 hover:bg-sky-50" href="?page={{ page.previous_page_number }}&amp;q={{ query|urlencode }}&amp;category={{ selected_category|urlencode }}&amp;lang={{ lang }}">&larr; Oldingi</a>{% endif %}<span>{{ page.number }} / {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a class="rounded-full border border-slate-200 px-4 py-2 hover:bg-sky-50" href="?page={{ page.next_page_number }}&amp;q={{ query|urlencode }}&amp;category={{ selected_category|urlencode }}&amp;lang={{ lang }}">Keyingi &rarr;</a>{% endif %}</nav>{% endif %}
+</section>
+{% endblock %}

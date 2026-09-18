@@ -5,7 +5,7 @@
   <div class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm lg:p-10">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">Profile settings</p>
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.profile_settings }}</p>
         <h1 class="mt-3 text-3xl font-bold text-slate-950">Profil ma'lumotlarini yangilang</h1>
       </div>
       <a href="/users/profile/?lang={{ lang }}" class="inline-flex rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">Profilga qaytish</a>
@@ -19,8 +19,8 @@
       <div class="sm:col-span-1">{{ form.email }}</div>
       <div class="sm:col-span-1">{{ form.username }}</div>
       <div class="sm:col-span-2 flex flex-col gap-3 sm:flex-row sm:justify-end">
-        <a href="/users/profile/?lang={{ lang }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">Cancel</a>
-        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">Save changes</button>
+        <a href="/users/profile/?lang={{ lang }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">{{ ui.cancel }}</a>
+        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.save_changes }}</button>
       </div>
     </form>
   </div>
