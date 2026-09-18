@@ -9,6 +9,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ('learning_center', 'level', 'featured')
     search_fields = ('name', 'subtitle', 'description')
     prepopulated_fields = {'slug': ('name',)}
+    readonly_fields = ('students_count', 'rating')
 
 
 @admin.register(VideoContent)

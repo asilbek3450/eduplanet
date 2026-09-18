@@ -3,6 +3,7 @@
 {% block content %}
 <div class="card">
   <div class="card-body">
+    <div class="d-flex justify-content-end mb-3"><a href="{% url 'dashboard:comments_create' %}" class="btn btn-primary btn-sm"><i class="mdi mdi-plus"></i> Yangi sharh</a></div>
     <form method="get" class="filter-bar">
       <div class="input-group" style="max-width: 320px;">
         <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Qidirish..." />
@@ -21,6 +22,7 @@
               <td><div style="max-width: 460px;">{{ c.text }}</div></td>
               <td>{{ c.created_at|date:"d.m.Y H:i" }}</td>
               <td class="text-right table-actions">
+                <a href="{% url 'dashboard:comments_edit' c.pk %}" title="Tahrirlash"><i class="mdi mdi-pencil"></i></a>
                 <a href="{% url 'dashboard:comments_delete' c.pk %}" class="text-danger"><i class="mdi mdi-delete"></i></a>
               </td>
             </tr>

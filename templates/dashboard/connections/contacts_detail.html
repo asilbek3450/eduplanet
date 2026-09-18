@@ -2,6 +2,7 @@
 
 {% block page_actions %}
   <a href="{% url 'dashboard:contacts_list' %}" class="btn btn-light btn-sm"><i class="mdi mdi-arrow-left"></i> Orqaga</a>
+  <a href="{% url 'dashboard:contacts_edit' instance.pk %}" class="btn btn-primary btn-sm ml-2"><i class="mdi mdi-pencil"></i> Tahrirlash</a>
   <a href="{% url 'dashboard:contacts_delete' instance.pk %}" class="btn btn-danger btn-sm ml-2"><i class="mdi mdi-delete"></i> O'chirish</a>
 {% endblock %}
 

@@ -20,13 +20,22 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 from django.conf import settings
+from django.views.generic import RedirectView
+from .media import public_media
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
+    # Accept the commonly typed URL without a trailing slash as well.
+    path('admin/login', RedirectView.as_view(url='/admin/login/', permanent=False)),
     path('admin/', include('dashboard.urls')),
     path('', include("apps.urls")),
+    # WhiteNoise serves static assets, but deliberately does not serve uploads.
+    # This fallback is required when DEBUG=False and no proxy/CDN owns /media/.
+    path('media/<path:path>', public_media, name='public-media'),
 ]
 # Serving the media files in development mode
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += staticfiles_urlpatterns()
+
+handler404 = 'users.views.page_not_found'

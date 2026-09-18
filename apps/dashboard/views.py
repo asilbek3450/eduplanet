@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Avg, Count, Q, Sum
@@ -21,14 +21,17 @@ from courses.models import Course, VideoContent
 from users.models import ContactUs, InstructorProfile, User
 
 from .forms import (
-    AdminLoginForm,
     BlogImageForm,
     BlogPostForm,
     CategoryForm,
+    CommentForm,
+    ContactUsForm,
     ContactUsResponseForm,
     CourseForm,
     InstructorProfileForm,
     LearningCenterForm,
+    EnrollmentForm,
+    RatingForm,
     TestimonialForm,
     UserAdminForm,
     VideoContentForm,
@@ -40,8 +43,8 @@ from .forms import (
 # ---------------------------------------------------------------------------
 
 def staff_required(view):
-    return login_required(login_url='dashboard:login')(
-        user_passes_test(lambda u: u.is_active and u.is_staff, login_url='dashboard:login')(view)
+    return login_required(login_url='login')(
+        user_passes_test(lambda u: u.is_active and u.is_superuser, login_url='login')(view)
     )
 
 
@@ -65,30 +68,10 @@ def _search(request, queryset, fields):
 # Auth
 # ---------------------------------------------------------------------------
 
-def admin_login(request):
-    if request.user.is_authenticated and request.user.is_staff:
-        return redirect('dashboard:home')
-
-    error = ''
-    form = AdminLoginForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        user = authenticate(
-            request,
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password'],
-        )
-        if user is not None and user.is_active and user.is_staff:
-            login(request, user)
-            return redirect(request.GET.get('next') or 'dashboard:home')
-        error = "Login yoki parol noto'g'ri yoki sizda admin huquqlari yo'q."
-
-    return render(request, 'dashboard/auth/login.html', {'form': form, 'error': error})
-
-
-@login_required(login_url='dashboard:login')
+@login_required(login_url='login')
 def admin_logout(request):
     logout(request)
-    return redirect('dashboard:login')
+    return redirect('login')
 
 
 # ---------------------------------------------------------------------------
@@ -571,6 +554,20 @@ def enrollments_delete(request, pk):
 
 
 @staff_required
+def enrollments_form(request, pk=None):
+    instance = get_object_or_404(UserCourse, pk=pk) if pk else None
+    form = EnrollmentForm(request.POST or None, instance=instance)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Kurs yozuvi saqlandi.")
+        return redirect('dashboard:enrollments_list')
+    return render(request, 'dashboard/partials/_simple_form.html', {
+        'form': form, 'instance': instance, 'back_url': reverse('dashboard:enrollments_list'),
+        'page_title': 'Kurs yozuvini tahrirlash' if instance else 'Yangi kurs yozuvi',
+    })
+
+
+@staff_required
 def comments_list(request):
     qs = UserCourseComment.objects.select_related('user', 'course').order_by('-created_at')
     qs, query = _search(request, qs, ['text', 'user__username', 'course__name'])
@@ -590,6 +587,20 @@ def comments_delete(request, pk):
 
 
 @staff_required
+def comments_form(request, pk=None):
+    instance = get_object_or_404(UserCourseComment, pk=pk) if pk else None
+    form = CommentForm(request.POST or None, instance=instance)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Sharh saqlandi.")
+        return redirect('dashboard:comments_list')
+    return render(request, 'dashboard/partials/_simple_form.html', {
+        'form': form, 'instance': instance, 'back_url': reverse('dashboard:comments_list'),
+        'page_title': 'Sharhni tahrirlash' if instance else 'Yangi sharh',
+    })
+
+
+@staff_required
 def ratings_list(request):
     qs = UserCourseRating.objects.select_related('user', 'course').order_by('-created_at')
     qs, query = _search(request, qs, ['user__username', 'course__name'])
@@ -606,6 +617,20 @@ def ratings_list(request):
 def ratings_delete(request, pk):
     instance = get_object_or_404(UserCourseRating, pk=pk)
     return _delete_object(request, instance, 'dashboard:ratings_list', "Baho o'chirildi.")
+
+
+@staff_required
+def ratings_form(request, pk=None):
+    instance = get_object_or_404(UserCourseRating, pk=pk) if pk else None
+    form = RatingForm(request.POST or None, instance=instance)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Baho saqlandi.")
+        return redirect('dashboard:ratings_list')
+    return render(request, 'dashboard/partials/_simple_form.html', {
+        'form': form, 'instance': instance, 'back_url': reverse('dashboard:ratings_list'),
+        'page_title': 'Bahoni tahrirlash' if instance else 'Yangi baho',
+    })
 
 
 @staff_required
@@ -673,6 +698,20 @@ def contacts_detail(request, pk):
             {'label': 'Murojaatlar', 'url': reverse('dashboard:contacts_list')},
             {'label': instance.full_name, 'url': None},
         ],
+    })
+
+
+@staff_required
+def contacts_form(request, pk=None):
+    instance = get_object_or_404(ContactUs, pk=pk) if pk else None
+    form = ContactUsForm(request.POST or None, instance=instance)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Murojaat saqlandi.")
+        return redirect('dashboard:contacts_list')
+    return render(request, 'dashboard/partials/_simple_form.html', {
+        'form': form, 'instance': instance, 'back_url': reverse('dashboard:contacts_list'),
+        'page_title': 'Murojaatni tahrirlash' if instance else 'Yangi murojaat',
     })
 
 

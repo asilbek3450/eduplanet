@@ -21,9 +21,12 @@
 
       <div class="mt-8 flex flex-col gap-4 sm:flex-row">
         {% if is_user_enrolled %}
-        <a href="#playlist" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-200">Kursga yozilgansiz</a>
+        <a href="#playlist" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-200">{{ ui.enrolled }}</a>
         {% else %}
-        <a href="{{ course.enroll_href }}" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">{{ ui.enroll }}</a>
+        <form method="post" action="{{ course.enroll_href }}">
+          {% csrf_token %}
+          <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">{{ ui.enroll }}</button>
+        </form>
         {% endif %}
         <a href="{{ learning_center.href }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">{{ learning_center.display_name }}</a>
       </div>
@@ -33,19 +36,19 @@
       <img src="{{ course.image }}" alt="{{ course.display_name }}" class="h-72 w-full object-cover">
       <div class="grid gap-6 p-7 sm:grid-cols-2">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Instructor</p>
-          <p class="mt-2 text-sm font-semibold text-slate-900">Asilbek Mirolimov</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ ui.instructor }}</p>
+          <p class="mt-2 text-sm font-semibold text-slate-900">{% if course.instructor %}{{ course.instructor.user.get_full_name|default:course.instructor.user.username }}{% else %}EduPlanet{% endif %}</p>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Center</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ ui.center }}</p>
           <p class="mt-2 text-sm font-semibold text-slate-900">{{ learning_center.display_name }}</p>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Website</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ ui.website }}</p>
           <a href="{{ learning_center.website }}" target="_blank" rel="noreferrer" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.website }}</a>
         </div>
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Support</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ ui.support }}</p>
           <a href="mailto:{{ learning_center.email }}" class="mt-2 block text-sm font-semibold text-slate-900 hover:text-sky-600">{{ learning_center.email }}</a>
         </div>
       </div>
@@ -75,10 +78,10 @@
     <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600">{{ ui.preview_lessons }}</p>
-        <h2 class="mt-4 text-3xl font-bold text-slate-950">{% if is_user_enrolled %}Full playlist{% else %}Preview playlist{% endif %} for {{ course.display_name }}</h2>
+        <h2 class="mt-4 text-3xl font-bold text-slate-950">{% if is_user_enrolled %}{{ ui.full_playlist }}{% else %}{{ ui.preview_playlist }}{% endif %} {{ ui.for_course }} {{ course.display_name }}</h2>
       </div>
       {% if not is_user_enrolled %}
-      <p class="max-w-xl text-sm leading-7 text-slate-600">Preview darslar ochiq. To'liq videolar, assignmentlar va course workflowga kirish uchun kursga yoziling.</p>
+      <p class="max-w-xl text-sm leading-7 text-slate-600">{{ ui.preview_description }}</p>
       {% endif %}
     </div>
 
@@ -112,7 +115,7 @@
       </div>
     </div>
     {% else %}
-    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-6 text-sm text-slate-600">Ushbu kurs uchun video materiallar tez orada qo'shiladi.</div>
+    <div class="mt-8 rounded-[1.5rem] bg-slate-50 p-6 text-sm text-slate-600">{{ ui.videos_soon }}</div>
     {% endif %}
   </div>
 </section>

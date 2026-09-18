@@ -91,9 +91,9 @@ UI_COPY = {
         "register": "Ro'yxatdan o'tish",
         "profile": "Profil",
         "logout": "Chiqish",
-        "hero_badge": "Senior Software Engineer и преподаватель",
-        "hero_title": "Backend karyerangizni real product tajriba bilan boshlang",
-        "hero_description": "EduPlanet - bu Asilbek Mirolimovning amaliy tajribaga tayangan LMS platformasi. Bu yerda siz Python, Django, REST API, PostgreSQL va DevOps asoslarini real startup workflow orqali o'rganasiz.",
+        "hero_badge": "IT • Dizayn • Marketing • Til • Fanlar",
+        "hero_title": "IT karyerangizni amaliy tajriba bilan boshlang",
+        "hero_description": "EduPlanet — IT, dizayn, marketing va tillarni tajribali ustozlar bilan o‘rganish platformasi. O‘zingizga mos kursni tanlang, amaliy mashg‘ulotlarda qatnashing va yangi ko‘nikmalarni egallang.",
         "hero_primary_cta": "Kurslarni ko'rish",
         "hero_secondary_cta": "Bepul roadmap olish",
         "stats_students": "Faol talabalar",
@@ -101,11 +101,11 @@ UI_COPY = {
         "stats_rating": "O'rtacha baho",
         "stats_hours": "Ko'rilgan soatlar",
         "featured_courses": "Eng talabgir kurslar",
-        "featured_courses_description": "Boshlovchilar, junior backend developerlar va product-minded muhandislar uchun ishlab chiqilgan amaliy kurslar.",
-        "instructor_title": "Asilbek Mirolimov bilan o'rganing",
+        "featured_courses_description": "IT, dizayn va marketing bo‘yicha amaliy kurslar.",
+        "instructor_title": "Tajribali ustozlar bilan o‘rganing",
         "testimonials_title": "Natijalar gapiradi",
         "blog_title": "SEO va karyera blogi",
-        "blog_description": "Python course Uzbekistan, Django course online va Backend course Tashkent kabi qidiruvlar uchun foydali, chuqur va amaliy maqolalar.",
+        "blog_description": "IT, dizayn, marketing va karyera haqida maqolalar.",
         "cta_title": "Start your programming journey today",
         "cta_description": "Bir kurs bilan boshlang, real portfolio yig'ing va ishga tayyor developerga aylanish uchun tizimli yo'lni tanlang.",
         "cta_primary": "Bugun boshlash",
@@ -114,7 +114,7 @@ UI_COPY = {
         "contact_description": "Kurs tanlash, learning path yoki jamoa uchun korporativ training bo'yicha 24 soat ichida javob beramiz.",
         "sticky_primary": "Kurslar",
         "sticky_secondary": "Bog'lanish",
-        "newsletter_label": "Haftalik backend insights",
+        "newsletter_label": "Haftalik IT yangiliklari",
         "students_label": "talaba",
         "lessons_label": "dars",
         "hours_label": "soat",
@@ -128,7 +128,7 @@ UI_COPY = {
         "center_courses": "Markazdagi kurslar",
         "back_home": "Bosh sahifaga qaytish",
         "featured_badge": "Launch-ready LMS",
-        "meta_site_name": "EduPlanet | Python, Django va Backend kurslari",
+        "meta_site_name": "EduPlanet | IT, Dizayn va SMM kurslari",
         "contact_success_title": "Xabaringiz qabul qilindi",
         "contact_success_description": "Rahmat. Odatda 1 ish kuni ichida siz bilan bog'lanamiz.",
     },
@@ -143,9 +143,9 @@ UI_COPY = {
         "register": "Register",
         "profile": "Profile",
         "logout": "Logout",
-        "hero_badge": "Senior Software Engineer & Educator",
-        "hero_title": "Build a backend career with real product experience",
-        "hero_description": "EduPlanet is Asilbek Mirolimov's practical LMS platform where you learn Python, Django, REST API, PostgreSQL, and DevOps fundamentals through real startup workflows.",
+        "hero_badge": "IT • Design • Marketing • Languages • Subjects",
+        "hero_title": "Build your IT career through practical experience",
+        "hero_description": "Learn IT, design, marketing and languages with experienced instructors. Choose a course, practise what you learn and develop new skills.",
         "hero_primary_cta": "Explore courses",
         "hero_secondary_cta": "Get free roadmap",
         "stats_students": "Active students",
@@ -153,11 +153,11 @@ UI_COPY = {
         "stats_rating": "Average rating",
         "stats_hours": "Hours watched",
         "featured_courses": "Featured courses",
-        "featured_courses_description": "Hands-on programs for beginners, junior backend developers, and product-minded engineers.",
-        "instructor_title": "Learn with Asilbek Mirolimov",
+        "featured_courses_description": "Practical courses across IT, design and marketing.",
+        "instructor_title": "Learn with experienced instructors",
         "testimonials_title": "Outcomes that feel real",
         "blog_title": "SEO and career blog",
-        "blog_description": "Practical articles designed for high-intent searches like Python course Uzbekistan, Django course online, and Backend course Tashkent.",
+        "blog_description": "Articles about IT, design, marketing and careers.",
         "cta_title": "Start your programming journey today",
         "cta_description": "Begin with one course, build a real portfolio, and follow a structured path toward becoming a job-ready developer.",
         "cta_primary": "Start today",
@@ -166,7 +166,7 @@ UI_COPY = {
         "contact_description": "We reply within 24 hours for course guidance, roadmap questions, or team training requests.",
         "sticky_primary": "Courses",
         "sticky_secondary": "Contact",
-        "newsletter_label": "Weekly backend insights",
+        "newsletter_label": "Weekly IT insights",
         "students_label": "students",
         "lessons_label": "lessons",
         "hours_label": "hours",
@@ -180,7 +180,7 @@ UI_COPY = {
         "center_courses": "Courses in this center",
         "back_home": "Back to homepage",
         "featured_badge": "Launch-ready LMS",
-        "meta_site_name": "EduPlanet | Python, Django and Backend Courses",
+        "meta_site_name": "EduPlanet | IT, Design and SMM Courses",
         "contact_success_title": "Your message is in",
         "contact_success_description": "Thanks. We usually get back within one business day.",
     },
@@ -195,9 +195,9 @@ UI_COPY = {
         "register": "Регистрация",
         "profile": "Профиль",
         "logout": "Выйти",
-        "hero_badge": "Senior Software Engineer & Educator",
-        "hero_title": "Стройте backend-карьеру на основе реального product-опыта",
-        "hero_description": "EduPlanet — практическая LMS-платформа Асилбека Миролимова, где вы изучаете Python, Django, REST API, PostgreSQL и основы DevOps через реальные startup-workflow.",
+        "hero_badge": "IT • Дизайн • Маркетинг • Языки • Предметы",
+        "hero_title": "Начните карьеру в IT с практического опыта",
+        "hero_description": "Изучайте IT, дизайн, маркетинг и языки с опытными преподавателями. Выберите подходящий курс, практикуйтесь и развивайте новые навыки.",
         "hero_primary_cta": "Смотреть курсы",
         "hero_secondary_cta": "Получить дорожную карту",
         "stats_students": "Активные студенты",
@@ -205,11 +205,11 @@ UI_COPY = {
         "stats_rating": "Средний рейтинг",
         "stats_hours": "Часы просмотра",
         "featured_courses": "Популярные курсы",
-        "featured_courses_description": "Практичные программы для новичков, junior backend-разработчиков и product-minded инженеров.",
-        "instructor_title": "Учитесь с Асилбеком Миролимовым",
+        "featured_courses_description": "Практические курсы по IT, дизайну и маркетингу.",
+        "instructor_title": "Учитесь с опытными преподавателями",
         "testimonials_title": "Результаты говорят сами за себя",
         "blog_title": "SEO и карьерный блог",
-        "blog_description": "Глубокие и практичные статьи для высокоинтентных запросов: Python course Uzbekistan, Django course online и Backend course Tashkent.",
+        "blog_description": "Статьи об IT, дизайне, маркетинге и карьере.",
         "cta_title": "Начните свой путь в программировании уже сегодня",
         "cta_description": "Начните с одного курса, соберите реальное портфолио и двигайтесь по системному пути к уровню job-ready разработчика.",
         "cta_primary": "Начать сейчас",
@@ -218,7 +218,7 @@ UI_COPY = {
         "contact_description": "Отвечаем в течение 24 часов по выбору курса, roadmap или корпоративному обучению.",
         "sticky_primary": "Курсы",
         "sticky_secondary": "Контакты",
-        "newsletter_label": "Еженедельные backend-инсайты",
+        "newsletter_label": "Новости IT каждую неделю",
         "students_label": "студентов",
         "lessons_label": "уроков",
         "hours_label": "часов",
@@ -232,11 +232,33 @@ UI_COPY = {
         "center_courses": "Курсы в этом направлении",
         "back_home": "На главную",
         "featured_badge": "LMS, готовая к запуску",
-        "meta_site_name": "EduPlanet | Курсы по Python, Django и backend-разработке",
+        "meta_site_name": "EduPlanet | Курсы IT, дизайна и SMM",
         "contact_success_title": "Сообщение отправлено",
         "contact_success_description": "Спасибо. Обычно мы отвечаем в течение одного рабочего дня.",
     },
 }
+
+UI_COPY["uz"].update({
+    "footer_title": "Haqiqiy tajribadan o'rganing.", "footer_description": "EduPlanet premium kurslar, amaliy blog maqolalari va Asilbek Mirolimov tajribasini bir platformada birlashtiradi.", "footer_navigation": "Navigatsiya", "footer_contact": "Aloqa", "footer_location": "Toshkent, O'zbekiston",
+    "login_title": "O'quv kabinetiga qayting.", "login_description": "Yozilgan kurslaringizni davom ettiring, ochiq darslarni ko'ring va rivojlanish rejangizdan uzoqlashmang.", "login_benefit_one": "Amaliy Python, Django va backend dasturlaringizni davom ettiring.", "login_benefit_two": "Blog, kurslar va mentorlik so'rovlari uchun bitta profilni saqlang.", "welcome_back": "Xush kelibsiz", "login_intro": "Kirish orqali o'quv kabinetingiz, kurslar ro'yxati va shaxsiy profilingizga qaytasiz.", "username": "Foydalanuvchi nomi", "password": "Parol",
+    "register_title": "EduPlanet'ga qo'shiling va haqiqiy natijalarni yarating.", "register_intro": "Bitta akkaunt bilan kurslarga yoziling, ochiq darslarni saqlang va tizimli o'sishni boshlang.", "register_benefits": "Sizga nimalar ochiladi", "register_benefit_one": "Amaliy Python, Django, PostgreSQL, DevOps va fullstack yo'nalishlari.", "register_benefit_two": "Qulay profil, kurslarga yozilish holati va shaxsiy o'quv kabineti.", "register_benefit_three": "Faqat darslarni tugatishga emas, ishga tayyor mutaxassis bo'lishga yo'naltirilgan yordam.",
+    "profile_settings": "Profil sozlamalari", "cancel": "Bekor qilish", "save_changes": "O'zgarishlarni saqlash", "profile_username": "Foydalanuvchi nomi", "phone": "Telefon", "not_added": "Hali kiritilmagan", "location": "Manzil", "edit_profile": "Profilni tahrirlash", "learning_focus": "O'qish yo'nalishi", "profile_focus_title": "Izchil rivojlanishda davom eting.", "enrolled_courses": "Yozilgan kurslar", "new_courses": "Yangi kurslar", "open_course": "Kursga o'tish",
+    "instructor": "Ustoz", "center": "Markaz", "website": "Veb-sayt", "support": "Yordam", "enrolled": "Kursga yozilgansiz", "full_playlist": "To'liq darslar ro'yxati", "preview_playlist": "Ochiq darslar ro'yxati", "for_course": "kursi uchun", "preview_description": "Ochiq darslar mavjud. To'liq videolar, topshiriqlar va kurs jarayoniga kirish uchun kursga yoziling.", "videos_soon": "Bu kurs uchun videolar tez orada qo'shiladi.",
+    "students": "Talabalar", "mentors": "Mentorlar", "courses_count": "Kurslar", "email": "Elektron pochta", "premium_courses": "ichidagi premium kurslar", "lessons": "dars", "category_centers": "yo'nalishidagi o'quv markazlari", "view_center": "Markazga o'tish", "no_centers": "Bu yo'nalishda hozircha markaz yo'q", "no_centers_description": "Yangi markazlar qo'shilganda shu yerda ko'rinadi. Hozircha boshqa yo'nalishlarni ko'rib chiqing.", "view_centers": "Markazlarni ko'rish",
+    "blog_heading": "Chuqur, amaliy va SEO uchun mos bloglar — Python, Django va backend rivoji uchun.", "blog_intro": "Maqolalar nafaqat trafik, balki haqiqiy foyda uchun yozilgan: roadmap, portfolio, suhbat, arxitektura va product engineering mavzulari real dasturchi ehtiyojidan kelib chiqadi.", "author": "Muallif", "min_read": "daq. o'qish", "more_articles": "Boshqa maqolalar", "author_bio": "Senior dasturiy ta'minot muhandisi va mentor. Python, Django, REST API hamda product engineering mavzularini real tajriba bilan tushuntiradi.",
+})
+UI_COPY["uz"].update({
+    "instructor_label": "Ustoz", "email_label": "Elektron pochta", "phone_label": "Telefon", "send_message": "Xabar yuborish", "slogan": "Haqiqiy tajribadan o'rganing", "previous_slide": "Oldingi slayd", "next_slide": "Keyingi slayd", "previous_courses": "Oldingi kurslar", "next_courses": "Keyingi kurslar",
+})
+
+UI_COPY["en"].update({
+    "footer_title": "Learn from real-world experience.", "footer_description": "EduPlanet combines premium courses, practical blog posts, and Asilbek Mirolimov's experience in one platform.", "footer_navigation": "Navigation", "footer_contact": "Contact", "footer_location": "Tashkent, Uzbekistan", "login_title": "Return to your learning dashboard.", "login_description": "Continue enrolled courses, preview lessons, and keep your growth plan moving.", "login_benefit_one": "Resume your practical Python, Django and backend programs.", "login_benefit_two": "Keep one profile for blogs, courses and mentorship requests.", "welcome_back": "Welcome back", "login_intro": "Log in to return to your learning dashboard, course playlist and personal profile.", "username": "Username", "password": "Password", "register_title": "Join EduPlanet and build real momentum.", "register_intro": "Use one account to enroll in courses, save previews and start growing consistently.", "register_benefits": "What you unlock", "register_benefit_one": "Practical Python, Django, PostgreSQL, DevOps and fullstack tracks.", "register_benefit_two": "A clean profile, enrollment status and learning dashboard.", "register_benefit_three": "Guidance toward becoming job-ready, not merely finishing lessons.", "profile_settings": "Profile settings", "cancel": "Cancel", "save_changes": "Save changes", "profile_username": "Username", "phone": "Phone", "not_added": "Not added yet", "location": "Location", "edit_profile": "Edit profile", "learning_focus": "Learning focus", "profile_focus_title": "Keep building consistently.", "enrolled_courses": "Enrolled courses", "new_courses": "New courses", "open_course": "Open course", "instructor": "Instructor", "center": "Center", "website": "Website", "support": "Support", "enrolled": "You are enrolled", "full_playlist": "Full playlist", "preview_playlist": "Preview playlist", "for_course": "for", "preview_description": "Preview lessons are available. Enroll for full videos, assignments and the complete course workflow.", "videos_soon": "Video materials for this course will be added soon.", "students": "Students", "mentors": "Mentors", "courses_count": "Courses", "email": "Email", "premium_courses": "premium courses", "lessons": "lessons", "category_centers": "learning centers", "view_center": "View center", "no_centers": "There are no centers in this category yet", "no_centers_description": "New centers will appear here. In the meantime, explore other categories.", "view_centers": "View centers", "blog_heading": "In-depth, practical, SEO-ready articles for Python, Django and backend growth.", "blog_intro": "Articles are written for real value, not just traffic: roadmaps, portfolios, interviews, architecture and product engineering based on real developer needs.", "author": "Author", "min_read": "min read", "more_articles": "More articles", "author_bio": "Senior Software Engineer and educator explaining Python, Django, REST API and product engineering through real experience.",
+})
+UI_COPY["ru"].update(UI_COPY["en"])
+UI_COPY["en"].update({
+    "instructor_label": "Instructor", "email_label": "Email", "phone_label": "Phone", "send_message": "Send message", "slogan": "Learn from real-world experience", "previous_slide": "Previous slide", "next_slide": "Next slide", "previous_courses": "Previous courses", "next_courses": "Next courses",
+})
+UI_COPY["ru"].update(UI_COPY["en"])
 
 HOME_EXTRAS = {
     "uz": {
@@ -928,6 +950,28 @@ CENTER_DATA = [
         },
     },
 ]
+
+# Real partner directory.  The first four slugs are retained so existing course
+# records can keep their relationships when demo content is refreshed.
+CATEGORY_DATA.extend([
+    {"slug": "it", "name": "IT va dasturlash", "description": "Dasturlash, sun'iy intellekt va raqamli texnologiyalar kurslari.", "icon": "</>", "translations": {}},
+    {"slug": "design", "name": "Dizayn", "description": "Grafik dizayn, UI/UX va kreativ kasblar.", "icon": "✦", "translations": {}},
+    {"slug": "marketing", "name": "Marketing va SMM", "description": "Raqamli marketing, SMM va kontent yo'nalishlari.", "icon": "↗", "translations": {}},
+    {"slug": "languages", "name": "Tillar va imtihonlar", "description": "Ingliz tili, IELTS va akademik tayyorgarlik.", "icon": "Aa", "translations": {}},
+])
+
+REAL_CENTER_DATA = [
+    {"slug":"web-development","name":"PDP Academy","headline":"Dasturlash bo'yicha amaliy ta'lim markazi","description":"PDP Academy dasturlash yo'nalishlarida amaliy ta'lim beradi. Rasmiy sahifasida frontend, backend va boshqa dasturlash yo'nalishlari hamda mentorlik, coworking va real loyihalar imkoniyatlari keltirilgan.","location":"Toshkent, Shayxontohur tumani, Beruniy ko'chasi 3A","email":"","phone_number":"+998787774747","image":"https://university.pdp.uz/static/media/pdpBulding.7b5ef2307bacc3fff328.png","website":"https://www.pdp.uz/offline","students_count":10000,"mentors_count":0,"courses_count":0,"features":["Frontend va backend dasturlash","Java, Python va mobil yo'nalishlar","Amaliy loyihalar va mentorlik"],"categories":["it"],"translations":{}},
+    {"slug":"backend-engineering","name":"Najot Ta'lim","headline":"Zamonaviy IT va raqamli kasblar ta'limi","description":"Najot Ta'lim dasturlash, sun'iy intellekt, marketing, dizayn va data analitika bo'yicha amaliy kurslarni taklif qiladi. Markaz rasmiy ma'lumotiga ko'ra bitiruvchilar uchun TechJobs orqali ishga joylashish yo'nalishi ham mavjud.","location":"Toshkent, Chilonzor tumani, Qatortol ko'chasi 1-uy","email":"","phone_number":"+998788889888","image":"https://static.tildacdn.one/tild3261-3161-4465-a131-333731353138/3-rasm.JPG","website":"https://najottalim.uz/","students_count":12000,"mentors_count":0,"courses_count":0,"features":["Dasturlash va sun'iy intellekt","Dizayn, marketing va data analitika","Kovorking va master-klasslar"],"categories":["it","design","marketing"],"translations":{}},
+    {"slug":"data-science","name":"Mohirdev","headline":"O'zbekistondagi onlayn kasbiy ta'lim platformasi","description":"Mohirdev dasturlashga oid kasblar bo'yicha onlayn ta'lim platformasi. Rasmiy saytda kasblarga yo'naltirilgan praktikumlar va qisqa kurslar, jumladan Python, Django hamda kiberxavfsizlik yo'nalishlari keltirilgan.","location":"Onlayn ta'lim platformasi","email":"","phone_number":"","image":"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80","website":"https://mohirdev.uz/","students_count":50000,"mentors_count":30,"courses_count":50,"features":["Python va Django","Kasblarga yo'naltirilgan praktikumlar","Moslashuvchan onlayn ta'lim"],"categories":["it"],"translations":{}},
+    {"slug":"devops","name":"PROWEB","headline":"IT va digital kasblar bo'yicha kurslar","description":"PROWEB Toshkentda IT va digital yo'nalishlar bo'yicha ta'lim beradi. Rasmiy kurslar ro'yxatida frontend, Python, data analytics, dizayn, SMM, mobilografiya va kiberxavfsizlik yo'nalishlari mavjud.","location":"Toshkent, Chilonzor va Mirobod tumanlaridagi filiallar","email":"","phone_number":"+998712036060","image":"https://42bc9131-ca53-4c3f-abe0-9facd51965a0.selstorage.ru/chilanzar_3_24c0554370.webp","website":"https://proweb.uz/uz","students_count":20000,"mentors_count":0,"courses_count":15,"features":["Frontend, Python va data analytics","Grafik dizayn va UI/UX","SMM, marketing va media"],"categories":["it","design","marketing"],"translations":{}},
+    {"slug":"mars-it-school","name":"MARS IT School","headline":"Bolalar va o'smirlar uchun IT maktabi","description":"MARS IT School 7–17 yoshdagi o'quvchilar uchun dasturlash va raqamli ko'nikmalar bo'yicha ta'lim beradi. Scratch va Robloxdan Python, web hamda full-stack yo'nalishlargacha bo'lgan dasturlar mavjud.","location":"Toshkentdagi 7 ta filial","email":"","phone_number":"+998787777757","image":"https://landing.marsit.uz/yunusobod/images/photo-3.jpg","website":"https://marsit.uz/","students_count":2300,"mentors_count":126,"courses_count":0,"features":["Scratch va Roblox","Python va web dasturlash","Bolalar uchun bepul sinov darsi"],"categories":["it"],"translations":{}},
+    {"slug":"cambridge-learning-center","name":"Cambridge Learning Center","headline":"Ingliz tili va IELTS tayyorgarligi","description":"Cambridge Learning Center umumiy ingliz tili, IELTS hamda akademik tayyorgarlik bo'yicha kurslar o'tkazadi. Toshkentda bir nechta filiallari mavjud; rasmiy sahifada IELTS test markazi haqida ham ma'lumot berilgan.","location":"Toshkentdagi bir nechta filial","email":"","phone_number":"+998787777774","image":"https://kursy.uz/components/com_mtree/img/listings/m/3361.jpg","website":"https://cambridgeonline.uz/","students_count":100000,"mentors_count":0,"courses_count":0,"features":["General English","IELTS tayyorgarligi","IELTS test markazi"],"categories":["languages"],"translations":{}},
+    {"slug":"inter-nation","name":"Inter Nation English School","headline":"Ingliz tili va IELTS o'quv markazi","description":"Inter Nation English School ingliz tili va IELTS bo'yicha kurslarni taklif qiladi. Rasmiy manbasida Toshkentdagi filiallar, IELTS-X dasturi va birinchi bepul dars haqida ma'lumot berilgan.","location":"Toshkentdagi 11 ta filial","email":"","phone_number":"+998787777707","image":"https://avatars.mds.yandex.net/get-altay/2384894/2a000001727e0b2c0d6d9e9944a7595901ec/XXL_height","website":"https://inter-nation.uz/","students_count":0,"mentors_count":0,"courses_count":0,"features":["General English","IELTS-X dasturi","Akademik qo'llab-quvvatlash"],"categories":["languages"],"translations":{}},
+    {"slug":"registan-lc","name":"Registan LC","headline":"Ingliz tili, IELTS va akademik tayyorgarlik","description":"Registan LC ingliz tili, IELTS, matematika va oliy ta'limga tayyorgarlik yo'nalishlari bilan tanilgan. Rasmiy sahifasida Toshkent manzili va aloqa ma'lumotlari ko'rsatilgan.","location":"Toshkent, Shota Rustaveli ko'chasi 53","email":"info@rgn.uz","phone_number":"+998781132700","image":"https://telegra.ph/file/d2a2e858db24c6c38bd6a.jpg","website":"https://rgn.uz/","students_count":0,"mentors_count":0,"courses_count":0,"features":["General English va IELTS","Matematika va abituriyent tayyorgarligi","Akademik dasturlar"],"categories":["languages"],"translations":{}},
+    {"slug":"thompson-school","name":"Thompson School","headline":"Akademik ta'lim va IELTS tayyorgarligi","description":"Thompson School Toshkentdagi xususiy ta'lim muassasasi. British Council IELTS sahifasida Thompson School Tashkent IELTS test markazi sifatida ko'rsatilgan.","location":"Toshkent, Furkat ko'chasi 15/2","email":"","phone_number":"+998781137474","image":"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80","website":"https://ielts.org/test-centres/british-council-thompson-school-tashkent","students_count":0,"mentors_count":0,"courses_count":0,"features":["Akademik ta'lim","Ingliz tili","IELTS test markazi"],"categories":["languages"],"translations":{}},
+]
+CENTER_DATA = REAL_CENTER_DATA
 
 COURSE_DATA = [
     {
@@ -2334,8 +2378,6 @@ BLOG_DATA = [
     },
 ]
 
-_BOOTSTRAPPED = False
-
 
 def get_language(request):
     lang = request.GET.get("lang", DEFAULT_LANGUAGE)
@@ -2465,7 +2507,7 @@ def build_nav_menu(lang, navigation):
 
     category_links = []
     try:
-        categories = list(Category.objects.all())
+        categories = list(Category.objects.filter(centers__isnull=False).distinct().order_by("name"))
     except Exception:
         categories = []
     for category in categories:
@@ -2505,12 +2547,12 @@ def build_nav_menu(lang, navigation):
             "blog_topic_career_desc": "Junior backend ishga olishda nima muhim",
             "blog_all": "Barcha maqolalar",
             "blog_all_desc": "EduPlanet blog arxivi",
-            "about_mentor": "Mentor sifatida",
-            "about_mentor_desc": "Asilbek bilan o'qish formati va kutiladigan natijalar",
-            "about_skills": "Tech stack",
-            "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
-            "about_mission": "Mission va falsafa",
-            "about_mission_desc": "Nega EduPlanet va kim uchun yaratilgan",
+            "about_mentor": "Asoschi haqida",
+            "about_mentor_desc": "Asilbek Mirolimovning tajribasi va faoliyati",
+            "about_skills": "Asoschining ko‘nikmalari",
+            "about_skills_desc": "Texnologiyalar va amaliy mutaxassisliklar",
+            "about_mission": "Maqsad va yondashuv",
+            "about_mission_desc": "Ta’lim orqali qanday natijaga intilamiz",
             "contact_book": "Konsultatsiyaga yozilish",
             "contact_book_desc": "Karyera yoki kurs tanlash bo'yicha 30 daqiqalik suhbat",
             "contact_email": "Email bilan yozish",
@@ -2532,11 +2574,11 @@ def build_nav_menu(lang, navigation):
             "blog_topic_career_desc": "What hiring teams actually look for",
             "blog_all": "All articles",
             "blog_all_desc": "Browse the EduPlanet blog archive",
-            "about_mentor": "As a mentor",
+            "about_mentor": "About the founder",
             "about_mentor_desc": "How learning with Asilbek works in practice",
-            "about_skills": "Tech stack",
+            "about_skills": "Founder’s expertise",
             "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
-            "about_mission": "Mission & philosophy",
+            "about_mission": "Mission & approach",
             "about_mission_desc": "Why EduPlanet exists and who it serves",
             "contact_book": "Book a consultation",
             "contact_book_desc": "30-minute career or course-fit chat",
@@ -2559,11 +2601,11 @@ def build_nav_menu(lang, navigation):
             "blog_topic_career_desc": "Что реально ценят при найме",
             "blog_all": "Все статьи",
             "blog_all_desc": "Архив блога EduPlanet",
-            "about_mentor": "Как наставник",
+            "about_mentor": "Об основателе",
             "about_mentor_desc": "Как устроено обучение с Асилбеком",
-            "about_skills": "Tech stack",
+            "about_skills": "Компетенции основателя",
             "about_skills_desc": "Python, Django, PostgreSQL, DevOps",
-            "about_mission": "Миссия и философия",
+            "about_mission": "Миссия и подход",
             "about_mission_desc": "Зачем EduPlanet и для кого",
             "contact_book": "Записаться на консультацию",
             "contact_book_desc": "30-минутный разговор по карьере или выбору курса",
@@ -2577,17 +2619,12 @@ def build_nav_menu(lang, navigation):
     courses_submenu.append({
         "label": labels["all_courses"],
         "description": labels["all_courses_desc"],
-        "href": navigation["courses"],
+        "href": with_lang(reverse('course_catalog'), lang),
         "icon": "★",
     })
 
     centers_submenu = list(category_links)
-    centers_submenu.append({
-        "label": labels["all_centers"],
-        "description": labels["all_centers_desc"],
-        "href": navigation["centers"],
-        "icon": "◎",
-    })
+
 
     blog_submenu = [
         {"label": labels["blog_topic_python"], "description": labels["blog_topic_python_desc"], "href": blog_url, "icon": "Py"},
@@ -2597,9 +2634,9 @@ def build_nav_menu(lang, navigation):
     ]
 
     about_submenu = [
-        {"label": labels["about_mentor"], "description": labels["about_mentor_desc"], "href": about_url, "icon": "AM"},
-        {"label": labels["about_skills"], "description": labels["about_skills_desc"], "href": about_url, "icon": "</>"},
-        {"label": labels["about_mission"], "description": labels["about_mission_desc"], "href": about_url, "icon": "◎"},
+        {"label": labels["about_mentor"], "description": labels["about_mentor_desc"], "href": about_url.split('#')[0] + '#about-founder', "icon": "AM"},
+        {"label": labels["about_skills"], "description": labels["about_skills_desc"], "href": about_url.split('#')[0] + '#about-skills', "icon": "</>"},
+        {"label": labels["about_mission"], "description": labels["about_mission_desc"], "href": about_url.split('#')[0] + '#about-mission', "icon": "◎"},
     ]
 
     contact_submenu = [
@@ -2613,17 +2650,16 @@ def build_nav_menu(lang, navigation):
         {"key": "home", "label": ui["home"], "href": navigation["home"], "submenu": []},
         {"key": "courses", "label": ui["courses"], "href": navigation["courses"], "submenu": courses_submenu},
         {"key": "centers", "label": ui["centers"], "href": navigation["centers"], "submenu": centers_submenu},
-        {"key": "blog", "label": ui["blog"], "href": navigation["blog"], "submenu": blog_submenu},
+        {"key": "blog", "label": ui["blog"], "href": navigation["blog"], "submenu": []},
         {"key": "about", "label": ui["about"], "href": navigation["about"], "submenu": about_submenu},
         {"key": "contact", "label": ui["contact"], "href": navigation["contact"], "submenu": contact_submenu},
     ]
 
 
 def ensure_platform_content(force=False):
-    global _BOOTSTRAPPED
-    if _BOOTSTRAPPED and not force:
-        return
-
+    """Bootstrap bundled demo content without overwriting managed content."""
+    if not force and Course.objects.exists():
+        return False
     User = get_user_model()
 
     with transaction.atomic():
@@ -2717,7 +2753,6 @@ def ensure_platform_content(force=False):
                     "students_count": item["students_count"],
                     "hours_watched": item["hours_watched"],
                     "price": item["price"],
-                    "rating": item["rating"],
                     "highlights": item["highlights"],
                     "outcomes": item["outcomes"],
                     "curriculum": item["curriculum"],
@@ -2799,8 +2834,7 @@ def ensure_platform_content(force=False):
             for course in Course.objects.filter(featured=True)[:2]:
                 UserCourse.objects.get_or_create(user=learner, course=course)
 
-    _BOOTSTRAPPED = True
-
+    return True
 
 def get_instructor_profile(lang):
     profile = InstructorProfile.objects.select_related("user").first()
@@ -2872,12 +2906,11 @@ def build_homepage_extras(lang, featured_courses, all_courses, centers, blogs):
 
 
 def get_homepage_context(request):
-    ensure_platform_content()
     lang = get_language(request)
     all_courses = [annotate_course(course, lang) for course in Course.objects.select_related("learning_center").all()]
     courses = [course for course in all_courses if course.featured][:6]
     centers = [annotate_center(center, lang) for center in LearningCenter.objects.prefetch_related("categories")]
-    categories = [annotate_category(category, lang) for category in Category.objects.all()]
+    categories = [annotate_category(category, lang) for category in Category.objects.filter(centers__isnull=False).distinct()]
     blogs = [annotate_blog(blog, lang) for blog in BlogPost.objects.filter(featured=True)[:4]]
     testimonials = [annotate_testimonial(item, lang) for item in Testimonial.objects.all()[:6]]
     instructor = get_instructor_profile(lang)
@@ -2885,11 +2918,11 @@ def get_homepage_context(request):
     total_hours = max(sum(course.hours_watched for course in Course.objects.all()), 10000)
     platform_course_count = max(Course.objects.count(), 25)
     seo = {
-        "title": "EduPlanet | Python course Uzbekistan, Django course online va Backend course Tashkent",
-        "description": "EduPlanet - Asilbek Mirolimovning Python, Django, REST API, PostgreSQL va DevOps bo'yicha content-rich LMS platformasi.",
+        "title": "EduPlanet | IT, Frontend, Backend, Dizayn va SMM kurslari",
+        "description": "EduPlanet - tajribali ustozlardan IT, dizayn, marketing va boshqa yo‘nalishlarni o‘rganish platformasi.",
         "keywords": global_keywords(["online lms", "uzbekistan coding academy", "personal brand educator"]),
         "og_title": "EduPlanet by Asilbek Mirolimov",
-        "og_description": "Start your programming journey today with real-world backend and web development courses.",
+        "og_description": "Learn IT, design and digital marketing through practical courses from experienced instructors.",
         "og_image": courses[0].image if courses else UNSPLASH["backend"],
         "structured_data": build_structured_data({
             "@context": "https://schema.org",
@@ -2948,7 +2981,6 @@ def get_homepage_context(request):
 
 
 def get_blog_list_context(request):
-    ensure_platform_content()
     lang = get_language(request)
     blogs = [annotate_blog(blog, lang) for blog in BlogPost.objects.all()]
     seo = {
@@ -2979,7 +3011,6 @@ def get_blog_list_context(request):
 
 
 def get_blog_detail_context(request, blog):
-    ensure_platform_content()
     lang = get_language(request)
     blog = annotate_blog(blog, lang)
     related_posts = [annotate_blog(item, lang) for item in BlogPost.objects.exclude(pk=blog.pk)[:3]]
@@ -3005,7 +3036,6 @@ def get_blog_detail_context(request, blog):
 
 
 def get_centers_by_category_context(request, category):
-    ensure_platform_content()
     lang = get_language(request)
     category = annotate_category(category, lang)
     centers = [annotate_center(center, lang) for center in LearningCenter.objects.filter(categories=category.id).prefetch_related("categories")]
@@ -3027,7 +3057,6 @@ def get_centers_by_category_context(request, category):
 
 
 def get_center_detail_context(request, center):
-    ensure_platform_content()
     lang = get_language(request)
     center = annotate_center(center, lang)
     courses = [annotate_course(course, lang) for course in center.courses.all()]
@@ -3054,7 +3083,6 @@ def get_center_detail_context(request, center):
 
 
 def get_course_detail_context(request, course, is_user_enrolled):
-    ensure_platform_content()
     lang = get_language(request)
     course = annotate_course(course, lang)
     center = annotate_center(course.learning_center, lang)
@@ -3094,7 +3122,6 @@ def get_course_detail_context(request, course, is_user_enrolled):
 
 
 def get_contact_success_context(request):
-    ensure_platform_content()
     lang = get_language(request)
     ui = UI_COPY[lang]
     seo = {

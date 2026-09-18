@@ -20,7 +20,7 @@
   <div class="col-xl-3 col-lg-12 stretch-card grid-margin">
     <div class="row">
       <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-        <div class="card stat-card bg-warning">
+        <div class="card !border-0 !bg-gradient-to-br !from-sky-500 !to-blue-600 !text-white !rounded-3xl shadow-lg shadow-sky-200/50">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <div>
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-        <div class="card stat-card bg-danger">
+        <div class="card !border-0 !bg-gradient-to-br !from-indigo-500 !to-violet-600 !text-white !rounded-3xl shadow-lg shadow-indigo-200/50">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <div>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3 pb-lg-0 pb-xl-3">
-        <div class="card stat-card bg-primary">
+        <div class="card !border-0 !bg-gradient-to-br !from-emerald-500 !to-teal-600 !text-white !rounded-3xl shadow-lg shadow-emerald-200/50">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <div>
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="col-xl-12 col-md-6 stretch-card pb-sm-3 pb-lg-0">
-        <div class="card stat-card bg-success">
+        <div class="card !border-0 !bg-gradient-to-br !from-orange-400 !to-amber-500 !text-white !rounded-3xl shadow-lg shadow-orange-200/50">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <div>
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div class="col-xl-9 stretch-card grid-margin">
+  <div class="col-xl-9 grid-margin">
     <div class="card">
       <div class="card-body">
         <div class="row">
@@ -95,7 +95,7 @@
         </div>
         <div class="row">
           <div class="col-sm-4">
-            <div class="card mb-3 mb-sm-0 border">
+            <div class="card metric-card mb-3 mb-sm-0 border">
               <div class="card-body py-3 px-4">
                 <p class="m-0 survey-head text-muted">O‘rtacha baho</p>
                 <h3 class="m-0">{{ stats.avg_rating|floatformat:2 }}</h3>
@@ -104,7 +104,7 @@
             </div>
           </div>
           <div class="col-sm-4">
-            <div class="card mb-3 mb-sm-0 border">
+            <div class="card metric-card mb-3 mb-sm-0 border">
               <div class="card-body py-3 px-4">
                 <p class="m-0 survey-head text-muted">Faol foydalanuvchilar</p>
                 <h3 class="m-0">{{ stats.users_active }}</h3>
@@ -113,7 +113,7 @@
             </div>
           </div>
           <div class="col-sm-4">
-            <div class="card border">
+            <div class="card metric-card border">
               <div class="card-body py-3 px-4">
                 <p class="m-0 survey-head text-muted">Murojaatlar</p>
                 <h3 class="m-0">{{ stats.contacts_total }}</h3>
@@ -122,9 +122,9 @@
             </div>
           </div>
         </div>
-        <div class="row my-3">
-          <div class="col-sm-12">
-            <canvas id="enrollChart" height="80"></canvas>
+        <div class="row">
+          <div class="col-sm-12 dashboard-chart">
+            <canvas id="enrollChart"></canvas>
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@
       <div class="card-body">
         <h4 class="card-title">Kategoriyalar bo‘yicha taqsimot</h4>
         <p class="text-muted small">Markazlarning kategoriya bo‘yicha taqsimoti</p>
-        <canvas id="categoryChart" height="220"></canvas>
+        <div class="dashboard-chart dashboard-chart--small"><canvas id="categoryChart"></canvas></div>
         <ul class="list-unstyled mt-3 mb-0">
           {% for cat in category_distribution %}
             <li class="d-flex justify-content-between py-1 border-bottom">

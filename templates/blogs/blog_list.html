@@ -21,7 +21,7 @@
         <p class="mt-4 flex-1 text-sm leading-7 text-slate-600">{{ blog.display_excerpt }}</p>
         <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
           <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-slate-400">Author</p>
+            <p class="text-xs uppercase tracking-[0.18em] text-slate-400">{{ ui.author }}</p>
             <p class="text-sm font-semibold text-slate-900">{{ blog.author_name }}</p>
           </div>
           <a href="{{ blog.href }}" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">{{ ui.read_article }}</a>
